@@ -3,7 +3,7 @@
      <div>
          <span>
              <img src="assets/phone-solid.svg" width="18px">
-                 古有云：大师之后再无大师。鄙人，宅悟
+                 鄙人，宅悟
          </span>
          ·
          <span>
@@ -24,7 +24,7 @@
  </center>
 有事可github留言，发邮件
 
-### [文章列表](list.md) --- [EOM文档说明](eom.md) --- [POEM文档](poem.md)
+### [文章列表](list.md) --- [QuantEye文档说明](quanteye.md) --- [POEM文档](poem.md)
 ### 简介
 本人、男
 #### 教育背景 

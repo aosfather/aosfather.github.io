@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quanteye | AI-native Quantitative Research Platform</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg-primary: #0b0f2a;
+                --bg-secondary: #12173a;
+                --accent: #00e5ff;
+                --accent-dim: rgba(0, 229, 255, 0.12);
+                --text-primary: #ffffff;
+                --text-secondary: #a3a6c2;
+                --border: rgba(255, 255, 255, 0.08);
+                --font-main:
+                    "Inter", -apple-system, BlinkMacSystemFont,
+                    "SF Pro Display", sans-serif;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: var(--font-main);
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 24px;
+            }
+            section {
+                padding: 100px 0;
+                position: relative;
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                line-height: 1.2;
+            }
+            .section-title {
+                font-size: clamp(2rem, 5vw, 2.8rem);
+                margin-bottom: 16px;
+                text-align: center;
+            }
+            .section-subtitle {
+                text-align: center;
+                color: var(--text-secondary);
+                margin-bottom: 60px;
+                font-size: 1.15rem;
+            }
+
+            /* Navigation */
+            nav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                background: rgba(11, 15, 42, 0.85);
+                backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--border);
+                transition: background 0.3s;
+            }
+            .nav-inner {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 72px;
+            }
+            .logo {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: var(--text-primary);
+                letter-spacing: 2px;
+            }
+            .logo span {
+                color: var(--accent);
+            }
+            .nav-links {
+                display: flex;
+                gap: 32px;
+                list-style: none;
+            }
+            .nav-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: color 0.2s;
+                position: relative;
+            }
+            .nav-links a:hover,
+            .nav-links a.active {
+                color: var(--accent);
+            }
+            .nav-links a::after {
+                content: "";
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--accent);
+                transition: width 0.3s;
+            }
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            /* Hero Section */
+            #hero {
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                background: radial-gradient(
+                    circle at 50% 30%,
+                    #1a204a 0%,
+                    var(--bg-primary) 70%
+                );
+            }
+            #hero-canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.4;
+                pointer-events: none;
+            }
+            .hero-content {
+                position: relative;
+                z-index: 2;
+                max-width: 900px;
+                padding: 0 20px;
+            }
+            .hero-title {
+                font-size: clamp(3.5rem, 8vw, 6rem);
+                margin-bottom: 24px;
+                background: linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    var(--accent) 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-subtitle {
+                font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+                color: var(--text-secondary);
+                margin-bottom: 48px;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .cta-group {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .btn {
+                padding: 16px 36px;
+                border-radius: 10px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border: none;
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+            }
+            .btn-primary {
+                background: var(--accent);
+                color: #0b0f2a;
+                box-shadow: 0 8px 30px rgba(0, 229, 255, 0.25);
+            }
+            .btn-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 40px rgba(0, 229, 255, 0.4);
+            }
+            .btn-secondary {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: var(--text-primary);
+                backdrop-filter: blur(4px);
+            }
+            .btn-secondary:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: var(--accent-dim);
+            }
+
+            /* Modules Grid */
+            .modules-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 28px;
+            }
+            .module-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 36px 28px;
+                transition:
+                    transform 0.3s,
+                    border-color 0.3s,
+                    box-shadow 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+            .module-card:hover {
+                transform: translateY(-6px);
+                border-color: var(--accent);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            }
+            .module-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: linear-gradient(90deg, var(--accent), transparent);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            .module-card:hover::before {
+                opacity: 1;
+            }
+            .module-icon {
+                width: 56px;
+                height: 56px;
+                background: var(--accent-dim);
+                border-radius: 14px;
+                margin-bottom: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8rem;
+                color: var(--accent);
+            }
+            .module-title {
+                font-size: 1.35rem;
+                margin-bottom: 16px;
+            }
+            .module-list {
+                list-style: none;
+                padding-left: 0;
+            }
+            .module-list li {
+                margin-bottom: 10px;
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                padding-left: 20px;
+                position: relative;
+            }
+            .module-list li::before {
+                content: "▹";
+                position: absolute;
+                left: 0;
+                color: var(--accent);
+            }
+
+            /* Comparison Table */
+            .tech-wrapper {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 32px;
+                overflow-x: auto;
+            }
+            .comparison-table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 600px;
+            }
+            .comparison-table th,
+            .comparison-table td {
+                padding: 20px 24px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+            }
+            .comparison-table th {
+                color: var(--text-secondary);
+                font-weight: 500;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .comparison-table td {
+                font-size: 1rem;
+            }
+            .highlight-cell {
+                color: var(--accent);
+                font-weight: 700;
+                background: var(--accent-dim);
+                border-radius: 8px;
+            }
+            .tech-slogan {
+                text-align: center;
+                font-size: clamp(1.2rem, 3vw, 1.6rem);
+                margin-top: 40px;
+                font-style: italic;
+                color: var(--text-secondary);
+                letter-spacing: -0.5px;
+            }
+            .tech-slogan strong {
+                color: var(--text-primary);
+                font-style: normal;
+            }
+
+            /* Use Cases */
+            .cases-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 24px;
+            }
+            .case-item {
+                background: var(--bg-secondary);
+                padding: 32px 24px;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+                text-align: center;
+                transition: all 0.3s;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .case-item:hover {
+                border-color: var(--accent);
+                background: linear-gradient(
+                    180deg,
+                    var(--accent-dim) 0%,
+                    var(--bg-secondary) 100%
+                );
+            }
+            .case-icon {
+                font-size: 2.8rem;
+                margin-bottom: 20px;
+                filter: drop-shadow(0 4px 10px rgba(0, 229, 255, 0.3));
+            }
+            .case-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+            .case-desc {
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            }
+
+            /* About */
+            .about-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 24px;
+                max-width: 850px;
+                margin: 0 auto;
+            }
+            .about-text {
+                font-size: 1.15rem;
+                color: var(--text-secondary);
+                line-height: 1.8;
+                margin-bottom: 16px;
+            }
+            .tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                justify-content: center;
+            }
+            .tag {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--border);
+                padding: 10px 20px;
+                border-radius: 50px;
+                font-size: 0.9rem;
+                color: var(--accent);
+                font-weight: 500;
+                transition: all 0.2s;
+            }
+            .tag:hover {
+                background: var(--accent-dim);
+                border-color: var(--accent);
+                transform: scale(1.05);
+            }
+
+            /* Footer */
+            footer {
+                background: #060818;
+                padding: 80px 0 40px;
+                border-top: 1px solid var(--border);
+                margin-top: 60px;
+            }
+            .footer-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 40px;
+                margin-bottom: 50px;
+            }
+            .footer-col h4 {
+                font-size: 1rem;
+                margin-bottom: 20px;
+                color: var(--text-primary);
+            }
+            .footer-links {
+                list-style: none;
+            }
+            .footer-links li {
+                margin-bottom: 14px;
+            }
+            .footer-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                transition: color 0.2s;
+                font-size: 0.95rem;
+            }
+            .footer-links a:hover {
+                color: var(--accent);
+            }
+            .footer-bottom {
+                text-align: center;
+                color: var(--text-secondary);
+                font-size: 0.85rem;
+                padding-top: 30px;
+                border-top: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .social-links {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .social-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.2s;
+            }
+            .social-links a:hover {
+                color: var(--accent);
+            }
+
+            /* Animations */
+            .fade-up {
+                opacity: 0;
+                transform: translateY(30px);
+                transition:
+                    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .fade-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .delay-1 {
+                transition-delay: 0.1s;
+            }
+            .delay-2 {
+                transition-delay: 0.2s;
+            }
+            .delay-3 {
+                transition-delay: 0.3s;
+            }
+            .delay-4 {
+                transition-delay: 0.4s;
+            }
+
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                }
+                .hero-title {
+                    font-size: 3rem;
+                }
+                section {
+                    padding: 70px 0;
+                }
+                .comparison-table {
+                    font-size: 0.9rem;
+                }
+                .comparison-table th,
+                .comparison-table td {
+                    padding: 14px 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav>
+            <div class="container nav-inner">
+                <div class="logo">QUANT<span>EYE</span></div>
+                <ul class="nav-links">
+                    <li><a href="#hero">首页</a></li>
+                    <li><a href="#modules">产品功能</a></li>
+                    <li><a href="#tech">技术优势</a></li>
+                    <li><a href="#cases">应用场景</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#contact">联系/试用</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section id="hero">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-content">
+                <h1 class="hero-title fade-up">Quanteye</h1>
+                <h2
+                    class="fade-up delay-1"
+                    style="
+                        font-size: clamp(1.6rem, 4vw, 2.2rem);
+                        font-weight: 400;
+                        color: var(--text-secondary);
+                        margin-top: -16px;
+                        margin-bottom: 24px;
+                    "
+                >
+                    See the Signal Before the Market Moves
+                </h2>
+                <p class="hero-subtitle fade-up delay-2">
+                    AI-native quantitative research infrastructure for hedge
+                    funds & asset managers.
+                </p>
+                <div class="cta-group fade-up delay-3">
+                    <button class="btn btn-primary" id="btn-trial">
+                        开始试用
+                    </button>
+                    <button class="btn btn-secondary" id="btn-demo">
+                        联系我们
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modules -->
+        <section id="modules">
+            <div class="container">
+                <h2 class="section-title fade-up">核心功能模块</h2>
+                <p class="section-subtitle fade-up delay-1">
+                    机构级量化研究全链路解决方案
+                </p>
+                <div class="modules-grid">
+                    <div class="module-card fade-up delay-1">
+                        <div class="module-icon">🧪</div>
+                        <h3 class="module-title">Factor Lab</h3>
+                        <ul class="module-list">
+                            <li>拖拽式因子构建</li>
+                            <li>自动 IC / IR / Turnover 分析</li>
+                            <li>多周期回测引擎</li>
+                        </ul>
+                    </div>
+                    <div class="module-card fade-up delay-2">
+                        <div class="module-icon">🧠</div>
+                        <h3 class="module-title">Alpha Engine</h3>
+                        <ul class="module-list">
+                            <li>另类数据融合（新闻 / 舆情 / 卫星）</li>
+                            <li>深度学习信号生成（Transformer / GNN）</li>
+                            <li>可解释性归因（SHAP / LIME）</li>
+                        </ul>
+                    </div>
+                    <div class="module-card fade-up delay-3">
+                        <div class="module-icon">🛡️</div>
+                        <h3 class="module-title">Risk Lens</h3>
+                        <ul class="module-list">
+                            <li>实时风险敞口监控</li>
+                            <li>压力测试 & 情景模拟</li>
+                            <li>VaR / CVaR / 尾部风险预警</li>
+                        </ul>
+                    </div>
+                    <div class="module-card fade-up delay-4">
+                        <div class="module-icon">☁️</div>
+                        <h3 class="module-title">Research Cloud</h3>
+                        <ul class="module-list">
+                            <li>分布式回测（Spark / Ray）</li>
+                            <li>Notebook-native 工作流</li>
+                            <li>企业级权限 & 审计日志</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology -->
+        <section id="tech">
+            <div class="container">
+                <h2 class="section-title fade-up">Why Quanteye</h2>
+                <p class="section-subtitle fade-up delay-1">
+                    从数据到 Alpha，以小时计，而非数月
+                </p>
+                <div class="tech-wrapper fade-up delay-2">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>维度</th>
+                                <th>传统平台</th>
+                                <th>Quanteye</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>数据处理</td>
+                                <td>T+1</td>
+                                <td class="highlight-cell">实时流</td>
+                            </tr>
+                            <tr>
+                                <td>建模方式</td>
+                                <td>线性</td>
+                                <td class="highlight-cell">AI-Native</td>
+                            </tr>
+                            <tr>
+                                <td>回测速度</td>
+                                <td>小时级</td>
+                                <td class="highlight-cell">分钟级</td>
+                            </tr>
+                            <tr>
+                                <td>部署架构</td>
+                                <td>本地服务器</td>
+                                <td class="highlight-cell">Cloud / Hybrid</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="tech-slogan fade-up delay-3">
+                    From data to alpha — <strong>in hours, not months.</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section id="cases">
+            <div class="container">
+                <h2 class="section-title fade-up">应用场景</h2>
+                <p class="section-subtitle fade-up delay-1">
+                    赋能多策略、多资产、多机构的实战落地
+                </p>
+                <div class="cases-grid">
+                    <div class="case-item fade-up delay-1">
+                        <div class="case-icon">📈</div>
+                        <div class="case-title">多因子选股</div>
+                        <div class="case-desc">
+                            全市场因子挖掘与动态权重优化
+                        </div>
+                    </div>
+                    <div class="case-item fade-up delay-2">
+                        <div class="case-icon">🌍</div>
+                        <div class="case-title">跨境市场中性策略</div>
+                        <div class="case-desc">
+                            跨时区数据对齐与汇率风险对冲
+                        </div>
+                    </div>
+                    <div class="case-item fade-up delay-3">
+                        <div class="case-icon">🤖</div>
+                        <div class="case-title">AI量化对冲基金孵化</div>
+                        <div class="case-desc">
+                            端到端模型训练与自动化交易部署
+                        </div>
+                    </div>
+                    <div class="case-item fade-up delay-4">
+                        <div class="case-icon">🏦</div>
+                        <div class="case-title">券商自营 & 资管中台</div>
+                        <div class="case-desc">统一投研底座与合规审计追踪</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title fade-up">关于我们</h2>
+                <div class="about-container">
+                    <p class="about-text fade-up delay-1">
+                        Quanteye
+                        由前头部量化基金核心研发团队创立，致力于用系统科学与工程化
+                        AI
+                        重塑量化研究范式。我们将华尔街级的交易基础设施与前沿深度学习技术深度融合，为专业投资者提供低延迟、高胜率、可解释的
+                        Alpha 挖掘环境。
+                    </p>
+                    <div class="tags fade-up delay-2">
+                        <span class="tag">Two Sigma</span>
+                        <span class="tag">Citadel</span>
+                        <span class="tag">清华姚班</span>
+                        <span class="tag">斯坦福 AI Lab</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>Quanteye</h4>
+                        <ul class="footer-links">
+                            <li><a href="#modules">产品功能</a></li>
+                            <li><a href="#tech">技术架构</a></li>
+                            <li><a href="#cases">解决方案</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>资源</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">开发者文档</a></li>
+                            <li><a href="#">API 参考</a></li>
+                            <li><a href="#">白皮书 & 研报</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>联系我们</h4>
+                        <ul class="footer-links">
+                            <li>
+                                <a href="mailto:contact@quanteye.ai"
+                                    >Email: contact@quanteye.ai</a
+                                >
+                            </li>
+                            <li><a href="#">预约演示</a></li>
+                            <li><a href="#">企业支持</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>合规与安全</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">SOC 2 认证</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span
+                        >© 2026 Quanteye Technologies. All rights
+                        reserved.</span
+                    >
+                    <div class="social-links">
+                        <a href="#">LinkedIn</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">WeChat</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // 1. Scroll Animations (Intersection Observer)
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("visible");
+                                observer.unobserve(entry.target); // Run once
+                            }
+                        });
+                    },
+                    { threshold: 0.15, rootMargin: "0px 0px -50px 0px" },
+                );
+
+                document
+                    .querySelectorAll(".fade-up")
+                    .forEach((el) => observer.observe(el));
+
+                // 2. Smooth Scroll & Active Nav Highlighting
+                const navLinks = document.querySelectorAll(".nav-links a");
+                const sections = document.querySelectorAll("section");
+
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    sections.forEach((section) => {
+                        const sectionTop = section.offsetTop;
+                        if (pageYOffset >= sectionTop - 120) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    navLinks.forEach((link) => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.add("active");
+                        }
+                    });
+                });
+
+                navLinks.forEach((link) => {
+                    link.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute("href");
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 80,
+                                behavior: "smooth",
+                            });
+                        }
+                    });
+                });
+
+                // 3. CTA Buttons
+                document
+                    .getElementById("btn-trial")
+                    .addEventListener("click", () => {
+                        alert(
+                            "🚀 即将跳转至企业沙箱环境 (Sandbox)...\n[模拟跳转] /sandbox/register",
+                        );
+                    });
+                document
+                    .getElementById("btn-demo")
+                    .addEventListener("click", () => {
+                        alert(
+                            "📅 正在为您预约专属客户经理演示...\n[模拟弹窗] 提交邮箱后发送 Calendly 链接",
+                        );
+                    });
+
+                // 4. Dynamic Particle Background (Canvas)
+                const canvas = document.getElementById("hero-canvas");
+                const ctx = canvas.getContext("2d");
+                let particles = [];
+
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                window.addEventListener("resize", resizeCanvas);
+                resizeCanvas();
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.vx = (Math.random() - 0.5) * 0.4;
+                        this.vy = (Math.random() - 0.5) * 0.4;
+                        this.size = Math.random() * 2 + 0.5;
+                        this.alpha = Math.random() * 0.5 + 0.1;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.fillStyle = `rgba(0, 229, 255, ${this.alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach((p, index) => {
+                        p.update();
+                        p.draw();
+                        // Draw connections
+                        for (let j = index + 1; j < particles.length; j++) {
+                            const dx = p.x - particles[j].x;
+                            const dy = p.y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 120) {
+                                ctx.strokeStyle = `rgba(0, 229, 255, ${0.15 * (1 - dist / 120)})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+            });
+        </script>
+    </body>
+</html>
