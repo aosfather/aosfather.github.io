@@ -24,6 +24,7 @@
  </center>
 有事可github留言，发邮件
 
+### [文章列表](list.md) --- [EOM文档说明](eom.md) --- [POEM文档](poem.md)
 ### 简介
 本人、男
 #### 教育背景 
