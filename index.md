@@ -76,6 +76,8 @@
 * 银行绩效项目、跨数据库的SQL引擎、BI项目、报表引擎、ERP、delphi组件
 
 #### 其它项目
+*  draw-io-gomcp **一个基于draw.io的Go语言mcp实现，支持在本地运行，单应用不依赖环境**
+* freecad-mcp-go **一个freecad的Go语言mcp server实现，支持在本地运行，单应用不依赖环境** 让AI可以调用freecad的能力，实现自然语言完成3D模型的设计，用于智能加工制造系统
 * gomicroui **一个由 AI 完成的 Microui项目的 Go 语言移植，我没写一行代码！**
 * EOM （Eyes on Market）近期在做的本地盯盘工具，基于Go语言开发，使用了fltk、goja等
 * 量化回测引擎，用Go做了一个，可以做简单回测，使用js脚本和poem脚本写策略，不用要搭建开发环境，一个执行文件
