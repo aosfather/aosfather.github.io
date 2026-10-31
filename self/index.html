@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>宅悟大师 | 个人主页</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg-primary: #0b0f2a;
+                --bg-secondary: #12173a;
+                --accent: #00e5ff;
+                --accent-dim: rgba(0, 229, 255, 0.12);
+                --text-primary: #ffffff;
+                --text-secondary: #a3a6c2;
+                --border: rgba(255, 255, 255, 0.08);
+                --font-main:
+                    "Inter", -apple-system, BlinkMacSystemFont,
+                    "SF Pro Display", "PingFang SC",
+                    "Microsoft YaHei", sans-serif;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: var(--font-main);
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 24px;
+            }
+            section {
+                padding: 90px 0;
+                position: relative;
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                line-height: 1.2;
+            }
+            .section-title {
+                font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+                margin-bottom: 16px;
+                text-align: center;
+            }
+            .section-subtitle {
+                text-align: center;
+                color: var(--text-secondary);
+                margin-bottom: 56px;
+                font-size: 1.1rem;
+            }
+
+            /* Navigation */
+            nav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                background: rgba(11, 15, 42, 0.85);
+                backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--border);
+                transition: background 0.3s;
+            }
+            .nav-inner {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 72px;
+            }
+            .logo {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--text-primary);
+                letter-spacing: 3px;
+            }
+            .logo span {
+                color: var(--accent);
+            }
+            .nav-links {
+                display: flex;
+                gap: 32px;
+                list-style: none;
+            }
+            .nav-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: color 0.2s;
+                position: relative;
+            }
+            .nav-links a:hover,
+            .nav-links a.active {
+                color: var(--accent);
+            }
+            .nav-links a::after {
+                content: "";
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--accent);
+                transition: width 0.3s;
+            }
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            /* Hero */
+            #hero {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                background: radial-gradient(
+                    circle at 50% 30%,
+                    #1a204a 0%,
+                    var(--bg-primary) 70%
+                );
+                padding: 120px 0 80px;
+            }
+            #hero-canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.4;
+                pointer-events: none;
+            }
+            .hero-content {
+                position: relative;
+                z-index: 2;
+                max-width: 900px;
+                padding: 0 20px;
+            }
+            .hero-title {
+                font-size: clamp(3rem, 8vw, 5.5rem);
+                margin-bottom: 20px;
+                background: linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    var(--accent) 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-tagline {
+                font-size: clamp(1.2rem, 3vw, 1.6rem);
+                font-weight: 400;
+                color: var(--text-secondary);
+                margin-bottom: 40px;
+            }
+            .contact-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px 36px;
+                justify-content: center;
+                margin-bottom: 40px;
+            }
+            .contact-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                color: var(--text-secondary);
+                font-size: 1rem;
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+            .contact-item:hover {
+                color: var(--accent);
+            }
+            .contact-item img {
+                width: 18px;
+                height: 18px;
+                filter: invert(70%) sepia(90%) saturate(2000%) hue-rotate(150deg) brightness(95%);
+                opacity: 0.9;
+            }
+            .cta-group {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .btn {
+                padding: 14px 32px;
+                border-radius: 10px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border: none;
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+                text-decoration: none;
+                display: inline-block;
+            }
+            .btn-primary {
+                background: var(--accent);
+                color: #0b0f2a;
+                box-shadow: 0 8px 30px rgba(0, 229, 255, 0.25);
+            }
+            .btn-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 40px rgba(0, 229, 255, 0.4);
+            }
+            .btn-secondary {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: var(--text-primary);
+                backdrop-filter: blur(4px);
+            }
+            .btn-secondary:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: var(--accent-dim);
+            }
+
+            /* About */
+            .about-container {
+                max-width: 880px;
+                margin: 0 auto;
+            }
+            .edu-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 28px 32px;
+                margin-bottom: 28px;
+                display: flex;
+                align-items: center;
+                gap: 24px;
+            }
+            .edu-icon {
+                width: 56px;
+                height: 56px;
+                background: var(--accent-dim);
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.6rem;
+                flex-shrink: 0;
+            }
+            .edu-card h3 {
+                font-size: 1.15rem;
+                margin-bottom: 4px;
+            }
+            .edu-card p {
+                color: var(--text-secondary);
+                font-size: 1rem;
+            }
+            .bullet-list {
+                list-style: none;
+                padding-left: 0;
+            }
+            .bullet-list li {
+                margin-bottom: 14px;
+                color: var(--text-secondary);
+                font-size: 1rem;
+                padding-left: 24px;
+                position: relative;
+                line-height: 1.7;
+            }
+            .bullet-list li::before {
+                content: "▹";
+                position: absolute;
+                left: 0;
+                color: var(--accent);
+            }
+            .bullet-list li strong {
+                color: var(--text-primary);
+                font-weight: 600;
+            }
+            .about-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 32px;
+            }
+            .about-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+
+            /* Tech Stack */
+            .stack-group {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 28px 32px;
+                margin-bottom: 24px;
+            }
+            .stack-group h3 {
+                font-size: 1.1rem;
+                margin-bottom: 18px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .stack-group h3::before {
+                content: "";
+                width: 4px;
+                height: 20px;
+                background: var(--accent);
+                border-radius: 2px;
+                display: inline-block;
+            }
+            .tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .tag {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--border);
+                padding: 8px 18px;
+                border-radius: 50px;
+                font-size: 0.9rem;
+                color: var(--accent);
+                font-weight: 500;
+                transition: all 0.2s;
+            }
+            .tag:hover {
+                background: var(--accent-dim);
+                border-color: var(--accent);
+                transform: scale(1.05);
+            }
+
+            /* Career */
+            .career-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 24px;
+            }
+            .career-item {
+                background: var(--bg-secondary);
+                padding: 32px 24px;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+                text-align: center;
+                transition: all 0.3s;
+            }
+            .career-item:hover {
+                border-color: var(--accent);
+                background: linear-gradient(
+                    180deg,
+                    var(--accent-dim) 0%,
+                    var(--bg-secondary) 100%
+                );
+            }
+            .career-name {
+                font-size: 1.15rem;
+                font-weight: 600;
+            }
+
+            /* Projects */
+            .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 28px;
+            }
+            .project-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 30px 28px;
+                transition:
+                    transform 0.3s,
+                    border-color 0.3s,
+                    box-shadow 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+            .project-card:hover {
+                transform: translateY(-6px);
+                border-color: var(--accent);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            }
+            .project-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: linear-gradient(90deg, var(--accent), transparent);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            .project-card:hover::before {
+                opacity: 1;
+            }
+            .project-title {
+                font-size: 1.15rem;
+                margin-bottom: 12px;
+                color: var(--accent);
+            }
+            .project-desc {
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+            .work-projects {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 32px;
+                margin-bottom: 48px;
+            }
+            .work-projects .bullet-list {
+                columns: 1;
+            }
+            @media (min-width: 768px) {
+                .work-projects .bullet-list {
+                    columns: 2;
+                    column-gap: 40px;
+                }
+            }
+
+            /* Footer */
+            footer {
+                background: #060818;
+                padding: 60px 0 40px;
+                border-top: 1px solid var(--border);
+            }
+            .footer-bottom {
+                text-align: center;
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .footer-bottom .contact-row {
+                margin-bottom: 0;
+            }
+            .footer-note {
+                font-size: 0.9rem;
+            }
+
+            /* Animations */
+            .fade-up {
+                opacity: 0;
+                transform: translateY(30px);
+                transition:
+                    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .fade-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .delay-1 {
+                transition-delay: 0.1s;
+            }
+            .delay-2 {
+                transition-delay: 0.2s;
+            }
+            .delay-3 {
+                transition-delay: 0.3s;
+            }
+            .delay-4 {
+                transition-delay: 0.4s;
+            }
+
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                }
+                section {
+                    padding: 60px 0;
+                }
+                .edu-card {
+                    flex-direction: column;
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav>
+            <div class="container nav-inner">
+                <div class="logo">宅悟<span>大师</span></div>
+                <ul class="nav-links">
+                    <li><a href="#hero">首页</a></li>
+                    <li><a href="#about">简介</a></li>
+                    <li><a href="#skills">技术履历</a></li>
+                    <li><a href="#career">从业经历</a></li>
+                    <li><a href="#projects">项目经历</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section id="hero">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-content">
+                <h1 class="hero-title fade-up">宅悟大师</h1>
+                <p class="hero-tagline fade-up delay-1">鄙人，宅悟 · 二十余年软件修行</p>
+                <div class="contact-row fade-up delay-2">
+                    <span class="contact-item">
+                        <img src="../assets/phone-solid.svg" alt="phone" />
+                        鄙人，宅悟
+                    </span>
+                    <a class="contact-item" href="mailto:76939156@qq.com">
+                        <img src="../assets/envelope-solid.svg" alt="email" />
+                        76939156@qq.com
+                    </a>
+                    <a
+                        class="contact-item"
+                        href="https://github.com/aosfather"
+                        target="_blank"
+                    >
+                        <img src="../assets/github-brands.svg" alt="github" />
+                        aosfather
+                    </a>
+                    <span class="contact-item">
+                        <img src="../assets/rss-solid.svg" alt="blog" />
+                        <a href="#" style="color: inherit; text-decoration: none">我的博客</a>
+                    </span>
+                </div>
+                <p
+                    class="fade-up delay-3"
+                    style="color: var(--text-secondary); margin-bottom: 36px"
+                >
+                    有事可 github 留言，发邮件
+                </p>
+                <div class="cta-group fade-up delay-4">
+                    <a class="btn btn-primary" href="../list.md">文章列表</a>
+                    <a class="btn btn-secondary" href="../quanteye.md">QuantEye 文档</a>
+                    <a class="btn btn-secondary" href="../poem.md">POEM 文档</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title fade-up">简介</h2>
+                <p class="section-subtitle fade-up delay-1">本人、男</p>
+                <div class="about-container">
+                    <div class="edu-card fade-up delay-1">
+                        <div class="edu-icon">🎓</div>
+                        <div>
+                            <h3>教育背景</h3>
+                            <p>武汉理工大学 (211) · 计算机辅助制造工程 · 本科</p>
+                        </div>
+                    </div>
+                    <div class="about-card fade-up delay-2">
+                        <h3>自我评价</h3>
+                        <ul class="bullet-list">
+                            <li>技术涉猎广，不忘技术初心，在互联网软件行业滚打多年，带团队，梳流程，定战略，一直坚持技术不离身。</li>
+                            <li>二十多年的软件开发经验、15 年以上架构设计经验。能胜任大型平台软件的架构设计、技术难点攻关工作。</li>
+                            <li>技术经验丰富，曾参与和主导过多个互联网产品的从 0 到 1 的搭建，主持过多次技术变革和团队组建工作。</li>
+                            <li>自身经历丰富，先后经历过传统 ERP 软件企业、SAAS 平台企业及互联网企业，参与过 CMMI 研发体系建设、PAAS 平台建设、devops 平台搭建和企业中台建设、智能制造系统建设。</li>
+                            <li>能力全面，涉足过产品、架构、研发、测试、运维等方面，技术底蕴深厚，对于桌面应用、WEB、平台、移动应用、小程序、BI 及数据处理、大数据和开放平台的软件设计开发都有涉猎，并能熟练使用多种编程语言。经验丰富，有多年开源系统集成和修改的经历。动手能力强，在实践微服务及大数据处理架构过程中，开源了多个微服务相关框架。</li>
+                            <li>曾在三家世界五百强公司履职过。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title fade-up">技术履历</h2>
+                <p class="section-subtitle fade-up delay-1">广度与深度并存的技术栈</p>
+                <div class="stack-group fade-up delay-1">
+                    <h3>语言</h3>
+                    <div class="tags">
+                        <span class="tag">java</span>
+                        <span class="tag">go</span>
+                        <span class="tag">delphi</span>
+                        <span class="tag">python</span>
+                        <span class="tag">php</span>
+                        <span class="tag">js</span>
+                        <span class="tag">css</span>
+                        <span class="tag">dart</span>
+                        <span class="tag">rust</span>
+                        <span class="tag">c</span>
+                    </div>
+                </div>
+                <div class="stack-group fade-up delay-2">
+                    <h3>Java 组件及中间件</h3>
+                    <div class="tags">
+                        <span class="tag">spring</span>
+                        <span class="tag">springboot</span>
+                        <span class="tag">springcloud</span>
+                        <span class="tag">mybatis</span>
+                        <span class="tag">activiti</span>
+                        <span class="tag">cas</span>
+                        <span class="tag">eureka</span>
+                        <span class="tag">xxl-job</span>
+                        <span class="tag">antlr</span>
+                        <span class="tag">hibernate</span>
+                        <span class="tag">lucene</span>
+                        <span class="tag">shark</span>
+                        <span class="tag">flex</span>
+                        <span class="tag">birt</span>
+                        <span class="tag">jboss</span>
+                        <span class="tag">tomcat</span>
+                    </div>
+                </div>
+                <div class="stack-group fade-up delay-2">
+                    <h3>微服务中间件</h3>
+                    <div class="tags">
+                        <span class="tag">redis</span>
+                        <span class="tag">memcache</span>
+                        <span class="tag">rabbitMQ</span>
+                        <span class="tag">rockMQ</span>
+                        <span class="tag">ES</span>
+                        <span class="tag">apollo</span>
+                        <span class="tag">seata</span>
+                        <span class="tag">dubbo</span>
+                        <span class="tag">nginx(网关)</span>
+                    </div>
+                </div>
+                <div class="stack-group fade-up delay-3">
+                    <h3>数据库 &amp; 移动端</h3>
+                    <div class="tags">
+                        <span class="tag">oracle</span>
+                        <span class="tag">mysql</span>
+                        <span class="tag">mongodb</span>
+                        <span class="tag">sqlite</span>
+                        <span class="tag">android</span>
+                        <span class="tag">ios</span>
+                        <span class="tag">flutter</span>
+                        <span class="tag">RN</span>
+                        <span class="tag">嵌入式</span>
+                    </div>
+                </div>
+                <div class="stack-group fade-up delay-3">
+                    <h3>涉猎领域</h3>
+                    <ul class="bullet-list">
+                        <li><strong>传统软件：</strong>做过 ERP 实施、ERP 研发、目标管理软件的设计和研发</li>
+                        <li><strong>微服务组件：</strong>设计开发过 api 网关、微服务应用框架、日志收集统计、查询中心、数据处理引擎（spout、bolt、sink）、实时业务指标计算引擎</li>
+                        <li><strong>互联网：</strong>SAAS 软件（CRM）研发、第三方支付核心系统（交易、渠道接入、对账、清结算、业管）、企业站、企业钱包、费用管理（机票、酒店、用车）、P2P、财经（营收）、企业信贷、风控、监管合规（客户评级、反洗钱）</li>
+                        <li><strong>智能制造：</strong>组态软件、MES</li>
+                        <li><strong>涉足行业：</strong>ERP、CRM、OA、SAAS、第三方支付、企业消费管理、TMC、互联网金融</li>
+                        <li><strong>职业经历：</strong>首席架构师、中间件架构师、资深开发工程师等</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career -->
+        <section id="career">
+            <div class="container">
+                <h2 class="section-title fade-up">从业经历</h2>
+                <p class="section-subtitle fade-up delay-1">其中三家世界五百强</p>
+                <div class="career-grid">
+                    <div class="career-item fade-up delay-1">
+                        <div class="career-name">贝壳金服</div>
+                    </div>
+                    <div class="career-item fade-up delay-1">
+                        <div class="career-name">华为</div>
+                    </div>
+                    <div class="career-item fade-up delay-2">
+                        <div class="career-name">京东</div>
+                    </div>
+                    <div class="career-item fade-up delay-2">
+                        <div class="career-name">钱包金服</div>
+                    </div>
+                    <div class="career-item fade-up delay-3">
+                        <div class="career-name">中企开源</div>
+                    </div>
+                    <div class="career-item fade-up delay-3">
+                        <div class="career-name">CRPP</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title fade-up">项目经历</h2>
+                <p class="section-subtitle fade-up delay-1">工作项目与个人开源项目</p>
+
+                <div class="work-projects fade-up delay-1">
+                    <ul class="bullet-list">
+                        <li>电商平台、MES、SCADA 工控软件、智能加工制造系统、AI 视觉及切割规划</li>
+                        <li>支付核心系统 第三方支付交易核心</li>
+                        <li>统一运营低代码平台 基于yaml配置工具的平台，用于快速开发线上运维运营工具</li>
+                        <li>监管平台 第三方支付支持央行监管的上报管理系统</li>
+                        <li>业务实时指标系统、全球开票回款系统、P2P 内部互助系统</li>
+                        <li>钱包企业站及支付线运营平台</li>
+                        <li>T+1 结算系统</li>
+                        <li>快捷支付产品</li>
+                        <li>意向客户管理系统（CRM）、OSS 运营管理系统、UC（user center）用户中心、报表引擎</li>
+                        <li>银行绩效项目、跨数据库的 SQL 引擎、BI 项目、报表引擎、ERP、delphi 组件</li>
+                    </ul>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card fade-up delay-1">
+                        <div class="project-title">draw-io-gomcp</div>
+                        <p class="project-desc">
+                            一个基于 draw.io 的 Go 语言 mcp 实现，支持在本地运行，单应用不依赖环境。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-1">
+                        <div class="project-title">freecad-mcp-go</div>
+                        <p class="project-desc">
+                            一个 freecad 的 Go 语言 mcp server 实现，支持在本地运行，单应用不依赖环境。让 AI 可以调用 freecad 的能力，实现自然语言完成 3D 模型的设计，用于智能加工制造系统。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-2">
+                        <div class="project-title">gomicroui</div>
+                        <p class="project-desc">
+                            一个由 AI 完成的 Microui 项目的 Go 语言移植，我没写一行代码！
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-2">
+                        <div class="project-title">EOM（Eyes on Market）</div>
+                        <p class="project-desc">
+                            近期在做的本地盯盘工具，基于 Go 语言开发，使用了 fltk、goja 等。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-3">
+                        <div class="project-title">量化回测引擎</div>
+                        <p class="project-desc">
+                            用 Go 做了一个，可以做简单回测，使用 js 脚本和 poem 脚本写策略，不用搭建开发环境，一个执行文件。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-3">
+                        <div class="project-title">AI Agent</div>
+                        <p class="project-desc">
+                            龙虾泛滥，也凑热闹自己搞了一个，基于 Go 语言小巧简单安全，主打本地使用。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-4">
+                        <div class="project-title">POEM（如律，如诗）</div>
+                        <p class="project-desc">
+                            中文脚本，轻量级嵌入式脚本引擎，基于 Go 语言开发，可以单独使用或基于 Go 做二次开发。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-4">
+                        <div class="project-title">bingo</div>
+                        <p class="project-desc">
+                            类 Springboot 的 web 框架，为微服务而生的 bingo，基于 Go 语言开发，曾应用到生产中。
+                        </p>
+                    </div>
+                    <div class="project-card fade-up delay-4">
+                        <div class="project-title">仓库里的其它主导项目</div>
+                        <p class="project-desc">
+                            开源自己写基本都是 Go 项目，Java 太正经，写小项目和验证想法容易受工作习惯影响，不知不觉就平台化了，企业化了。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="contact-row">
+                        <a
+                            class="contact-item"
+                            href="https://github.com/aosfather"
+                            target="_blank"
+                        >
+                            <img src="../assets/github-brands.svg" alt="github" />
+                            GitHub
+                        </a>
+                        <a class="contact-item" href="mailto:76939156@qq.com">
+                            <img src="../assets/envelope-solid.svg" alt="email" />
+                            76939156@qq.com
+                        </a>
+                        <a class="contact-item" href="../list.md">文章列表</a>
+                    </div>
+                    <span class="footer-note">© 2026 宅悟大师 · 有事可 github 留言，发邮件</span>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // 1. Scroll Animations (Intersection Observer)
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("visible");
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    },
+                    { threshold: 0.15, rootMargin: "0px 0px -50px 0px" },
+                );
+
+                document
+                    .querySelectorAll(".fade-up")
+                    .forEach((el) => observer.observe(el));
+
+                // 2. Smooth Scroll & Active Nav Highlighting
+                const navLinks = document.querySelectorAll(".nav-links a");
+                const sections = document.querySelectorAll("section");
+
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    sections.forEach((section) => {
+                        const sectionTop = section.offsetTop;
+                        if (pageYOffset >= sectionTop - 120) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    navLinks.forEach((link) => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.add("active");
+                        }
+                    });
+                });
+
+                navLinks.forEach((link) => {
+                    link.addEventListener("click", (e) => {
+                        const targetId = link.getAttribute("href");
+                        if (!targetId.startsWith("#")) return;
+                        e.preventDefault();
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 80,
+                                behavior: "smooth",
+                            });
+                        }
+                    });
+                });
+
+                // 3. Dynamic Particle Background (Canvas)
+                const canvas = document.getElementById("hero-canvas");
+                const ctx = canvas.getContext("2d");
+                let particles = [];
+
+                function resizeCanvas() {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                }
+                window.addEventListener("resize", resizeCanvas);
+                resizeCanvas();
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.vx = (Math.random() - 0.5) * 0.4;
+                        this.vy = (Math.random() - 0.5) * 0.4;
+                        this.size = Math.random() * 2 + 0.5;
+                        this.alpha = Math.random() * 0.5 + 0.1;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.fillStyle = `rgba(0, 229, 255, ${this.alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach((p, index) => {
+                        p.update();
+                        p.draw();
+                        for (let j = index + 1; j < particles.length; j++) {
+                            const dx = p.x - particles[j].x;
+                            const dy = p.y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 120) {
+                                ctx.strokeStyle = `rgba(0, 229, 255, ${0.15 * (1 - dist / 120)})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+            });
+        </script>
+    </body>
+</html>
