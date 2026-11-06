@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mygod · 一个播放器，接住所有音乐与所有 AI 助手</title>
+<style>
+  :root{
+    --ink:#0e1116;
+    --ink2:#3d4450;
+    --ink3:#6c7480;
+    --line:#e6e9ef;
+    --bg:#ffffff;
+    --bg2:#f6f8fb;
+    --accent:#3b5bfd;
+    --accent2:#7a5cff;
+    --code:#0f131a;
+    --code-ink:#d7dce6;
+    --r:14px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav ul a:hover{color:var(--accent)}
+  @media (max-width:760px){nav ul{display:none}}
+
+  /* hero */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:96px 0 84px;
+    background:
+      radial-gradient(1000px 420px at 82% -8%, rgba(122,92,255,.16), transparent 62%),
+      radial-gradient(760px 360px at 8% 6%, rgba(59,91,253,.14), transparent 60%),
+      #fff;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:20px}
+  h1{font-size:58px;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;font-weight:800;max-width:860px}
+  h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:19px;color:var(--ink2);max-width:700px;margin:0 0 34px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 22px;border-radius:11px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;
+  }
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 10px 24px rgba(59,91,253,.22)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{transform:translateY(-1px)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .stat{background:#fff;padding:20px 22px}
+  .stat b{display:block;font-size:26px;letter-spacing:-.02em}
+  .stat span{font-size:12.5px;color:var(--ink3)}
+  @media (max-width:760px){
+    h1{font-size:36px}.hero{padding:64px 0 56px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* sections */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:10px}
+  h2{font-size:32px;letter-spacing:-.02em;margin:0 0 10px}
+  h2 + p.sub{color:var(--ink3);font-size:15.5px;margin:0 0 38px;max-width:680px}
+  h3{font-size:18px;margin:34px 0 10px}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;
+  }
+  .card .ic{font-size:20px;margin-bottom:10px}
+  .card h3{margin:0 0 6px;font-size:16.5px}
+  .card p{margin:0;color:var(--ink2);font-size:14.5px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:16px}
+  .step{
+    position:relative;padding:24px 26px 24px 74px;border:1px solid var(--line);
+    border-radius:var(--r);background:#fff;
+  }
+  .step::before{
+    counter-increment:s;content:counter(s);
+    position:absolute;left:24px;top:22px;
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:14px;
+  }
+  .step h3{margin:0 0 8px;font-size:17px}
+  .step p{margin:6px 0;color:var(--ink2);font-size:15px}
+  .step .note{color:var(--ink3);font-size:13.5px}
+
+  /* code */
+  .codewrap{position:relative;margin:16px 0}
+  pre{
+    margin:0;background:var(--code);color:var(--code-ink);
+    border-radius:12px;padding:18px 20px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;line-height:1.65;
+  }
+  pre .c{color:#7f8b9e}
+  pre .k{color:#8fb4ff}
+  pre .s{color:#a6e3a1}
+  pre .v{color:#f5c2e7}
+  .copy{
+    position:absolute;top:10px;right:10px;
+    background:#1d2430;color:#c9d2e0;border:1px solid #2a3342;
+    font-size:12px;padding:5px 10px;border-radius:7px;cursor:pointer;
+  }
+  .copy:hover{background:#252e3c}
+  code.inline{background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* prompt cards */
+  .prompts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .prompt{border:1px solid var(--line);border-radius:var(--r);padding:20px;background:#fff}
+  .prompt .who{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+  .prompt p{margin:0;font-size:14.5px;color:var(--ink2)}
+  .prompt p b{color:var(--ink)}
+  @media (max-width:900px){.prompts{grid-template-columns:1fr}}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:18px 0}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+";color:var(--accent);font-weight:800;margin-right:10px}
+  details[open] summary::before{content:"−"}
+  details p{margin:10px 0 0;color:var(--ink2);font-size:15px}
+
+  .banner{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);
+    padding:26px 28px;margin:30px 0;font-size:14.5px;color:var(--ink2);
+  }
+  .banner b{color:var(--ink)}
+
+  footer{padding:52px 0 72px;color:var(--ink3);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot">m</span> mygod</div>
+    <ul>
+      <li><a href="#features">特性</a></li>
+      <li><a href="#install">安装</a></li>
+      <li><a href="#mcp">助手接入</a></li>
+      <li><a href="#cli">命令行</a></li>
+      <li><a href="#faq">常见问题</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Music Engine · MCP + CLI</div>
+    <h1>一个播放器，<br>接住<em>所有音乐</em>与<em>所有 AI 助手</em></h1>
+    <p class="lede">
+      mygod 运行在你自己的电脑上：把多个在线曲库和本地音乐库合成同一个播放队列，
+      再以「智能助手接入」和「命令行」两种方式对外开放。一句话放歌，一条命令接管播放状态。
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#install">开始安装 →</a>
+      <a class="btn ghost" href="#cli">查看 CLI 帮助</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>个在线曲库来源，统一检索</span></div>
+      <div class="stat"><b>1</b><span>个本地库，目录登记即用</span></div>
+      <div class="stat"><b>19</b><span>个可被助手调用的能力</span></div>
+      <div class="stat"><b>1</b><span>个播放实例，多端共享</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 特性 ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">FEATURES</div>
+    <h2>为“听歌”这件事做减法</h2>
+    <p class="sub">不用在几个客户端之间来回切换，也不用为了放一首歌去学一套新接口。</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>多源聚合检索</h3>
+        <p>一次搜索看到多个在线曲库与本地库的结果，每条都标明来源与可播状态，不用逐平台试听。</p>
+      </div>
+      <div class="card">
+        <div class="ic">✦</div>
+        <h3>助手原生接入</h3>
+        <p>以标准 MCP 服务（stdio 类型）暴露能力，Trae、Codex、WorkBuddy 等支持 MCP 的助手配置一行路径即可使用。</p>
+      </div>
+      <div class="card">
+        <div class="ic">◫</div>
+        <h3>单一播放器，多端共享</h3>
+        <p>本机只允许一个播放实例；多个助手或终端同时连接，读写同一份队列、进度与音量，不会互相打断。</p>
+      </div>
+      <div class="card">
+        <div class="ic">⌂</div>
+        <h3>本地音乐库</h3>
+        <p>登记一个目录，自动建立索引并支持增量重扫；本地文件直接读取播放，不复制、不转码、不上传。</p>
+      </div>
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>音质与音效</h3>
+        <p>标准 / 较高 / 极高 / 无损四档自动向下兼容；均衡器预设、夜间模式、增强、响度均衡均随会话保存。</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>会话恢复与自愈</h3>
+        <p>退出后按上次队列与进度恢复；不可播的曲目自动跳过，取流 15 秒无数据即判定失败，不让播放在加载里卡死。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 安装 ============ -->
+<section id="install">
+  <div class="wrap">
+    <div class="kicker">INSTALL</div>
+    <h2>安装：三分钟，两个可执行文件</h2>
+    <p class="sub">mygod 不依赖任何后台服务：所有数据（会话、索引、缓存）都在你自己的电脑上。</p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>取得两个可执行文件</h3>
+        <p><b>mygod-mcp</b> —— 给支持 MCP 的智能助手用；<b>mygod-cli</b> —— 给命令行与脚本用。</p>
+        <p class="note">目标平台：macOS（Apple Silicon）。两个文件彼此独立，用哪一个就装哪一个，也可以两个都装。</p>
+      </div>
+
+      <div class="step">
+        <h3>放进 PATH，并赋予执行权限</h3>
+        <div class="codewrap">
+          <button class="copy" data-copy>复制</button>
+          <pre><span class="c"># 放到个人 bin 目录（若目录不存在先创建）</span>
+mkdir -p ~/.local/bin
+mv mygod-mcp mygod-cli ~/.local/bin/
+chmod +x ~/.local/bin/mygod-mcp ~/.local/bin/mygod-cli
+
+<span class="c"># 确认 PATH 里有它（zsh 用户写进 ~/.zshrc）</span>
+export PATH="$HOME/.local/bin:$PATH"</pre>
+        </div>
+        <p class="note">如果你的文件在别处，后面所有配置里把 <code class="inline">/Users/you/.local/bin</code> 换成实际目录即可。</p>
+      </div>
+
+      <div class="step">
+        <h3>验证安装</h3>
+        <div class="codewrap">
+          <button class="copy" data-copy>复制</button>
+          <pre><span class="c"># 命令行：应打印引擎版本、可用来源与登录状态</span>
+mygod-cli status
+
+<span class="c"># 助手接入端：应输出 MCP 握手信息后等待标准输入</span>
+mygod-mcp</pre>
+        </div>
+        <p class="note">首次跑起来会自动创建一个常驻引擎；之后无论从哪个入口连接，用的都是同一个播放实例。</p>
+      </div>
+    </div>
+
+    <div class="banner">
+      <b>数据都在本机。</b> 播放会话、本地索引、缓存文件统一保存在
+      <code class="inline">~/.local/share/mygod</code>；除向你自己指定的曲库来源取流外，不向任何第三方发送播放数据。
+    </div>
+  </div>
+</section>
+
+<!-- ============ MCP ============ -->
+<section id="mcp">
+  <div class="wrap">
+    <div class="kicker">MCP SERVER</div>
+    <h2>接入智能助手：把路径告诉它，剩下的它自己配</h2>
+    <p class="sub">mygod-mcp 是一个本地 stdio 类型的 MCP 服务：不需要端口、不需要服务器、不需要网络权限，助手用它就像读一个本地工具。</p>
+
+    <h3>它是什么类型</h3>
+    <table>
+      <thead><tr><th>项</th><th>值</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>传输类型</td><td><code>stdio</code></td><td>通过标准输入 / 标准输出与助手通信，本机进程间对话</td></tr>
+        <tr><td>启动方式</td><td>由助手拉起</td><td>助手启动时按配置执行该路径，随用随起</td></tr>
+        <tr><td>参数</td><td>无</td><td>空参数数组即可；常驻引擎由它自己管理</td></tr>
+        <tr><td>并发</td><td>多客户端安全</td><td>多助手同时连接不会互相抢播放器，后到者接入同一实例</td></tr>
+      </tbody>
+    </table>
+
+    <h3>方式一：让助手自己完成配置（推荐）</h3>
+    <p style="color:var(--ink2);font-size:15px">在对话里直接对助手说下面这句话，它会自行写入 MCP 配置并完成握手验证：</p>
+    <div class="prompts">
+      <div class="prompt">
+        <div class="who">TRAE</div>
+        <p>“帮我加一个 MCP 服务器，名字叫 <b>mygod</b>，类型 <b>stdio</b>，命令路径是 <b>/Users/you/.local/bin/mygod-mcp</b>，不需要参数，加好后调用一次 status 验证。”</p>
+      </div>
+      <div class="prompt">
+        <div class="who">CODEX</div>
+        <p>“在 MCP 配置里增加 <b>mygod</b>：stdio 类型，command 为 <b>/Users/you/.local/bin/mygod-mcp</b>，无 args，然后跑一次工具列表确认能看到 scan_local。”</p>
+      </div>
+      <div class="prompt">
+        <div class="who">WORKBUDDY</div>
+        <p>“接入本地 MCP 服务 <b>mygod</b>，类型 <b>stdio</b>，可执行文件在 <b>/Users/you/.local/bin/mygod-mcp</b>，配置完读一次播放状态。”</p>
+      </div>
+    </div>
+    <p class="note" style="color:var(--ink3);font-size:13.5px">路径改成你自己的实际位置即可；换成任何支持 MCP 的助手，说法都通用。</p>
+
+    <h3>方式二：手工写入配置</h3>
+    <p style="color:var(--ink2);font-size:15px">通用 <code class="inline">mcpServers</code> 写法（Trae 等使用 JSON 配置的助手）：</p>
+    <div class="codewrap">
+      <button class="copy" data-copy>复制</button>
+      <pre>{
+  <span class="k">"mcpServers"</span>: {
+    <span class="k">"mygod"</span>: {
+      <span class="k">"type"</span>: <span class="s">"stdio"</span>,
+      <span class="k">"command"</span>: <span class="s">"/Users/you/.local/bin/mygod-mcp"</span>,
+      <span class="k">"args"</span>: []
+    }
+  }
+}</pre>
+    </div>
+
+    <p style="color:var(--ink2);font-size:15px">使用 TOML 配置的助手（如 Codex）：</p>
+    <div class="codewrap">
+      <button class="copy" data-copy>复制</button>
+      <pre>[<span class="k">mcp_servers</span>.<span class="v">mygod</span>]
+command = <span class="s">"/Users/you/.local/bin/mygod-mcp"</span>
+args = []</pre>
+    </div>
+
+    <div class="banner">
+      <b>配好之后能做什么？</b> 助手可以检索与播放、控制队列（上一首 / 下一首 / 暂停 / 跳转 / 音量）、
+      读歌词与评论、看发现页与电台、调节音效、登记本地音乐目录、读取当前播放快照——共 19 个能力动作，语义与命令行完全一致。
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLI ============ -->
+<section id="cli">
+  <div class="wrap">
+    <div class="kicker">COMMAND LINE</div>
+    <h2>不支持 MCP？用命令行，一样能把播放管起来</h2>
+    <p class="sub">任何终端、脚本、快捷键工具、定时任务都可以调用 mygod-cli；输出是结构化的，便于下游程序解析。</p>
+
+    <h3>命令一览（<code class="inline">mygod-cli help</code> 的完整版）</h3>
+    <div class="codewrap">
+      <button class="copy" data-copy>复制</button>
+      <pre>mygod-cli — 音乐引擎的命令行形态
+
+  status                        引擎版本、可用来源、登录状态
+  search &lt;关键词&gt; [--kind k] [--source s] [--limit n]
+  play &lt;关键词&gt; [--source s] [--n i] [--yes]
+       play --tracks id,id | --playlist id | --album id | --radio mode
+  state                         当前播放与接下来播放
+  next | prev | pause | toggle | resume | radio_exit
+  volume &lt;0-1&gt; | eq &lt;preset&gt; | repeat &lt;off|all|one&gt; | shuffle [on|off]
+  lyrics [id] [--source s]      不传 id 则取正在播放的那首
+  catalog &lt;kind&gt; &lt;id&gt; [--source s] [--tab t] [--limit n] [--offset n]
+  discovery &lt;kind&gt; [--source s] [--limit n]
+  radio [mode]                  个人电台（default / familiar / explore）
+  login-qr                      扫码登录（需要登录的来源）
+  help                          显示本帮助
+
+  sources: 运行 status 查看当前可用的来源标识（默认使用第一个）
+  无参数启动时进入交互模式；退出交互不影响已建立的播放</pre>
+    </div>
+
+    <h3>命令说明</h3>
+    <table>
+      <thead><tr><th>命令</th><th>作用</th><th>关键参数</th></tr></thead>
+      <tbody>
+        <tr><td><code>status</code></td><td>查看引擎版本、可用来源与各来源登录状态</td><td>—</td></tr>
+        <tr><td><code>search</code></td><td>按关键词检索，只返回结果不播放</td><td><code>--kind</code> 结果类型；<code>--source</code> 来源；<code>--limit</code> 条数</td></tr>
+        <tr><td><code>play</code></td><td>检索并播放，或用编号 / 歌单 / 专辑 / 电台直接建队列</td><td><code>--n</code> 播第几条；<code>--yes</code> 跳过确认；<code>--tracks / --playlist / --album / --radio</code></td></tr>
+        <tr><td><code>state</code></td><td>当前曲目、进度、队列、音量、循环与随机</td><td>—</td></tr>
+        <tr><td><code>next / prev</code></td><td>切到下一首 / 上一首</td><td>—</td></tr>
+        <tr><td><code>pause / resume / toggle</code></td><td>暂停、继续、在两者间切换</td><td>—</td></tr>
+        <tr><td><code>radio_exit</code></td><td>退出电台续播，队列不再自动延长</td><td>—</td></tr>
+        <tr><td><code>volume</code></td><td>设置音量，跨接入端共享</td><td><code>0-1</code> 之间的浮点数</td></tr>
+        <tr><td><code>eq</code></td><td>切换均衡器预设，<code>flat</code> 关闭</td><td>预设名</td></tr>
+        <tr><td><code>repeat</code></td><td>循环模式：关闭 / 列表 / 单曲</td><td><code>off | all | one</code></td></tr>
+        <tr><td><code>shuffle</code></td><td>随机开关，不带参数即开启</td><td><code>on | off</code></td></tr>
+        <tr><td><code>lyrics</code></td><td>取时间轴 / 翻译 / 逐字歌词</td><td><code>id</code> 曲目编号；<code>--source</code> 来源</td></tr>
+        <tr><td><code>catalog</code></td><td>打开艺人、专辑、歌单或用户页</td><td><code>kind</code> 与 <code>id</code>；<code>--tab</code>、<code>--limit</code>、<code>--offset</code></td></tr>
+        <tr><td><code>discovery</code></td><td>发现页：每日推荐、推荐歌单、精选、榜单、最近播放</td><td><code>kind</code>；<code>--limit</code></td></tr>
+        <tr><td><code>radio</code></td><td>按口味生成连续曲目</td><td><code>default / familiar / explore</code></td></tr>
+        <tr><td><code>login-qr</code></td><td>扫码登录需要账号的来源，凭据保存在本机</td><td>—</td></tr>
+        <tr><td><code>help</code></td><td>打印命令表</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h3>常用示例</h3>
+    <div class="codewrap">
+      <button class="copy" data-copy>复制</button>
+      <pre><span class="c"># 搜一下，看看有哪些可播的版本</span>
+mygod-cli search "晚风" --limit 10
+
+<span class="c"># 直接播搜索结果里的第 2 条</span>
+mygod-cli play "晚风" --n 2 --yes
+
+<span class="c"># 用一组曲目编号建队列，从第 1 条开始</span>
+mygod-cli play --tracks 1001,1002,1003
+
+<span class="c"># 打开一个歌单并整体入队</span>
+mygod-cli play --playlist 7788
+
+<span class="c"># 列表循环 + 随机，然后把音量调到 60%</span>
+mygod-cli repeat all &amp;&amp; mygod-cli shuffle on &amp;&amp; mygod-cli volume 0.6
+
+<span class="c"># 看现在在放什么</span>
+mygod-cli state</pre>
+    </div>
+
+    <div class="banner">
+      <b>让不支持 MCP 的助手也能用：</b> 你不需要额外封装，只要告诉它“用 shell 调用
+      <code class="inline">mygod-cli</code>，先跑 <code class="inline">help</code> 看命令表”，它就能自己选命令、读输出、决定下一步。
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">FAQ</div>
+    <h2>常见问题</h2>
+    <div class="faq">
+      <details open>
+        <summary>同时开几个助手，会不会有两个播放器在放？</summary>
+        <p>不会。mygod 在本机只允许一个播放实例：先连上的持有引擎，其余的以客户端身份接入，读写同一份队列与进度。任一入口切歌，其他入口的下一次快照就同步更新。</p>
+      </details>
+      <details>
+        <summary>必须登录吗？</summary>
+        <p>不必。部分曲库来源对游客开放检索与播放，受限能力会在检索阶段就标注出来，不会等到点了播放才失败。需要更多能力时用 <code class="inline">mygod-cli login-qr</code> 扫码，凭据只保存在本机。</p>
+      </details>
+      <details>
+        <summary>本地音乐怎么用？</summary>
+        <p>两条路：助手侧调用 <code class="inline">scan_local</code> 的 add 登记目录并建立索引，之后本地文件与在线曲目一样可被搜索；不接助手时，也可以直接用命令行播放已知路径，例如 <code class="inline">mygod-cli play --tracks /Users/you/Music/a.mp3 --source local</code>。文件不会被复制或转码。</p>
+      </details>
+      <details>
+        <summary>数据存在哪里？怎么清空？</summary>
+        <p>统一在 <code class="inline">~/.local/share/mygod</code>：播放会话、本地索引、缓存。删掉这个目录等同于恢复出厂；删除缓存子目录只影响已缓存曲目，不影响索引与队列。</p>
+      </details>
+      <details>
+        <summary>播放卡在加载怎么办？</summary>
+        <p>不会一直卡住。取流 15 秒没有新数据即判定该曲目失败并自动跳到下一首；整条队列都不可播时停在停止态并给出原因，不会无限重试。</p>
+      </details>
+      <details>
+        <summary>能不能下载歌曲？</summary>
+        <p>不能，也不提供。mygod 只做在线取流播放和读取你本机已有的文件；不提供下载、转存或再分发能力。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div>mygod · 本机音乐中枢 · 智能助手接入 + 命令行</div>
+    <div>内容版权归各曲库来源所有；本地文件的使用授权由用户自行确保。</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = '复制'; }, 1400);
+      }).catch(function () {
+        btn.textContent = '请手动选择';
+      });
+    });
+  });
+</script>
+</body>
+</html>

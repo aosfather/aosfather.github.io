@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mygod · 产品需求文档（对外版）</title>
+<style>
+  :root{
+    --ink:#111418;
+    --ink-2:#3a4048;
+    --ink-3:#6b7280;
+    --line:#e6e8ec;
+    --bg:#ffffff;
+    --bg-2:#f7f8fa;
+    --accent:#2f6bff;
+    --accent-soft:#eef3ff;
+    --radius:12px;
+    --max:960px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* ---------- cover ---------- */
+  .cover{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fbfcff 0%,#ffffff 100%);
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin-bottom:18px;
+  }
+  h1{
+    font-size:52px;line-height:1.15;letter-spacing:-.02em;
+    margin:0 0 18px;font-weight:800;
+  }
+  h1 .thin{font-weight:300;color:var(--ink-3)}
+  .lede{font-size:19px;color:var(--ink-2);max-width:660px;margin:0 0 36px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:13px;color:var(--ink-2);
+    background:#fff;
+  }
+  .chip b{color:var(--ink);font-weight:600}
+
+  /* ---------- layout ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  .sec-no{
+    font-size:12px;letter-spacing:.18em;color:var(--ink-3);
+    font-weight:700;margin-bottom:10px;
+  }
+  h2{font-size:30px;line-height:1.3;margin:0 0 8px;letter-spacing:-.01em}
+  h2 .sub{display:block;font-size:15px;font-weight:400;color:var(--ink-3);margin-top:8px;letter-spacing:0}
+  h3{font-size:19px;margin:40px 0 10px;letter-spacing:-.005em}
+  h4{font-size:15px;margin:24px 0 8px;color:var(--ink-2)}
+  p{margin:10px 0}
+  p.lead{font-size:17px;color:var(--ink-2)}
+
+  /* ---------- tables ---------- */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px}
+  th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  th{
+    background:var(--bg-2);font-weight:600;color:var(--ink-2);
+    font-size:13px;letter-spacing:.02em;white-space:nowrap;
+  }
+  td code{background:var(--bg-2);padding:1px 6px;border-radius:4px;font-size:13px}
+  .num{white-space:nowrap;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  tbody tr:hover{background:#fcfdff}
+
+  /* ---------- fr blocks ---------- */
+  .fr{
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin:18px 0;background:#fff;
+  }
+  .fr-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px}
+  .fr-id{
+    flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;
+    color:var(--accent);background:var(--accent-soft);
+    padding:3px 9px;border-radius:6px;margin-top:2px;
+  }
+  .fr-title{font-size:17px;font-weight:700;line-height:1.4}
+  .fr-body{color:var(--ink-2);font-size:15px}
+  .fr-body p{margin:8px 0}
+  .kv{margin:12px 0 0;font-size:14.5px}
+  .kv dt{font-weight:600;color:var(--ink);margin-top:8px}
+  .kv dd{margin:2px 0 0;color:var(--ink-2)}
+
+  /* ---------- rules ---------- */
+  .rule{
+    border-left:3px solid var(--accent);
+    background:#fafbff;padding:14px 18px;border-radius:0 10px 10px 0;
+    margin:16px 0;font-size:15px;color:var(--ink-2);
+  }
+  .rule b{color:var(--ink)}
+
+  /* ---------- tags ---------- */
+  .tag{
+    display:inline-block;font-size:11.5px;letter-spacing:.06em;
+    padding:2px 8px;border-radius:5px;margin-left:8px;vertical-align:middle;
+    border:1px solid var(--line);color:var(--ink-3);background:#fff;font-weight:600;
+  }
+  .tag.p0{color:#0b6b3a;border-color:#bfe6cf;background:#f0fbf4}
+  .tag.p1{color:#7a4b00;border-color:#f0dcb4;background:#fffaf0}
+
+  /* ---------- flow ---------- */
+  .flow{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+    margin:18px 0;font-size:14px;
+  }
+  .flow span{
+    background:var(--bg-2);border:1px solid var(--line);
+    padding:7px 13px;border-radius:8px;white-space:nowrap;
+  }
+  .flow i{color:var(--ink-3);font-style:normal}
+
+  /* ---------- callout ---------- */
+  .callout{
+    border:1px dashed #d8e0f0;background:#fbfcff;
+    border-radius:var(--radius);padding:18px 22px;margin:20px 0;
+    font-size:14.5px;color:var(--ink-2);
+  }
+  .callout .h{font-weight:700;color:var(--ink);margin-bottom:4px}
+
+  /* ---------- toc ---------- */
+  .toc{
+    margin-top:38px;border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 26px;background:#fff;
+  }
+  .toc .h{font-size:12px;letter-spacing:.18em;color:var(--ink-3);font-weight:700;margin-bottom:12px}
+  .toc ol{margin:0;padding-left:20px;columns:2;column-gap:40px;font-size:14.5px}
+  .toc li{margin:5px 0;break-inside:avoid}
+  .toc a{color:var(--ink-2);text-decoration:none}
+  .toc a:hover{color:var(--accent)}
+
+  .footer{padding:48px 0 72px;color:var(--ink-3);font-size:13px}
+
+  @media (max-width:640px){
+    h1{font-size:34px}
+    .toc ol{columns:1}
+    section{padding:44px 0}
+    .wrap{padding:0 18px}
+  }
+  @media print{
+    .cover{page-break-after:always}
+    section{page-break-inside:avoid}
+    body{font-size:12pt}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Product Requirements Document · Public Edition</div>
+    <h1>mygod <span class="thin">音乐中枢</span></h1>
+    <p class="lede">
+      把多个在线曲库与本地文件合成一个播放队列，用一个统一入口供人和智能助手共同操作。
+      一份播放器、一份会话、一份音效偏好，换设备、换入口都不丢。
+    </p>
+    <div class="meta">
+      <span class="chip"><b>文档版本</b> 1.0</span>
+      <span class="chip"><b>状态</b> 对外发布版</span>
+      <span class="chip"><b>日期</b> 2026-11-06</span>
+      <span class="chip"><b>文档类型</b> 产品需求文档（营销可读）</span>
+    </div>
+
+    <div class="toc">
+      <div class="h">目录</div>
+      <ol>
+        <li><a href="#s1">产品概述</a></li>
+        <li><a href="#s2">目标用户与使用场景</a></li>
+        <li><a href="#s3">产品范围</a></li>
+        <li><a href="#s4">产品模型与术语</a></li>
+        <li><a href="#s5">功能需求</a></li>
+        <li><a href="#s6">共享规则与异常处理</a></li>
+        <li><a href="#s7">非功能需求</a></li>
+        <li><a href="#s8">待定事项</a></li>
+      </ol>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= 1 ================= -->
+<section id="s1">
+  <div class="sec-no">01</div>
+  <h2>产品概述
+    <span class="sub">一个中枢，替代一堆分散的客户端</span>
+  </h2>
+
+  <h3>1.1 一句话定义</h3>
+  <p class="lead">
+    mygod 是运行在用户自己设备上的音乐中枢：它同时对接多个在线曲库来源和一个本地音乐库，
+    向上提供统一的检索、播放、歌词、评论、推荐与音效能力，并以两种形态对外开放——
+    一种是可脚本化的命令行，一种是可被智能助手直接调用的开放接入协议。
+  </p>
+
+  <h3>1.2 背景与问题</h3>
+  <p>音乐内容被拆散在多个平台，用户的真实听歌行为因此断成三截：</p>
+  <table>
+    <thead>
+      <tr><th>断点</th><th>用户实际遭遇</th><th>产品回应</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>内容分散</b></td>
+        <td>一首歌只在一个平台有版权；想听的专辑被切成三份，各自打开一个客户端。</td>
+        <td>把多个曲库来源聚合成同一份检索结果，一次搜索看到全部可用版本。</td>
+      </tr>
+      <tr>
+        <td><b>播放割裂</b></td>
+        <td>每个客户端各自维护队列与进度；切换入口就从头开始，音效与音量也要重设。</td>
+        <td>本机只有一份播放会话，任何入口接入都接管同一个队列与同一条进度。</td>
+      </tr>
+      <tr>
+        <td><b>助手缺席</b></td>
+        <td>智能助手能写文档、能查资料，却无法真的把一首歌放出来。</td>
+        <td>把音乐能力拆成一组可被助手调用的动作，一句自然语言即可完成检索到播放。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>1.3 目标</h3>
+  <p>目标以用户可观察的结果表述，不以百分比承诺：</p>
+  <ul>
+    <li>用户只在一个入口检索，就能看到同一首歌在多个来源中的可用情况与可播状态；</li>
+    <li>用户从任意一个接入端发起播放，本机正在播放的内容随之切换，其余接入端看到的快照同步更新；</li>
+    <li>用户在不可播、网络中断、来源失效的情况下，不需要手动干预就能继续听下一首；</li>
+    <li>用户把本地音乐目录登记一次，之后可以像在线内容一样搜索与播放。</li>
+  </ul>
+</section>
+
+<!-- ================= 2 ================= -->
+<section id="s2">
+  <div class="sec-no">02</div>
+  <h2>目标用户与使用场景
+    <span class="sub">三类人，一个中枢</span>
+  </h2>
+
+  <table>
+    <thead>
+      <tr><th>用户</th><th>典型场景</th><th>触发动作</th><th>完成证据</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>日常听众</b><br><span class="tag">主力用户</span></td>
+        <td>在家用电脑听歌，歌单跨几个平台，还要兼顾本地下载的老歌。</td>
+        <td>说出或输入歌名／歌手／歌单名。</td>
+        <td>目标曲目开始播放，进度条前进，歌词与当前行同步。</td>
+      </tr>
+      <tr>
+        <td><b>智能助手用户</b></td>
+        <td>在对话里让助手"放一首适合通勤的歌""把刚才那首加到队列后面"。</td>
+        <td>一句自然语言请求。</td>
+        <td>助手调用成功并回读快照，确认状态由暂停变为播放。</td>
+      </tr>
+      <tr>
+        <td><b>脚本与自动化用户</b></td>
+        <td>用脚本定时播放、把播放状态接入自己的面板或快捷键工具。</td>
+        <td>执行一条命令或调用一次接口。</td>
+        <td>命令返回结构化快照，脚本据此判断下一步。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>核心用户旅程（最短闭环）</h3>
+  <div class="flow">
+    <span>登记内容来源</span><i>→</i>
+    <span>检索目标曲目</span><i>→</i>
+    <span>确认可播状态</span><i>→</i>
+    <span>建立播放队列</span><i>→</i>
+    <span>播放并回读快照</span><i>→</i>
+    <span>调整（下一首／跳转／循环／音效）</span><i>→</i>
+    <span>退出后恢复</span>
+  </div>
+  <p>完成条件：用户听到目标曲目，且下一次打开时能从上一次的队列与进度继续。</p>
+</section>
+
+<!-- ================= 3 ================= -->
+<section id="s3">
+  <div class="sec-no">03</div>
+  <h2>产品范围
+    <span class="sub">已交付、规划中、明确不做</span>
+  </h2>
+
+  <h3>3.1 本期已交付（P0）</h3>
+  <ul>
+    <li>四个在线曲库来源的检索、详情、歌单、专辑与流播放；</li>
+    <li>本地音乐库的目录登记、索引、增量扫描、搜索与播放；</li>
+    <li>完整播放控制：队列、上一首／下一首、暂停／继续、进度跳转、音量、随机、循环；</li>
+    <li>歌词（时间轴歌词、翻译、逐字歌词）、评论分页、发现页与电台；</li>
+    <li>音质档位与音效（均衡器预设、夜间模式、增强、响度均衡）；</li>
+    <li>双形态接入：命令行与智能助手开放接入；</li>
+    <li>多接入端共享单一播放器；会话落盘与自动恢复。</li>
+  </ul>
+
+  <h3>3.2 规划中（P1）</h3>
+  <ul>
+    <li>本地库目录变更的实时感知（文件新增／移动／删除后无需手动重扫）；</li>
+    <li>本地库规模到十万级后的存储与检索优化；</li>
+    <li>更多本地音频封装格式与内嵌封面、内嵌歌词读取；</li>
+    <li>场景化模式（按情境自动调整音效与推荐策略）。</li>
+  </ul>
+
+  <h3>3.3 明确不做</h3>
+  <ul>
+    <li>不提供任何内容下载与再分发能力，播放始终为在线取流或读取用户本机已有文件；</li>
+    <li>不替用户保存平台账号密码，不代理平台登录以外的任何账户操作；</li>
+    <li>不修改、不上传用户本地音频文件。</li>
+  </ul>
+</section>
+
+<!-- ================= 4 ================= -->
+<section id="s4">
+  <div class="sec-no">04</div>
+  <h2>产品模型与术语
+    <span class="sub">先统一语言，再定义行为</span>
+  </h2>
+
+  <table>
+    <thead>
+      <tr><th>术语</th><th>定义</th><th>唯一性规则</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>内容来源</b></td>
+        <td>提供曲目检索与在线取流的一方，或用户本机文件目录。</td>
+        <td>在线来源与本地库各算一方；每条来源可独立登录、独立可用。</td>
+      </tr>
+      <tr>
+        <td><b>曲目</b></td>
+        <td>一条可被检索、可被加入队列的音乐条目。</td>
+      <td>由"来源 + 来源内编号"唯一定位；不同来源的同名曲目视为不同曲目。</td>
+      </tr>
+      <tr>
+        <td><b>播放队列</b></td>
+        <td>当前参与播放的有序曲目集合，含播放位置与当前条目。</td>
+        <td>本机同一时刻只有一个活动队列；队列允许跨来源混排。</td>
+      </tr>
+      <tr>
+        <td><b>播放会话</b></td>
+        <td>队列 + 循环模式 + 随机开关 + 音量 + 音效偏好的集合。</td>
+        <td>会话可落盘；重新启动后按上次状态恢复，恢复后处于暂停。</td>
+      </tr>
+      <tr>
+        <td><b>播放快照</b></td>
+        <td>一次读取得到的播放状态：状态、当前曲目、进度、当前歌词行、队列、音量、随机、循环、错误信息。</td>
+        <td>所有接入端读到的都是同一份快照；进度随时间自行推进。</td>
+      </tr>
+      <tr>
+        <td><b>本地索引</b></td>
+        <td>用户登记目录下音频文件的元数据与文件位置清单。</td>
+        <td>仅由用户显式登记的目录产生；搜索仅覆盖索引内条目。</td>
+      </tr>
+      <tr>
+        <td><b>可播性</b></td>
+        <td>曲目在当前来源与当前登录状态下能否取到流。</td>
+        <td>检索阶段即可判定并标注；播放阶段若判定失败则自动跳过。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= 5 ================= -->
+<section id="s5">
+  <div class="sec-no">05</div>
+  <h2>功能需求
+    <span class="sub">每条需求都写清触发、规则、结果与状态变化</span>
+  </h2>
+
+  <!-- 5.1 -->
+  <h3>5.1 内容来源与检索</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-01</span><span class="fr-title">多来源聚合检索<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>用户输入关键词，并指定内容来源（默认首个在线曲库）与结果类型。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>按来源各自检索，来源间不做合并去重；结果按来源计数分页返回；分页偏移量对多来源按整页对齐。</dd>
+        <dt>结果</dt>
+        <dd>返回该页条目，每条带可播状态、时长、艺人、专辑；专辑与歌单结果额外带条目数。</dd>
+        <dt>状态变化</dt>
+        <dd>检索本身不改变播放状态；若当前有播放，快照保持不变。</dd>
+        <dt>异常</dt>
+        <dd>未登录导致该来源不可用：返回空页并说明需要登录；某来源超时：返回其余来源结果，不整体失败。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-02</span><span class="fr-title">详情页与播放列表展开<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>用户点开艺人、专辑、歌单或用户主页。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>艺人页提供热门曲目与专辑列表切换；专辑／歌单页返回完整曲目，单次最多 1000 条；除主来源外，其余来源只保证专辑与歌单。</dd>
+        <dt>结果</dt>
+        <dd>页面含名称、封面、简介与曲目集合；曲目集合可直接作为播放队列来源。</dd>
+        <dt>异常</dt>
+        <dd>资源已下架：返回明确的不可用提示，不返回半截列表。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-03</span><span class="fr-title">批量曲目详情<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>调用方持有一组曲目编号，需要补齐名称、时长与可播状态。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>按传入顺序返回，逐条判定可播性；任一编号失效不影响其余条目。</dd>
+        <dt>结果</dt>
+        <dd>返回顺序与输入一致的曲目列表，缺失条目以不可用标注。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-04</span><span class="fr-title">来源可用性与账号状态<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>接入端首次连接，或用户想确认当前可用能力。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>逐来源报告登录状态；未登录来源给出"游客可用范围"说明；已登录来源附带账号资料。</dd>
+        <dt>结果</dt>
+        <dd>调用方据此决定后续动作：可直接播放、需要登录，或该来源当前不可用。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 5.2 -->
+  <h3>5.2 播放与队列</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-05</span><span class="fr-title">建立播放队列<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>用户指定曲目集合、歌单、专辑或电台中的恰好一种，并可指定从第几条开始。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>四种来源互斥，一次只能指定一种；指定起始位置时，队列保留完整集合，从该位置开始播；心跳式电台允许同时附带其歌曲来源的歌单编号。</dd>
+        <dt>结果</dt>
+        <dd>新队列覆盖旧队列并立即进入加载；返回建立后快照。</dd>
+        <dt>状态变化</dt>
+        <dd>状态由空闲／暂停变为加载，再变为播放；失败的条目按 6.1 跳过。</dd>
+        <dt>异常</dt>
+        <dd>一次指定多种来源：拒绝并说明只能指定一种；本机无音频输出：明确提示可在无输出设备的环境下不可播。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-06</span><span class="fr-title">播放控制集合<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>用户执行暂停、继续、上一首、下一首、跳转到指定条目、跳转到指定时间点或设置音量。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>跳转时间点在已加载范围内即时生效；超出范围的跳转以可播边界为准；音量取值 0–100，跨接入端共享同一音量。</dd>
+        <dt>结果</dt>
+        <dd>返回操作完成后的快照，调用方无需再次查询。</dd>
+        <dt>状态变化</dt>
+        <dd>暂停与继续在同一队列位置往返；切歌重置进度为 0 并重新进入加载。</dd>
+        <dt>异常</dt>
+        <dd>队列为空时所有控制返回空操作提示，不报错、不崩溃。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-07</span><span class="fr-title">循环与随机<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>循环三档：关闭（播完队列末条即停）、列表（末条回到首条）、单曲（当前曲目重复）。随机为独立开关，与循环叠加生效：随机顺序在队列建立时确定并保持，不回退到未随机前的顺序。</dd>
+        <dt>持久化</dt>
+        <dd>循环与随机随会话落盘，重启后保持上次选择。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-08</span><span class="fr-title">播放快照<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>任意接入端请求当前播放状态，可重复轮询。</p>
+      <dl class="kv">
+        <dt>结果字段</dt>
+        <dd>状态（空闲／加载／播放／暂停／停止）、当前曲目及其来源与可播标记、进度与总时长、当前歌词行、队列与当前序号、电台名、音量、随机、循环、音效开关、错误说明。</dd>
+        <dt>处理规则</dt>
+        <dd>进度随时间自行推进，每次读取都是最新值；加载中的曲目进度停在起点并置为加载状态；出错但未跳过时错误说明随快照返回。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-09</span><span class="fr-title">电台续播与口味反馈<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>队列播完，或用户给出"不喜欢"。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>电台模式下队列耗尽时，按模式补充新曲目并继续；补充时过滤掉当前不可播的曲目，避免插队即卡。</dd>
+        <dt>结果</dt>
+        <dd>队列自动延长，播放不中断；"不喜欢"记录到该来源的偏好，并影响后续挑选。</dd>
+        <dt>异常</dt>
+        <dd>补充连续失败：保持当前队列并置为停止，附错误说明，不进入无限重试。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-10</span><span class="fr-title">跨来源混排队列<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p>队列条目各自携带来源，同一队列内可同时包含多个在线来源与本地库曲目；某一条目不可播时，仅跳过该条目，不改变其余条目的顺序。</p>
+    </div>
+  </div>
+
+  <!-- 5.3 -->
+  <h3>5.3 歌词与评论</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-11</span><span class="fr-title">歌词三种形态<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>提供时间轴歌词、翻译歌词与逐字歌词；调用方可任选其一或全部；本地曲目优先读取同目录同名歌词文件。</dd>
+        <dt>结果</dt>
+        <dd>快照同时给出"当前歌词行"，供接入端直接展示；无歌词时返回空而不报错。</dd>
+        <dt>异常</dt>
+        <dd>来源暂无该曲目歌词：返回空集合，不编造内容。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-12</span><span class="fr-title">评论浏览<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>首屏按热度排序，其后按时间排序；可按曲目、节目、歌单或话题检索；分页返回。</dd>
+        <dt>异常</dt>
+        <dd>目标无评论：返回空页并给出零计数。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 5.4 -->
+  <h3>5.4 发现与推荐</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-13</span><span class="fr-title">发现页卡片<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <table>
+        <thead><tr><th>卡片</th><th>内容</th><th>前置条件</th></tr></thead>
+        <tbody>
+          <tr><td>每日推荐</td><td>按日期生成的曲目集合</td><td>需登录</td></tr>
+          <tr><td>推荐歌单</td><td>与口味相关的歌单集合</td><td>需登录</td></tr>
+          <tr><td>精选</td><td>编辑精选的歌单集合</td><td>无需登录</td></tr>
+          <tr><td>榜单</td><td>按热度排序的榜单元数据</td><td>无需登录</td></tr>
+          <tr><td>最近播放</td><td>最近播放曲目</td><td>需登录</td></tr>
+        </tbody>
+      </table>
+      <p>未满足前置条件的卡片返回空集合并说明原因，不隐藏入口。</p>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-14</span><span class="fr-title">个人电台三档<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>档位</dt>
+        <dd>默认（按整体口味）、熟悉（贴近常听）、探索（扩大尝试范围）。</dd>
+        <dt>规则</dt>
+        <dd>一次返回若干曲目，作为队列或续播补充；连续两次拿不到可播曲目时停止补充并说明。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-15</span><span class="fr-title">心动模式<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p>以用户收藏歌单为种子、以当前曲目为起点生成连续曲目；种子歌单编号随会话保存，重启后仍可续播。</p>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-16</span><span class="fr-title">收藏与歌单管理<span class="tag p1">P1</span></span></div>
+    <div class="fr-body">
+      <p>当前版本对收藏与歌单写入返回"尚未开放"的明确说明；读取路径已具备，写入将在后续版本提供。</p>
+    </div>
+  </div>
+
+  <!-- 5.5 -->
+  <h3>5.5 音质与音效</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-17</span><span class="fr-title">音质档位<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>档位</dt>
+        <dd>标准、较高、极高、无损，按来源实际提供的最高档向下兼容。</dd>
+        <dt>规则</dt>
+        <dd>请求档位高于来源能力时自动降到该来源最高档；本地曲目按文件本身规格播放，不做转码。</dd>
+        <dt>结果</dt>
+        <dd>快照显示实际生效档位，调用方可判断是否降级。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-18</span><span class="fr-title">音效处理<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <table>
+        <thead><tr><th>能力</th><th>作用</th><th>默认</th></tr></thead>
+        <tbody>
+          <tr><td>均衡器预设</td><td>按预设曲线调整频段增益，可保存、可删除、同名覆盖</td><td>未启用</td></tr>
+          <tr><td>夜间模式</td><td>压低低频与峰值，适合安静环境</td><td>关闭</td></tr>
+          <tr><td>增强</td><td>提升细节与临场感</td><td>关闭</td></tr>
+          <tr><td>响度均衡</td><td>让不同曲目的听感音量趋于一致</td><td>开启</td></tr>
+          <tr><td>增益</td><td>整体升降电平</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p>音效偏好随会话保存，切换曲目与重启后保持；任一音效关闭时，对应处理立即停止而不影响播放连续性。</p>
+    </div>
+  </div>
+
+  <!-- 5.6 -->
+  <h3>5.6 本地音乐库</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-19</span><span class="fr-title">目录登记与索引<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>触发：</b>用户把某个绝对路径目录交给中枢，或要求移除、查看、重扫。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>登记后立即遍历该目录；仅收录受支持的音频文件；同一目录重复登记视为重扫；移除时连同其曲目一并从索引清除。</dd>
+        <dt>结果</dt>
+        <dd>返回登记后的曲目总数与目录清单（含每个目录当前贡献的曲目数）。</dd>
+        <dt>状态变化</dt>
+        <dd>索引写入本机；此后该来源的检索立即可命中。</dd>
+        <dt>异常</dt>
+        <dd>路径不存在或不可读：拒绝登记并说明；目录内个别文件读取失败：跳过该文件，不中断整体扫描；单目录无权限：跳过该目录，其余继续。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-20</span><span class="fr-title">索引更新策略<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>增量规则</dt>
+        <dd>重扫时以文件大小与修改时间判定是否变化；未变化的文件跳过元数据读取，只保留原条目。</dd>
+        <dt>删除规则</dt>
+        <dd>重扫后不再存在的文件，其条目从索引移除，检索不再命中。</dd>
+        <dt>结果</dt>
+        <dd>一次重扫完成后返回最终曲目数，调用方可直接用于校验。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-21</span><span class="fr-title">本地检索与播放<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>检索规则</dt>
+        <dd>在曲名、艺人、专辑与文件路径上做子串匹配，大小写不敏感；曲名命中的排序优先于只在路径命中。</dd>
+        <dt>播放规则</dt>
+        <dd>直接读取本机文件播放，不复制、不转码、不发起网络请求；同目录同名歌词文件自动加载。</dd>
+        <dt>异常</dt>
+        <dd>播放期间文件被移动或删除：本次播放按 6.1 失败处理，队列继续前进。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 5.7 -->
+  <h3>5.7 接入形态与多端共享</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-22</span><span class="fr-title">两种接入形态<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <table>
+        <thead><tr><th>形态</th><th>适用</th><th>能力边界</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>智能助手接入</b></td>
+            <td>在对话中完成检索、播放、调音效、看状态。</td>
+            <td>一次性暴露全部能力动作，助手按需调用；每次调用返回结构化结果。</td>
+          </tr>
+          <tr>
+            <td><b>命令行</b></td>
+            <td>脚本、快捷键、自动化流程。</td>
+            <td>子命令 + 交互模式；输出可直接被其他程序解析。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>两种形态共用同一套能力定义与同一份播放会话，行为一致，不出现"命令行能播、助手不能播"的差异。</p>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-23</span><span class="fr-title">单一播放器与多端接入<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p><b>背景：</b>多个助手或终端可能同时连接，若各自启动播放器，会出现两路音频互相覆盖、队列互相清空。</p>
+      <dl class="kv">
+        <dt>处理规则</dt>
+        <dd>本机只允许一个进程持有播放引擎；后到者以客户端身份接入同一引擎，读写同一会话。</dd>
+        <dt>结果</dt>
+        <dd>任一端播放，其他端立即看到同一快照；不存在两个队列、两个音量。</dd>
+        <dt>异常</dt>
+        <dd>持有引擎的一方异常退出：下一次接入自动重新建立引擎，并从落盘会话恢复。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-24</span><span class="fr-title">登录与会话维持<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>登录方式</dt>
+        <dd>扫码登录：先取二维码内容与轮询标识，再轮询登录进度，确认后会话保存到本机。</dd>
+        <dt>状态语义</dt>
+        <dd>过期 / 等待扫码 / 已扫码待确认 / 已确认，四种状态可区分。</dd>
+        <dt>游客模式</dt>
+        <dd>不登录也能使用部分来源的检索与播放；受限能力在检索阶段即标注，不等到播放才失败。</dd>
+        <dt>异常</dt>
+        <dd>会话过期：相关调用返回"需要重新登录"并指明下一步动作。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 5.8 -->
+  <h3>5.8 缓存与恢复</h3>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-25</span><span class="fr-title">边播边缓存<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>规则</dt>
+        <dd>在线曲目边取流边播放，同时写入本机缓存；完整取回后保留，下次直接播放。</dd>
+        <dt>容量</dt>
+        <dd>缓存设总容量上限，超出时按最近播放时间由远及近淘汰；超过上限四分之一的单曲不入缓存。</dd>
+        <dt>隐私</dt>
+        <dd>缓存仅存于本机；本地库文件不复制进缓存。</dd>
+        <dt>异常</dt>
+        <dd>磁盘写入失败：本次播放改为纯内存进行，播放不中断，仅失去缓存收益。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-26</span><span class="fr-title">播放恢复<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <dl class="kv">
+        <dt>落盘时机</dt>
+        <dd>播放状态发生变化后延迟数秒合并写入，避免频繁写盘；退出时再写一次。</dd>
+        <dt>恢复结果</dt>
+        <dd>下次启动按上次的队列、序号、循环、随机、音量、电台与种子歌单恢复，处于暂停状态，等待用户继续。</dd>
+        <dt>异常</dt>
+        <dd>恢复时某曲目已不可用：该条目标记为不可播，播放时自动跳过，不影响其余曲目。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="fr">
+    <div class="fr-head"><span class="fr-id">FR-27</span><span class="fr-title">停止与清理<span class="tag p0">P0</span></span></div>
+    <div class="fr-body">
+      <p>停止播放保留队列与序号，仅结束发声；清空队列后快照回到空闲。用户主动清理缓存不影响队列与索引。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6 ================= -->
+<section id="s6">
+  <div class="sec-no">06</div>
+  <h2>共享规则与异常处理
+    <span class="sub">只在这里定义一次，各功能引用</span>
+  </h2>
+
+  <h3>6.1 可播性与自动跳过</h3>
+  <div class="rule">
+    <b>规则 R1：</b>队列中每一条目在加载时判定可播性。不可播（版权受限、需付费、来源已下架、文件已删除、取流失败、长时间无数据）时，
+    记录原因、不打断其余队列，自动前进到下一条；若队列中已无可播条目，则置为停止并保留错误说明，不做无限重试。
+  </div>
+  <p>该规则覆盖在线取流与本地文件两种来源，是"播放不中断"的唯一依据。</p>
+
+  <h3>6.2 无响应阈值</h3>
+  <div class="rule">
+    <b>规则 R2：</b>取流阶段若在 15 秒内没有收到任何数据，视为该条目失败并转入 R1；加载期间状态保持"加载"，但不进入无限等待。
+  </div>
+
+  <h3>6.3 队列与序号</h3>
+  <div class="rule">
+    <b>规则 R3：</b>队列是有序且可重复的集合；同一曲目可出现多次，各次独立计序。切歌只移动序号，不改写队列内容；建立新队列才替换旧队列。
+  </div>
+
+  <h3>6.4 会话一致性</h3>
+  <div class="rule">
+    <b>规则 R4：</b>所有接入端读写同一份会话；任一端写入后，其余端的下一次快照即反映该变化。不存在"每端一份音量"或"每端一个队列"。
+  </div>
+
+  <h3>6.5 失败与恢复对照</h3>
+  <table>
+    <thead>
+      <tr><th>情形</th><th>用户可见表现</th><th>系统行为</th><th>恢复方式</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>曲目不可播</td>
+        <td>当前曲目短暂显示加载后切到下一首</td>
+        <td>记录原因并跳过（R1）</td>
+        <td>无需操作</td>
+      </tr>
+      <tr>
+        <td>取流长时间无数据</td>
+        <td>加载状态在约 15 秒内结束</td>
+        <td>判定失败并跳过（R2）</td>
+        <td>无需操作</td>
+      </tr>
+      <tr>
+        <td>整条队列都不可播</td>
+        <td>停止并显示原因</td>
+        <td>停止补充，不重试</td>
+        <td>换队列或稍后重试</td>
+      </tr>
+      <tr>
+        <td>来源未登录</td>
+        <td>检索结果为空或受限项标注</td>
+        <td>不发起需要登录的请求</td>
+        <td>完成扫码登录</td>
+      </tr>
+      <tr>
+        <td>登录会话过期</td>
+        <td>调用返回"需要重新登录"</td>
+        <td>保留其余来源可用</td>
+        <td>重新扫码</td>
+      </tr>
+      <tr>
+        <td>本地文件被移动或删除</td>
+        <td>播放中断后自动下一首</td>
+        <td>索引在下次重扫时剔除</td>
+        <td>重扫或重新登记目录</td>
+      </tr>
+      <tr>
+        <td>引擎进程异常退出</td>
+        <td>下次连接从暂停态恢复</td>
+        <td>按落盘会话重建</td>
+        <td>继续播放即可</td>
+      </tr>
+      <tr>
+        <td>磁盘写入失败</td>
+        <td>播放继续，无缓存收益</td>
+        <td>转为内存播放（FR-25）</td>
+        <td>释放磁盘空间后自动恢复缓存</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= 7 ================= -->
+<section id="s7">
+  <div class="sec-no">07</div>
+  <h2>非功能需求
+    <span class="sub">可感受的体验下限，不含实现细节</span>
+  </h2>
+
+  <table>
+    <thead>
+      <tr><th>维度</th><th>要求</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>响应</b></td>
+        <td>检索、详情与播放控制类操作返回时间不随本地库规模线性恶化；本地库一千条量级时，一次检索在可感知的即时范围内返回。</td>
+      </tr>
+      <tr>
+        <td><b>启动</b></td>
+        <td>接入端首次连接即可用，无需额外服务端账号；无播放任务时保持空闲不占音频设备。</td>
+      </tr>
+      <tr>
+        <td><b>稳定性</b></td>
+        <td>单条曲目失败不影响队列其余条目；任一控制命令可在队列为空、加载中、停止等状态下安全返回。</td>
+      </tr>
+      <tr>
+        <td><b>数据归属</b></td>
+        <td>播放会话、索引、缓存、音效偏好全部保存在用户本机；除向用户指定的内容来源请求内容外，不向第三方传输播放数据。</td>
+      </tr>
+      <tr>
+        <td><b>隐私</b></td>
+        <td>不在本机长期保存平台密码；登录凭据仅在用户主动登录后按来源保存，可随时清除。</td>
+      </tr>
+      <tr>
+        <td><b>兼容</b></td>
+        <td>同一份能力定义在两种接入形态下语义一致；返回结构稳定，新增字段不影响既有调用方。</td>
+      </tr>
+      <tr>
+        <td><b>可维护</b></td>
+        <td>每个能力有稳定名称与明确输入输出；错误信息包含可执行的动作提示（如"需要登录""换一个来源"）。</td>
+      </tr>
+      <tr>
+        <td><b>合规</b></td>
+        <td>产品仅做在线取流播放与本机文件读取，不提供内容下载、转存或再分发能力；内容版权由各来源自身提供与授权。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= 8 ================= -->
+<section id="s8">
+  <div class="sec-no">08</div>
+  <h2>待定事项
+    <span class="sub">对外发布前需要明确，不影响当前能力使用</span>
+  </h2>
+
+  <table>
+    <thead><tr><th>编号</th><th>事项</th><th>影响</th></tr></thead>
+    <tbody>
+      <tr><td class="num">Q1</td><td>本地库规模上限与推荐存储策略（当前以文件式索引为主，十万条以上是否切换存储方式）</td><td>大规模用户的检索速度</td></tr>
+      <tr><td class="num">Q2</td><td>目录变更是否提供实时感知，还是维持"手动重扫"语义</td><td>本地库使用成本</td></tr>
+      <tr><td class="num">Q3</td><td>收藏、歌单写入、场景模式的上线节奏</td><td>完整度与用户预期</td></tr>
+      <tr><td class="num">Q4</td><td>除现有格式外，本地库还需支持哪些音频封装</td><td>本地库覆盖范围</td></tr>
+      <tr><td class="num">Q5</td><td>对外发布版是否需要附带可交互演示页</td><td>宣传材料形态</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="h">合规声明</div>
+    本文档描述能力与行为，不构成对任何第三方内容的授权、代理或替代。所有在线内容的可用性、地域限制与账号权益，均以对应内容来源自身的规则为准；
+    用户在本地库中播放的文件，其来源与授权由用户自行确保。
+  </div>
+</section>
+
+<div class="footer">
+  mygod 产品需求文档 · 对外发布版 1.0 · 2026-11-06 · 本文档不包含实现细节与第三方平台名称
+</div>
+
+</main>
+</body>
+</html>
