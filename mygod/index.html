@@ -74,6 +74,31 @@
     .stats{grid-template-columns:repeat(2,1fr)}
   }
 
+  /* picker */
+  .picker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 6px}
+  .picker.three{grid-template-columns:repeat(3,1fr)}
+  .pick{position:relative;display:block;cursor:pointer}
+  .pick input{position:absolute;opacity:0;pointer-events:none}
+  .pick span{display:block;height:100%;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s}
+  .pick b{display:block;font-size:15px}
+  .pick small{display:block;color:var(--ink3);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .pick em{font-style:normal;display:inline-block;margin-top:9px;font-size:11px;font-weight:700;
+    color:#0b6b3a;background:#f0fbf4;border:1px solid #bfe6cf;border-radius:5px;padding:2px 7px}
+  .pick input:checked + span{border-color:var(--accent);background:#f7f9ff;box-shadow:0 0 0 3px rgba(59,91,253,.10)}
+  .pick input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+  @media (max-width:900px){.picker,.picker.three{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.picker,.picker.three{grid-template-columns:1fr}}
+
+  /* mail request */
+  .request{border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);padding:22px 24px;margin-top:14px}
+  .preview{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    font-size:13.8px;white-space:pre-wrap;color:var(--ink2);margin-bottom:16px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;line-height:1.7}
+  .preview .t{font-size:11.5px;letter-spacing:.1em;color:var(--ink3);margin-bottom:8px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+  .request .note{color:var(--ink3);font-size:13px;margin:12px 0 0}
+  .buildsteps{margin:14px 0 22px;padding-left:22px;color:var(--ink2);font-size:14.8px}
+  .buildsteps li{margin:8px 0}
+
   /* sections */
   section{padding:76px 0;border-bottom:1px solid var(--line)}
   .kicker{font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:10px}
@@ -170,6 +195,7 @@
     <div class="brand"><span class="dot">m</span> mygod</div>
     <ul>
       <li><a href="#features">特性</a></li>
+      <li><a href="#download">下载</a></li>
       <li><a href="#install">安装</a></li>
       <li><a href="#mcp">助手接入</a></li>
       <li><a href="#cli">命令行</a></li>
@@ -187,7 +213,7 @@
       再以「智能助手接入」和「命令行」两种方式对外开放。一句话放歌，一条命令接管播放状态。
     </p>
     <div class="cta">
-      <a class="btn primary" href="#install">开始安装 →</a>
+      <a class="btn primary" href="#download">下载 mygod →</a>
       <a class="btn ghost" href="#cli">查看 CLI 帮助</a>
     </div>
     <div class="stats">
@@ -238,6 +264,79 @@
         <p>退出后按上次队列与进度恢复；不可播的曲目自动跳过，取流 15 秒无数据即判定失败，不让播放在加载里卡死。</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ 下载 ============ -->
+<section id="download">
+  <div class="wrap">
+    <div class="kicker">DOWNLOAD</div>
+    <h2>下载 mygod</h2>
+    <p class="sub">
+      先选平台，再选要装的部分，点击生成申请后会通过邮件把你的组合发给作者，作者据此回复对应的可执行文件或下载方式。
+      macOS（Apple Silicon）为当前已构建平台，其余平台按申请构建。
+    </p>
+
+    <h3>1 · 选择平台</h3>
+    <div class="picker">
+      <label class="pick">
+        <input type="radio" name="platform" value="macOS · Apple Silicon (arm64)" checked>
+        <span><b>macOS</b><small>Apple Silicon · arm64</small><em>已构建</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="macOS · Intel (x86_64)">
+        <span><b>macOS</b><small>Intel · x86_64</small><em>按申请构建</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="Windows · x64">
+        <span><b>Windows</b><small>x64</small><em>按申请构建</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="Linux · x64">
+        <span><b>Linux</b><small>x64</small><em>按申请构建</em></span>
+      </label>
+    </div>
+
+    <h3>2 · 选择组件</h3>
+    <div class="picker three">
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-mcp + mygod-cli" checked>
+        <span><b>两个都要</b><small>助手接入 + 命令行，推荐</small></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-mcp">
+        <span><b>mygod-mcp</b><small>只给 Trae / Codex / WorkBuddy 等 MCP 助手用</small></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-cli">
+        <span><b>mygod-cli</b><small>只给终端、脚本与自动化用</small></span>
+      </label>
+    </div>
+
+    <h3>3 · 发送下载申请</h3>
+    <div class="request">
+      <div class="preview" id="mail-preview">
+        <div class="t">邮件预览</div>
+        <div id="mail-body">—</div>
+      </div>
+      <a class="btn primary" id="mail-send" href="mailto:aosfather@gmail.com">用邮件发送申请 →</a>
+      <p class="note">
+        邮件会自动发往 <code class="inline">aosfather@gmail.com</code>，主题与正文已按你的选择填好；
+        也可以复制地址手动发送。若只想自己构建，见下方说明。
+      </p>
+    </div>
+
+    <h3>想自己构建？</h3>
+    <p style="color:var(--ink2);font-size:15px">
+      mygod 的完整能力清单、行为规则与异常处理都写在产品需求文档里。把它交给你的 AI 编码助手，按功能编号逐条实现，
+      就能在你自己的平台上构建出这两个可执行文件。
+    </p>
+    <ol class="buildsteps">
+      <li>打开 PRD，确认要实现的版本范围（全部 P0，或只挑你需要的几个能力）。</li>
+      <li>让 AI 编码助手以 <b>FR-01 … FR-27</b> 为任务清单，逐条实现并自测；共享规则（R1–R4）作为统一约束。</li>
+      <li>本机产出 <b>mygod-mcp</b> 与 <b>mygod-cli</b>，按下方安装步骤放入 PATH 即可使用。</li>
+    </ol>
+    <a class="btn ghost" href="prd.html">打开产品需求文档 prd.html →</a>
   </div>
 </section>
 
@@ -494,6 +593,41 @@ mygod-cli state</pre>
       });
     });
   });
+
+  /* 下载申请：把所选平台与组件组成一封发往作者的邮件 */
+  (function () {
+    var send = document.getElementById('mail-send');
+    var body = document.getElementById('mail-body');
+    if (!send || !body) return;
+    var to = 'aosfather@gmail.com';
+
+    function picked(name) {
+      var el = document.querySelector('input[name="' + name + '"]:checked');
+      return el ? el.value : '';
+    }
+
+    function refresh() {
+      var platform = picked('platform');
+      var component = picked('component');
+      var subject = 'mygod 下载申请 · ' + platform + ' · ' + component;
+      var text =
+        '你好：\n\n' +
+        '我想获取 mygod，选择的组合如下：\n' +
+        '· 平台：' + platform + '\n' +
+        '· 组件：' + component + '\n\n' +
+        '请回复对应的可执行文件或下载方式。\n\n' +
+        '（本邮件由 mygod 主页的下载申请生成）';
+
+      body.textContent = '收件人：' + to + '\n主题：' + subject + '\n\n' + text;
+      send.href = 'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(text);
+    }
+
+    document.querySelectorAll('input[name="platform"], input[name="component"]')
+      .forEach(function (el) { el.addEventListener('change', refresh); });
+    refresh();
+  })();
 </script>
 </body>
 </html>
