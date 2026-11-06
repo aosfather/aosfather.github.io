@@ -74,6 +74,35 @@
     .stats{grid-template-columns:repeat(2,1fr)}
   }
 
+  /* cases */
+  .cases{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .case{border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 22px;background:#fff}
+  .case .lab{font-size:11.5px;letter-spacing:.12em;color:var(--ink3);font-weight:700;margin:0 0 7px}
+  .case .say{
+    background:var(--bg2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;
+    padding:13px 16px;font-size:15px;color:var(--ink);margin:0 0 16px;line-height:1.65;
+  }
+  .case .say::before{content:"“";color:var(--ink3)}
+  .case .say::after{content:"”";color:var(--ink3)}
+  .case ol{margin:0 0 16px;padding-left:20px;color:var(--ink2);font-size:14.5px;line-height:1.75}
+  .case ol li{margin:5px 0}
+  .case .out{
+    display:inline-block;font-size:12.5px;font-weight:700;color:#0b6b3a;
+    background:#f0fbf4;border:1px solid #bfe6cf;border-radius:6px;padding:4px 10px;
+  }
+  .case .tool{margin-left:8px;font-size:12px;color:var(--ink3)}
+  @media (max-width:900px){.cases{grid-template-columns:1fr}}
+
+  /* before / after */
+  .shift{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:30px 0 34px}
+  .shift .side{border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;background:#fff}
+  .shift .side.b{background:var(--bg2);color:var(--ink2)}
+  .shift .h{font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--ink3);margin-bottom:8px}
+  .shift ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.8}
+  .shift .side.a{border-color:#c9d7ff;background:#f8faff}
+  @media (max-width:760px){.shift{grid-template-columns:1fr}.shift .mid{text-align:center}}
+  .shift .mid{color:var(--accent);font-weight:800;font-size:18px}
+
   /* picker */
   .picker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 6px}
   .picker.three{grid-template-columns:repeat(3,1fr)}
@@ -195,6 +224,7 @@
     <div class="brand"><span class="dot">m</span> mygod</div>
     <ul>
       <li><a href="#features">特性</a></li>
+      <li><a href="#cases">使用案例</a></li>
       <li><a href="#download">下载</a></li>
       <li><a href="#install">安装</a></li>
       <li><a href="#mcp">助手接入</a></li>
@@ -262,6 +292,119 @@
         <div class="ic">↻</div>
         <h3>会话恢复与自愈</h3>
         <p>退出后按上次队列与进度恢复；不可播的曲目自动跳过，取流 15 秒无数据即判定失败，不让播放在加载里卡死。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 使用案例 ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="kicker">USE CASES</div>
+    <h2>一句话说完，中间那些步骤交给它</h2>
+    <p class="sub">
+      以前要"先上网查、再去播放器里搜、名字不对还得再试几轮"的事，现在你说一句，助手在后台把检索、比对、建队列、播放一次做完。
+    </p>
+
+    <div class="shift">
+      <div class="side b">
+        <div class="h">以前</div>
+        <ul>
+          <li>记错歌名，先搜索引擎找线索</li>
+          <li>拿到歌名再去播放器里重新搜</li>
+          <li>搜不到，换关键词再来一遍</li>
+          <li>想凑一张同风格歌单，手动一首首找</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="side a">
+        <div class="h">现在</div>
+        <ul>
+          <li>把记得的碎片说出来（歌词、场景、大概名字）</li>
+          <li>助手跨源检索、比对艺人时长，确认后直接播</li>
+          <li>找不到可播版本就自动换源，不必你操心</li>
+          <li>一句"像这几位"就能生成并播放整张队列</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cases">
+      <div class="case">
+        <h3>① 只记得一句歌词，名字还记错了</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">放那首“晚风吹过旧巷口”的歌，名字好像是《风起时》，可能记错了。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>用歌词片段与近似歌名在多个曲库来源分别检索；</li>
+          <li>把候选结果按艺人、时长、发行信息比对，排除同名与翻唱；</li>
+          <li>确认目标曲目后直接建立队列并播放，附一句“我理解的是这首”。</li>
+        </ol>
+        <span class="out">打开就在播</span><span class="tool">原来：搜索 → 复制歌名 → 播放器再搜 → 试错 3 轮</span>
+      </div>
+
+      <div class="case">
+        <h3>② 想要一张“和这几位类似”的歌单</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">帮我找几张和这三位风格接近的歌手，凑一张 20 首左右的歌单，直接开始放。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>逐个检索这几位艺人，打开艺人页取热门曲目与同风格推荐；</li>
+          <li>去重、按可播状态过滤，凑到目标数量；</li>
+          <li>整批入队并播放，之后不满意就一句“换一批”。</li>
+        </ol>
+        <span class="out">20 首，直接播放</span><span class="tool">原来：逐个搜索 → 手动挑 → 建歌单</span>
+      </div>
+
+      <div class="case">
+        <h3>③ 这首在某处没版权，换一个能放的</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">这张专辑里缺的那几首，帮我找别处能播的版本补上，保持原顺序。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>按曲名与艺人到其余来源逐一比对，挑出可播的等价版本；</li>
+          <li>保留专辑原有顺序，把不可播条目替换或跳过；</li>
+          <li>开播后回到快照，告诉你哪几首是替代版本。</li>
+        </ol>
+        <span class="out">顺序不变，完整播完</span><span class="tool">原来：换平台 → 逐首搜 → 手动排序</span>
+      </div>
+
+      <div class="case">
+        <h3>④ 本地老歌和今天的热歌混着放</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">先放我电脑里那首 demo，再接着放今天的榜单，循环列表。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>登记并检索本地音乐目录，取到那首 demo；</li>
+          <li>拉取榜单曲目，与本地曲目拼成同一个队列；</li>
+          <li>设置列表循环后开播，本地文件直接读取，不复制不转码。</li>
+        </ol>
+        <span class="out">跨来源一条队列</span><span class="tool">原来：本地播放器 + 在线客户端各放一半</span>
+      </div>
+
+      <div class="case">
+        <h3>⑤ 听着听着想换口味，但别停</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">这首不太合适，换类似的就行，别停。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>标记当前曲目的口味反馈，从电台重新取一批；</li>
+          <li>过滤掉不可播条目后在队列尾部接上；</li>
+          <li>播放不中断，下一首立刻接上。</li>
+        </ol>
+        <span class="out">无缝续播</span><span class="tool">原来：退出去找歌 → 再点播放</span>
+      </div>
+
+      <div class="case">
+        <h3>⑥ 忘了自己刚才放到哪了</h3>
+        <p class="lab">你只需要说</p>
+        <p class="say">刚才放到第几首了？接着放。</p>
+        <p class="lab">助手替你做的事</p>
+        <ol>
+          <li>读取播放快照：当前曲目、队列序号、进度、循环与音量；</li>
+          <li>从暂停处继续，进度从原来的位置走；</li>
+          <li>顺带告诉你剩下的队列还有多少首。</li>
+        </ol>
+        <span class="out">从原处继续</span><span class="tool">原来：重开客户端 → 重新找歌</span>
       </div>
     </div>
   </div>
