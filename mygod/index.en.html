@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mygod · One player for music and AI assistants</title>
+<style>
+  :root{
+    --ink:#0e1116;
+    --ink2:#3d4450;
+    --ink3:#6c7480;
+    --line:#e6e9ef;
+    --bg:#ffffff;
+    --bg2:#f6f8fb;
+    --accent:#3b5bfd;
+    --accent2:#7a5cff;
+    --code:#0f131a;
+    --code-ink:#d7dce6;
+    --r:14px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav ul a:hover{color:var(--accent)}
+  @media (max-width:760px){nav ul{display:none}}
+
+  /* hero */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:96px 0 84px;
+    background:
+      radial-gradient(1000px 420px at 82% -8%, rgba(122,92,255,.16), transparent 62%),
+      radial-gradient(760px 360px at 8% 6%, rgba(59,91,253,.14), transparent 60%),
+      #fff;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:20px}
+  h1{font-size:58px;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;font-weight:800;max-width:860px}
+  h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:19px;color:var(--ink2);max-width:700px;margin:0 0 34px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 22px;border-radius:11px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;
+  }
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 10px 24px rgba(59,91,253,.22)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{transform:translateY(-1px)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .stat{background:#fff;padding:20px 22px}
+  .stat b{display:block;font-size:26px;letter-spacing:-.02em}
+  .stat span{font-size:12.5px;color:var(--ink3)}
+  @media (max-width:760px){
+    h1{font-size:36px}.hero{padding:64px 0 56px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* cases */
+  .cases{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .case{border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 22px;background:#fff}
+  .case .lab{font-size:11.5px;letter-spacing:.12em;color:var(--ink3);font-weight:700;margin:0 0 7px}
+  .case .say{
+    background:var(--bg2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;
+    padding:13px 16px;font-size:15px;color:var(--ink);margin:0 0 16px;line-height:1.65;
+  }
+  .case .say::before{content:"“";color:var(--ink3)}
+  .case .say::after{content:"”";color:var(--ink3)}
+  .case ol{margin:0 0 16px;padding-left:20px;color:var(--ink2);font-size:14.5px;line-height:1.75}
+  .case ol li{margin:5px 0}
+  .case .out{
+    display:inline-block;font-size:12.5px;font-weight:700;color:#0b6b3a;
+    background:#f0fbf4;border:1px solid #bfe6cf;border-radius:6px;padding:4px 10px;
+  }
+  .case .tool{margin-left:8px;font-size:12px;color:var(--ink3)}
+  @media (max-width:900px){.cases{grid-template-columns:1fr}}
+
+  /* before / after */
+  .shift{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:30px 0 34px}
+  .shift .side{border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;background:#fff}
+  .shift .side.b{background:var(--bg2);color:var(--ink2)}
+  .shift .h{font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--ink3);margin-bottom:8px}
+  .shift ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.8}
+  .shift .side.a{border-color:#c9d7ff;background:#f8faff}
+  @media (max-width:760px){.shift{grid-template-columns:1fr}.shift .mid{text-align:center}}
+  .shift .mid{color:var(--accent);font-weight:800;font-size:18px}
+
+  /* picker */
+  .picker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 6px}
+  .picker.three{grid-template-columns:repeat(3,1fr)}
+  .pick{position:relative;display:block;cursor:pointer}
+  .pick input{position:absolute;opacity:0;pointer-events:none}
+  .pick span{display:block;height:100%;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s}
+  .pick b{display:block;font-size:15px}
+  .pick small{display:block;color:var(--ink3);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .pick em{font-style:normal;display:inline-block;margin-top:9px;font-size:11px;font-weight:700;
+    color:#0b6b3a;background:#f0fbf4;border:1px solid #bfe6cf;border-radius:5px;padding:2px 7px}
+  .pick input:checked + span{border-color:var(--accent);background:#f7f9ff;box-shadow:0 0 0 3px rgba(59,91,253,.10)}
+  .pick input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+  @media (max-width:900px){.picker,.picker.three{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.picker,.picker.three{grid-template-columns:1fr}}
+
+  /* mail request */
+  .request{border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);padding:22px 24px;margin-top:14px}
+  .preview{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    font-size:13.8px;white-space:pre-wrap;color:var(--ink2);margin-bottom:16px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;line-height:1.7}
+  .preview .t{font-size:11.5px;letter-spacing:.1em;color:var(--ink3);margin-bottom:8px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+  .request .note{color:var(--ink3);font-size:13px;margin:12px 0 0}
+  .buildsteps{margin:14px 0 22px;padding-left:22px;color:var(--ink2);font-size:14.8px}
+  .buildsteps li{margin:8px 0}
+
+  /* sections */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:10px}
+  h2{font-size:32px;letter-spacing:-.02em;margin:0 0 10px}
+  h2 + p.sub{color:var(--ink3);font-size:15.5px;margin:0 0 38px;max-width:680px}
+  h3{font-size:18px;margin:34px 0 10px}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;
+  }
+  .card .ic{font-size:20px;margin-bottom:10px}
+  .card h3{margin:0 0 6px;font-size:16.5px}
+  .card p{margin:0;color:var(--ink2);font-size:14.5px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:16px}
+  .step{
+    position:relative;padding:24px 26px 24px 74px;border:1px solid var(--line);
+    border-radius:var(--r);background:#fff;
+  }
+  .step::before{
+    counter-increment:s;content:counter(s);
+    position:absolute;left:24px;top:22px;
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:14px;
+  }
+  .step h3{margin:0 0 8px;font-size:17px}
+  .step p{margin:6px 0;color:var(--ink2);font-size:15px}
+  .step .note{color:var(--ink3);font-size:13.5px}
+
+  /* code */
+  .codewrap{position:relative;margin:16px 0}
+  pre{
+    margin:0;background:var(--code);color:var(--code-ink);
+    border-radius:12px;padding:18px 20px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;line-height:1.65;
+  }
+  pre .c{color:#7f8b9e}
+  pre .k{color:#8fb4ff}
+  pre .s{color:#a6e3a1}
+  pre .v{color:#f5c2e7}
+  .copy{
+    position:absolute;top:10px;right:10px;
+    background:#1d2430;color:#c9d2e0;border:1px solid #2a3342;
+    font-size:12px;padding:5px 10px;border-radius:7px;cursor:pointer;
+  }
+  .copy:hover{background:#252e3c}
+  code.inline{background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* prompt cards */
+  .prompts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .prompt{border:1px solid var(--line);border-radius:var(--r);padding:20px;background:#fff}
+  .prompt .who{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+  .prompt p{margin:0;font-size:14.5px;color:var(--ink2)}
+  .prompt p b{color:var(--ink)}
+  @media (max-width:900px){.prompts{grid-template-columns:1fr}}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:18px 0}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+";color:var(--accent);font-weight:800;margin-right:10px}
+  details[open] summary::before{content:"−"}
+  details p{margin:10px 0 0;color:var(--ink2);font-size:15px}
+
+  .banner{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);
+    padding:26px 28px;margin:30px 0;font-size:14.5px;color:var(--ink2);
+  }
+  .banner b{color:var(--ink)}
+
+  footer{padding:52px 0 72px;color:var(--ink3);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot">m</span> mygod</div>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#cases">Use Cases</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#mcp">Assistant Setup</a></li>
+      <li><a href="#cli">CLI</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="index.html">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Music Engine No GUI· MCP + CLI</div>
+    <h1>One player,<br>for <em>music</em> and <em>AI assistants</em></h1>
+    <p class="lede">
+      Oh my god — just listen. mygod has no UI; you talk to it through your assistant or your terminal. Misremember a song title? It still finds it across 4 online sources and your local library, and plays it. Multiple assistants, still just one player. Three minutes to install, all data stays on your machine. Download now.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#download">Download mygod →</a>
+      <a class="btn ghost" href="#cli">View CLI help</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>Online music sources, one unified search</span></div>
+      <div class="stat"><b>1</b><span>Local library — just register a folder</span></div>
+      <div class="stat"><b>19</b><span>Capabilities your assistant can call</span></div>
+      <div class="stat"><b>1</b><span>Player instance shared across clients</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Features ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">FEATURES</div>
+    <h2>Less of everything, except the music</h2>
+    <p class="sub">No switching between apps, and no new API to learn just to play a song.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>One search, every source</h3>
+        <p>One search returns results from multiple online sources and your local library, each labeled with its source and playability — no more trying each platform one by one.</p>
+      </div>
+      <div class="card">
+        <div class="ic">✦</div>
+        <h3>Native assistant integration</h3>
+        <p>Exposes its capabilities as a standard MCP server (stdio). Assistants that support MCP — Trae, Codex, WorkBuddy and others — just need one path in their config.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◫</div>
+        <h3>One player, shared by all</h3>
+        <p>Only one player instance runs on your machine. Multiple assistants and terminals connect at once and read/write the same queue, progress and volume without interrupting each other.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⌂</div>
+        <h3>Local music library</h3>
+        <p>Register a folder and it indexes automatically, with incremental rescans. Local files are read directly — no copying, no transcoding, no uploading.</p>
+      </div>
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>Audio quality &amp; effects</h3>
+        <p>Four quality tiers — standard / high / higher / lossless — with automatic fallback. EQ presets, night mode, enhancement and loudness normalization are all saved with the session.</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>Session recovery &amp; self-healing</h3>
+        <p>Restarts where you left off, with the same queue and position. Unplayable tracks are skipped, and a stream with no data for 15 seconds is marked failed — playback never freezes on loading.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Use Cases ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="kicker">USE CASES</div>
+    <h2>Say one sentence. It handles everything in between.</h2>
+    <p class="sub">
+      What used to mean "search the web, then search the player, then retry with different keywords" now takes one sentence: your assistant searches, compares, builds the queue and plays — all in one go.
+    </p>
+
+    <div class="shift">
+      <div class="side b">
+        <div class="h">BEFORE</div>
+        <ul>
+          <li>Misremember the title, hunt for clues in a search engine</li>
+          <li>Take the title and search again inside the player</li>
+          <li>No results? Try another round of keywords</li>
+          <li>Want a playlist in the same style? Pick songs one by one</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="side a">
+        <div class="h">NOW</div>
+        <ul>
+          <li>Say whatever fragments you remember (lyrics, scene, rough title)</li>
+          <li>The assistant searches across sources, compares artist and duration, then plays</li>
+          <li>If a version can't play, it switches sources automatically</li>
+          <li>One "like these artists" builds and plays the whole queue</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cases">
+      <div class="case">
+        <h3>① You only remember one line — and got the title wrong</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">Play that song that goes 'the evening wind blows down the old alley' — I think it's called "When the Wind Rises", but I might have the title wrong.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Searches several sources using the lyric fragment and the approximate title;</li>
+          <li>Compares candidates by artist, duration and release info, ruling out same-name songs and covers;</li>
+          <li>Confirms the target, builds the queue and plays it, adding "I took it to mean this one".</li>
+        </ol>
+        <span class="out">Playing the moment you open it</span><span class="tool">Before: search → copy title → search in player → 3 rounds of trial and error</span>
+      </div>
+
+      <div class="case">
+        <h3>② A playlist "similar to these artists"</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">Find artists with a style close to these three, put together a playlist of about 20 tracks, and start playing.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Looks up each artist, opens their pages for popular tracks and similar-artist recommendations;</li>
+          <li>De-duplicates, filters by playability, and fills up to the target count;</li>
+          <li>Enqueues the whole batch and plays it; a single "give me another batch" replaces it later.</li>
+        </ol>
+        <span class="out">20 tracks, playing now</span><span class="tool">Before: search each one → pick manually → build a playlist</span>
+      </div>
+
+      <div class="case">
+        <h3>③ Not licensed on one source? Find a playable one</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">A few tracks on this album are missing. Find playable versions elsewhere and fill them in, keeping the original order.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Matches title and artist against the remaining sources and picks equivalent playable versions;</li>
+          <li>Keeps the album order, replacing or skipping unplayable entries;</li>
+          <li>Returns to the snapshot after playback starts and tells you which ones were substitutes.</li>
+        </ol>
+        <span class="out">Same order, full album</span><span class="tool">Before: switch platform → search each track → reorder by hand</span>
+      </div>
+
+      <div class="case">
+        <h3>④ Local oldies mixed with today's charts</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">Play the demo on my computer first, then today's chart, and loop the list.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Registers and searches the local music folder to find that demo;</li>
+          <li>Fetches the chart tracks and merges them with the local track into one queue;</li>
+          <li>Sets list loop and starts playback; local files are read directly, with no copying or transcoding.</li>
+        </ol>
+        <span class="out">One queue across sources</span><span class="tool">Before: local player + online client, half the music each</span>
+      </div>
+
+      <div class="case">
+        <h3>⑤ Change the mood without stopping the music</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">This one isn't right. Swap in something similar — don't stop.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Records the taste feedback for the current track and fetches a fresh batch from radio;</li>
+          <li>Filters out unplayable entries and appends them to the end of the queue;</li>
+          <li>Playback never stops — the next track picks up immediately.</li>
+        </ol>
+        <span class="out">Seamless continuation</span><span class="tool">Before: leave to find a song → hit play again</span>
+      </div>
+
+      <div class="case">
+        <h3>⑥ Forgot where you left off</h3>
+        <p class="lab">ALL YOU SAY</p>
+        <p class="say">Which track was I on? Resume from there.</p>
+        <p class="lab">WHAT THE ASSISTANT DOES</p>
+        <ol>
+          <li>Reads the playback snapshot: current track, queue position, progress, loop mode and volume;</li>
+          <li>Resumes from the pause point, with progress continuing from the original position;</li>
+          <li>Also tells you how many tracks are left in the queue.</li>
+        </ol>
+        <span class="out">Resumes where you stopped</span><span class="tool">Before: reopen the client → find the song again</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Download ============ -->
+<section id="download">
+  <div class="wrap">
+    <div class="kicker">DOWNLOAD</div>
+    <h2>Download mygod</h2>
+    <p class="sub">
+      Pick your platform and the components you want, then generate a request. An email sends your selection to the author, who replies with the matching binaries or download instructions. macOS (Apple Silicon) is prebuilt; other platforms are built on request.
+    </p>
+
+    <h3>1 · Choose your platform</h3>
+    <div class="picker">
+      <label class="pick">
+        <input type="radio" name="platform" value="macOS · Apple Silicon (arm64)" checked>
+        <span><b>macOS</b><small>Apple Silicon · arm64</small><em>Prebuilt</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="macOS · Intel (x86_64)">
+        <span><b>macOS</b><small>Intel · x86_64</small><em>Built on request</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="Windows · x64">
+        <span><b>Windows</b><small>x64</small><em>Built on request</em></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="platform" value="Linux · x64">
+        <span><b>Linux</b><small>x64</small><em>Built on request</em></span>
+      </label>
+    </div>
+
+    <h3>2 · Choose components</h3>
+    <div class="picker three">
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-mcp + mygod-cli" checked>
+        <span><b>Both</b><small>Assistant integration + CLI, recommended</small></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-mcp">
+        <span><b>mygod-mcp</b><small>For MCP assistants like Trae / Codex / WorkBuddy only</small></span>
+      </label>
+      <label class="pick">
+        <input type="radio" name="component" value="mygod-cli">
+        <span><b>mygod-cli</b><small>For terminals, scripts and automation only</small></span>
+      </label>
+    </div>
+
+    <h3>3 · Send the request</h3>
+    <div class="request">
+      <div class="preview" id="mail-preview">
+        <div class="t">EMAIL PREVIEW</div>
+        <div id="mail-body">—</div>
+      </div>
+      <a class="btn primary" id="mail-send" href="mailto:aosfather@gmail.com">Send request by email →</a>
+      <p class="note">
+        The email goes to <code class="inline">aosfather@gmail.com</code> with the subject and body filled in from your choices. You can also copy the address and send it manually. To build it yourself, see below.
+      </p>
+    </div>
+
+    <h3>Want to build it yourself?</h3>
+    <p style="color:var(--ink2);font-size:15px">
+      The full capability list, behavior rules and error handling are all in the PRD. Hand it to your AI coding assistant, implement the numbered requirements one by one, and build both binaries on your own platform.
+    </p>
+    <ol class="buildsteps">
+      <li>Open the PRD and decide the scope (all P0 items, or just the capabilities you need).</li>
+      <li>Have your AI coding assistant use <b>FR-01 … FR-27</b> as its task list, implementing and self-testing each one; shared rules (R1–R4) apply throughout.</li>
+      <li>Produce <b>mygod-mcp</b> and <b>mygod-cli</b> locally, then add them to your PATH as shown below.</li>
+    </ol>
+    <a class="btn ghost" href="prd.html">Open the PRD (prd.html) →</a>
+  </div>
+</section>
+
+<!-- ============ Install ============ -->
+<section id="install">
+  <div class="wrap">
+    <div class="kicker">INSTALL</div>
+    <h2>Install: three minutes, two binaries</h2>
+    <p class="sub">mygod needs no background service: all data (sessions, indexes, cache) stays on your own machine.</p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>Get the two binaries</h3>
+        <p><b>mygod-mcp</b> — for MCP-capable AI assistants; <b>mygod-cli</b> — for the command line and scripts.</p>
+        <p class="note">Target platform: macOS (Apple Silicon). The two files are independent — install whichever you use, or both.</p>
+      </div>
+
+      <div class="step">
+        <h3>Put them on your PATH and make them executable</h3>
+        <div class="codewrap">
+          <button class="copy" data-copy>Copy</button>
+          <pre><span class="c"># Put them in your personal bin directory (create it first if needed)</span>
+mkdir -p ~/.local/bin
+mv mygod-mcp mygod-cli ~/.local/bin/
+chmod +x ~/.local/bin/mygod-mcp ~/.local/bin/mygod-cli
+
+<span class="c"># Make sure it's on your PATH (zsh users: add to ~/.zshrc)</span>
+export PATH="$HOME/.local/bin:$PATH"</pre>
+        </div>
+        <p class="note">If your files live elsewhere, replace <code class="inline">/Users/you/.local/bin</code> with the real directory in all configs below.</p>
+      </div>
+
+      <div class="step">
+        <h3>Verify the install</h3>
+        <div class="codewrap">
+          <button class="copy" data-copy>Copy</button>
+          <pre><span class="c"># CLI: should print engine version, available sources and login status</span>
+mygod-cli status
+
+<span class="c"># Assistant side: should print the MCP handshake, then wait on stdin</span>
+mygod-mcp</pre>
+        </div>
+        <p class="note">The first run starts a persistent engine; from then on, every entry point connects to the same player instance.</p>
+      </div>
+    </div>
+
+    <div class="banner">
+      <b>All data stays local.</b> Playback sessions, local indexes and cache files all live in
+      <code class="inline">~/.local/share/mygod</code>. Apart from streaming from the sources you choose, no playback data is sent to any third party.
+    </div>
+  </div>
+</section>
+
+<!-- ============ MCP ============ -->
+<section id="mcp">
+  <div class="wrap">
+    <div class="kicker">MCP SERVER</div>
+    <h2>Connect an assistant: give it the path, it configures the rest</h2>
+    <p class="sub">mygod-mcp is a local stdio MCP server: no ports, no server, no network permissions. To an assistant it's just another local tool.</p>
+
+    <h3>What kind of server is it</h3>
+    <table>
+      <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Transport</td><td><code>stdio</code></td><td>Talks to the assistant over stdin/stdout — a local process-to-process conversation</td></tr>
+        <tr><td>Startup</td><td>Launched by the assistant</td><td>The assistant runs the configured path when it starts, on demand</td></tr>
+        <tr><td>Arguments</td><td>None</td><td>An empty args array is enough; it manages the persistent engine itself</td></tr>
+        <tr><td>Concurrency</td><td>Multi-client safe</td><td>Multiple assistants can connect without fighting over the player; latecomers join the same instance</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Option 1: let the assistant configure itself (recommended)</h3>
+    <p style="color:var(--ink2);font-size:15px">Just say this in the conversation — the assistant writes the MCP config and verifies the handshake itself:</p>
+    <div class="prompts">
+      <div class="prompt">
+        <div class="who">TRAE</div>
+        <p>"Add an MCP server named <b>mygod</b>, type <b>stdio</b>, command path <b>/Users/you/.local/bin/mygod-mcp</b>, no arguments. Then call <b>status</b> once to verify."</p>
+      </div>
+      <div class="prompt">
+        <div class="who">CODEX</div>
+        <p>"Add <b>mygod</b> to the MCP config: stdio type, command <b>/Users/you/.local/bin/mygod-mcp</b>, no args. Then list the tools and confirm <b>scan_local</b> shows up."</p>
+      </div>
+      <div class="prompt">
+        <div class="who">WORKBUDDY</div>
+        <p>"Connect the local MCP server <b>mygod</b>, type <b>stdio</b>, binary at <b>/Users/you/.local/bin/mygod-mcp</b>. Once configured, read the playback state once."</p>
+      </div>
+    </div>
+    <p class="note" style="color:var(--ink3);font-size:13.5px">Replace the path with your own. The same wording works with any MCP-capable assistant.</p>
+
+    <h3>Option 2: write the config by hand</h3>
+    <p style="color:var(--ink2);font-size:15px">Generic <code class="inline">mcpServers</code> form (for assistants using JSON config, such as Trae):</p>
+    <div class="codewrap">
+      <button class="copy" data-copy>Copy</button>
+      <pre>{
+  <span class="k">"mcpServers"</span>: {
+    <span class="k">"mygod"</span>: {
+      <span class="k">"type"</span>: <span class="s">"stdio"</span>,
+      <span class="k">"command"</span>: <span class="s">"/Users/you/.local/bin/mygod-mcp"</span>,
+      <span class="k">"args"</span>: []
+    }
+  }
+}</pre>
+    </div>
+
+    <p style="color:var(--ink2);font-size:15px">For assistants using TOML config (such as Codex):</p>
+    <div class="codewrap">
+      <button class="copy" data-copy>Copy</button>
+      <pre>[<span class="k">mcp_servers</span>.<span class="v">mygod</span>]
+command = <span class="s">"/Users/you/.local/bin/mygod-mcp"</span>
+args = []</pre>
+    </div>
+
+    <div class="banner">
+      <b>What can it do once configured?</b> Your assistant can search and play, control the queue (previous / next / pause / seek / volume),
+      read lyrics and comments, browse discovery and radio, adjust audio effects, register local music folders, and read the current playback snapshot — 19 capabilities in total, with semantics identical to the CLI.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLI ============ -->
+<section id="cli">
+  <div class="wrap">
+    <div class="kicker">COMMAND LINE</div>
+    <h2>No MCP support? The CLI manages playback just as well</h2>
+    <p class="sub">Any terminal, script, hotkey tool or scheduled job can call mygod-cli. Output is structured so downstream programs can parse it.</p>
+
+    <h3>Command reference (the full <code class="inline">mygod-cli help</code> output)</h3>
+    <div class="codewrap">
+      <button class="copy" data-copy>Copy</button>
+      <pre>mygod-cli — command-line interface to the music engine
+
+  status                        Engine version, available sources, login status
+  search &lt;keyword&gt; [--kind k] [--source s] [--limit n]
+  play &lt;keyword&gt; [--source s] [--n i] [--yes]
+       play --tracks id,id | --playlist id | --album id | --radio mode
+  state                         Now playing and what's next
+  next | prev | pause | toggle | resume | radio_exit
+  volume &lt;0-1&gt; | eq &lt;preset&gt; | repeat &lt;off|all|one&gt; | shuffle [on|off]
+  lyrics [id] [--source s]      With no id, uses the current track
+  catalog &lt;kind&gt; &lt;id&gt; [--source s] [--tab t] [--limit n] [--offset n]
+  discovery &lt;kind&gt; [--source s] [--limit n]
+  radio [mode]                  Personal radio (default / familiar / explore)
+  login-qr                      QR-code login (for sources that need it)
+  help                          Show this help
+
+  sources: run status to see available source IDs (the first is used by default)
+  Starting with no arguments enters interactive mode; leaving it does not stop playback</pre>
+    </div>
+
+    <h3>Command details</h3>
+    <table>
+      <thead><tr><th>Command</th><th>Description</th><th>Key options</th></tr></thead>
+      <tbody>
+        <tr><td><code>status</code></td><td>Engine version, available sources and each source's login status</td><td>—</td></tr>
+        <tr><td><code>search</code></td><td>Search by keyword, returning results without playing</td><td><code>--kind</code> result type; <code>--source</code> source; <code>--limit</code> count</td></tr>
+        <tr><td><code>play</code></td><td>Search and play, or build a queue directly from IDs / playlist / album / radio</td><td><code>--n</code> play the nth result; <code>--yes</code> skip confirmation; <code>--tracks / --playlist / --album / --radio</code></td></tr>
+        <tr><td><code>state</code></td><td>Current track, progress, queue, volume, loop and shuffle</td><td>—</td></tr>
+        <tr><td><code>next / prev</code></td><td>Skip to the next / previous track</td><td>—</td></tr>
+        <tr><td><code>pause / resume / toggle</code></td><td>Pause, resume, or switch between the two</td><td>—</td></tr>
+        <tr><td><code>radio_exit</code></td><td>Leave radio continuation; the queue no longer extends itself</td><td>—</td></tr>
+        <tr><td><code>volume</code></td><td>Set volume, shared across all entry points</td><td>Float between <code>0-1</code></td></tr>
+        <tr><td><code>eq</code></td><td>Switch EQ preset; <code>flat</code> turns it off</td><td>Preset name</td></tr>
+        <tr><td><code>repeat</code></td><td>Loop mode: off / list / single track</td><td><code>off | all | one</code></td></tr>
+        <tr><td><code>shuffle</code></td><td>Toggle shuffle; with no argument it turns on</td><td><code>on | off</code></td></tr>
+        <tr><td><code>lyrics</code></td><td>Timed / translated / word-by-word lyrics</td><td><code>id</code> track ID; <code>--source</code> source</td></tr>
+        <tr><td><code>catalog</code></td><td>Open an artist, album, playlist or user page</td><td><code>kind</code> and <code>id</code>; <code>--tab</code>, <code>--limit</code>, <code>--offset</code></td></tr>
+        <tr><td><code>discovery</code></td><td>Discovery page: daily picks, recommended playlists, featured, charts, recently played</td><td><code>kind</code>; <code>--limit</code></td></tr>
+        <tr><td><code>radio</code></td><td>Generate a continuous stream matched to your taste</td><td><code>default / familiar / explore</code></td></tr>
+        <tr><td><code>login-qr</code></td><td>QR-code login for sources that need an account; credentials stay local</td><td>—</td></tr>
+        <tr><td><code>help</code></td><td>Print the command table</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Common examples</h3>
+    <div class="codewrap">
+      <button class="copy" data-copy>Copy</button>
+      <pre><span class="c"># Search and see which versions are playable</span>
+mygod-cli search "evening wind" --limit 10
+
+<span class="c"># Play the 2nd search result directly</span>
+mygod-cli play "evening wind" --n 2 --yes
+
+<span class="c"># Build a queue from track IDs, starting at the first</span>
+mygod-cli play --tracks 1001,1002,1003
+
+<span class="c"># Open a playlist and enqueue it all</span>
+mygod-cli play --playlist 7788
+
+<span class="c"># Loop the list + shuffle, then set volume to 60%</span>
+mygod-cli repeat all &amp;&amp; mygod-cli shuffle on &amp;&amp; mygod-cli volume 0.6
+
+<span class="c"># See what's playing now</span>
+mygod-cli state</pre>
+    </div>
+
+    <div class="banner">
+      <b>Even assistants without MCP support can use it:</b> no extra wrapper needed. Just tell it "call
+      <code class="inline">mygod-cli</code> via the shell, run <code class="inline">help</code> first to see the command list", and it will pick commands, read the output and decide the next step on its own.
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">FAQ</div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      <details open>
+        <summary>If I run several assistants, will two players be playing?</summary>
+        <p>No. mygod allows only one player instance on your machine: the first connection owns the engine, the rest join as clients and read/write the same queue and progress. Switch tracks from any entry point and every other client's next snapshot is already up to date.</p>
+      </details>
+      <details>
+        <summary>Do I have to log in?</summary>
+        <p>No. Some sources allow guest search and playback; restricted capabilities are flagged at search time, so you won't hit a failure only after pressing play. For more capabilities, scan the QR code with <code class="inline">mygod-cli login-qr</code> — credentials stay on your machine.</p>
+      </details>
+      <details>
+        <summary>How do I use local music?</summary>
+        <p>Two ways: on the assistant side, call <code class="inline">scan_local</code> with add to register a folder and build the index — local files then become searchable just like online tracks. Without an assistant, play a known path directly from the CLI, e.g. <code class="inline">mygod-cli play --tracks /Users/you/Music/a.mp3 --source local</code>. Files are never copied or transcoded.</p>
+      </details>
+      <details>
+        <summary>Where is my data stored? How do I clear it?</summary>
+        <p>All in <code class="inline">~/.local/share/mygod</code>: playback sessions, local indexes and cache. Delete the directory and it's a factory reset; deleting just the cache subdirectory only affects cached tracks, not your indexes or queues.</p>
+      </details>
+      <details>
+        <summary>What if playback gets stuck loading?</summary>
+        <p>It won't stay stuck. If a stream delivers no new data for 15 seconds, the track is marked failed and skipped. If the entire queue is unplayable, it stops and reports the reason instead of retrying forever.</p>
+      </details>
+      <details>
+        <summary>Can it download songs?</summary>
+        <p>No, and it never will. mygod only streams online playback and reads files already on your machine. Downloading, saving or redistributing tracks is not provided.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div>mygod · Your local music hub · Assistant integration + CLI</div>
+    <div>Content copyright belongs to the respective music sources; users are responsible for the rights to their local files.</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
+      }).catch(function () {
+        btn.textContent = 'Select manually';
+      });
+    });
+  });
+
+  /* Download request: compose an email to the author from the selected platform and components */
+  (function () {
+    var send = document.getElementById('mail-send');
+    var body = document.getElementById('mail-body');
+    if (!send || !body) return;
+    var to = 'aosfather@gmail.com';
+
+    function picked(name) {
+      var el = document.querySelector('input[name="' + name + '"]:checked');
+      return el ? el.value : '';
+    }
+
+    function refresh() {
+      var platform = picked('platform');
+      var component = picked('component');
+      var subject = 'mygod download request · ' + platform + ' · ' + component;
+      var text =
+        'Hello,\n\n' +
+        'I would like to get mygod. Here is my selection:\n' +
+        '· Platform: ' + platform + '\n' +
+        '· Components: ' + component + '\n\n' +
+        'Please reply with the matching binaries or download instructions.\n\n' +
+        '(This email was generated from the mygod download page)';
+
+      body.textContent = 'To: ' + to + '\nSubject: ' + subject + '\n\n' + text;
+      send.href = 'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(text);
+    }
+
+    document.querySelectorAll('input[name="platform"], input[name="component"]')
+      .forEach(function (el) { el.addEventListener('change', refresh); });
+    refresh();
+  })();
+</script>
+</body>
+</html>
