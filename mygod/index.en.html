@@ -103,28 +103,22 @@
   @media (max-width:760px){.shift{grid-template-columns:1fr}.shift .mid{text-align:center}}
   .shift .mid{color:var(--accent);font-weight:800;font-size:18px}
 
-  /* picker */
-  .picker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 6px}
-  .picker.three{grid-template-columns:repeat(3,1fr)}
-  .pick{position:relative;display:block;cursor:pointer}
-  .pick input{position:absolute;opacity:0;pointer-events:none}
-  .pick span{display:block;height:100%;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s}
-  .pick b{display:block;font-size:15px}
-  .pick small{display:block;color:var(--ink3);font-size:12.5px;margin-top:3px;line-height:1.5}
-  .pick em{font-style:normal;display:inline-block;margin-top:9px;font-size:11px;font-weight:700;
-    color:#0b6b3a;background:#f0fbf4;border:1px solid #bfe6cf;border-radius:5px;padding:2px 7px}
-  .pick input:checked + span{border-color:var(--accent);background:#f7f9ff;box-shadow:0 0 0 3px rgba(59,91,253,.10)}
-  .pick input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
-  @media (max-width:900px){.picker,.picker.three{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:520px){.picker,.picker.three{grid-template-columns:1fr}}
-
-  /* mail request */
-  .request{border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);padding:22px 24px;margin-top:14px}
-  .preview{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;
-    font-size:13.8px;white-space:pre-wrap;color:var(--ink2);margin-bottom:16px;
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;line-height:1.7}
-  .preview .t{font-size:11.5px;letter-spacing:.1em;color:var(--ink3);margin-bottom:8px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
-  .request .note{color:var(--ink3);font-size:13px;margin:12px 0 0}
+  /* download links */
+  .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .dl-card{border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff}
+  .dl-card .os{font-size:16.5px;font-weight:700;margin:0 0 4px}
+  .dl-card .arch{font-size:12.5px;color:var(--ink3);margin:0 0 16px}
+  .dl-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .dl-list a{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+    background:var(--bg2);color:var(--ink);font-size:13.5px;font-weight:600;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .dl-list a:hover{border-color:var(--accent);color:var(--accent);background:#f7f9ff}
+  .dl-list a small{color:var(--ink3);font-size:12px;font-weight:400}
+  @media (max-width:900px){.dl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.dl-grid{grid-template-columns:1fr}}
   .buildsteps{margin:14px 0 22px;padding-left:22px;color:var(--ink2);font-size:14.8px}
   .buildsteps li{margin:8px 0}
 
@@ -230,6 +224,7 @@
       <li><a href="#mcp">Assistant Setup</a></li>
       <li><a href="#cli">CLI</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
       <li><a href="index.html">中文</a></li>
     </ul>
   </div>
@@ -416,56 +411,37 @@
     <div class="kicker">DOWNLOAD</div>
     <h2>Download mygod</h2>
     <p class="sub">
-      Pick your platform and the components you want, then generate a request. An email sends your selection to the author, who replies with the matching binaries or download instructions. macOS (Apple Silicon) is prebuilt; other platforms are built on request.
+      Current release: <b>v1.0.0</b>. Download the archive for your platform and extract it to get the two binaries, mygod-mcp and mygod-cli, then add them to your PATH as shown below.
     </p>
 
-    <h3>1 · Choose your platform</h3>
-    <div class="picker">
-      <label class="pick">
-        <input type="radio" name="platform" value="macOS · Apple Silicon (arm64)" checked>
-        <span><b>macOS</b><small>Apple Silicon · arm64</small><em>Prebuilt</em></span>
-      </label>
-      <label class="pick">
-        <input type="radio" name="platform" value="macOS · Intel (x86_64)">
-        <span><b>macOS</b><small>Intel · x86_64</small><em>Built on request</em></span>
-      </label>
-      <label class="pick">
-        <input type="radio" name="platform" value="Windows · x64">
-        <span><b>Windows</b><small>x64</small><em>Built on request</em></span>
-      </label>
-      <label class="pick">
-        <input type="radio" name="platform" value="Linux · x64">
-        <span><b>Linux</b><small>x64</small><em>Built on request</em></span>
-      </label>
-    </div>
-
-    <h3>2 · Choose components</h3>
-    <div class="picker three">
-      <label class="pick">
-        <input type="radio" name="component" value="mygod-mcp + mygod-cli" checked>
-        <span><b>Both</b><small>Assistant integration + CLI, recommended</small></span>
-      </label>
-      <label class="pick">
-        <input type="radio" name="component" value="mygod-mcp">
-        <span><b>mygod-mcp</b><small>For MCP assistants like Trae / Codex / WorkBuddy only</small></span>
-      </label>
-      <label class="pick">
-        <input type="radio" name="component" value="mygod-cli">
-        <span><b>mygod-cli</b><small>For terminals, scripts and automation only</small></span>
-      </label>
-    </div>
-
-    <h3>3 · Send the request</h3>
-    <div class="request">
-      <div class="preview" id="mail-preview">
-        <div class="t">EMAIL PREVIEW</div>
-        <div id="mail-body">—</div>
+    <div class="dl-grid">
+      <div class="dl-card">
+        <div class="os">macOS</div>
+        <div class="arch">Apple Silicon · arm64</div>
+        <ul class="dl-list">
+          <li><a href="https://github.com/aosfather/mygod/releases/download/v1.0.0/darwin-arm64.zip"><span>darwin-arm64.zip</span><small>arm64</small></a></li>
+        </ul>
       </div>
-      <a class="btn primary" id="mail-send" href="mailto:aosfather@gmail.com">Send request by email →</a>
-      <p class="note">
-        The email goes to <code class="inline">aosfather@gmail.com</code> with the subject and body filled in from your choices. You can also copy the address and send it manually. To build it yourself, see below.
-      </p>
+      <div class="dl-card">
+        <div class="os">Linux</div>
+        <div class="arch">x86_64 and arm64</div>
+        <ul class="dl-list">
+          <li><a href="https://github.com/aosfather/mygod/releases/download/v1.0.0/linux-amd64.zip"><span>linux-amd64.zip</span><small>x86_64</small></a></li>
+          <li><a href="https://github.com/aosfather/mygod/releases/download/v1.0.0/linux-arm64.zip"><span>linux-arm64.zip</span><small>arm64</small></a></li>
+        </ul>
+      </div>
+      <div class="dl-card">
+        <div class="os">Windows</div>
+        <div class="arch">x64 · amd64</div>
+        <ul class="dl-list">
+          <li><a href="https://github.com/aosfather/mygod/releases/download/v1.0.0/windows-amd64.zip"><span>windows-amd64.zip</span><small>x64</small></a></li>
+        </ul>
+      </div>
     </div>
+
+    <p style="color:var(--ink3);font-size:13.5px;margin-top:18px">
+      Source and updates: <a href="https://github.com/aosfather/mygod" style="color:var(--accent)">github.com/aosfather/mygod</a>
+    </p>
 
     <h3>Want to build it yourself?</h3>
     <p style="color:var(--ink2);font-size:15px">
@@ -491,7 +467,7 @@
       <div class="step">
         <h3>Get the two binaries</h3>
         <p><b>mygod-mcp</b> — for MCP-capable AI assistants; <b>mygod-cli</b> — for the command line and scripts.</p>
-        <p class="note">Target platform: macOS (Apple Silicon). The two files are independent — install whichever you use, or both.</p>
+        <p class="note">Builds are available for macOS / Linux / Windows. The two files are independent — install whichever you use, or both.</p>
       </div>
 
       <div class="step">
@@ -713,6 +689,29 @@ mygod-cli state</pre>
   </div>
 </section>
 
+<!-- ============ Contact ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker">CONTACT</div>
+    <h2>Get in touch</h2>
+    <p class="sub">Got an idea, a feature request, or ran into a bug? Send me an email — I read every one.</p>
+
+    <div class="banner">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <a class="btn primary" href="mailto:aosfather@gmail.com?subject=mygod%20feature%20idea">Share an idea →</a>
+        <a class="btn ghost" href="mailto:aosfather@gmail.com?subject=mygod%20bug%20report">Report a bug →</a>
+      </div>
+      <p style="margin:0">
+        Email: <a href="mailto:aosfather@gmail.com" style="color:var(--accent);font-weight:600">aosfather@gmail.com</a>
+        &nbsp;·&nbsp; Repo: <a href="https://github.com/aosfather/mygod" style="color:var(--accent)">github.com/aosfather/mygod</a>
+      </p>
+      <p style="margin:10px 0 0;font-size:13px;color:var(--ink3)">
+        For bug reports, include the version (v1.0.0), your platform, steps to reproduce, and the output of <code class="inline">mygod-cli status</code>.
+      </p>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap row">
     <div>mygod · Your local music hub · Assistant integration + CLI</div>
@@ -733,41 +732,6 @@ mygod-cli state</pre>
       });
     });
   });
-
-  /* Download request: compose an email to the author from the selected platform and components */
-  (function () {
-    var send = document.getElementById('mail-send');
-    var body = document.getElementById('mail-body');
-    if (!send || !body) return;
-    var to = 'aosfather@gmail.com';
-
-    function picked(name) {
-      var el = document.querySelector('input[name="' + name + '"]:checked');
-      return el ? el.value : '';
-    }
-
-    function refresh() {
-      var platform = picked('platform');
-      var component = picked('component');
-      var subject = 'mygod download request · ' + platform + ' · ' + component;
-      var text =
-        'Hello,\n\n' +
-        'I would like to get mygod. Here is my selection:\n' +
-        '· Platform: ' + platform + '\n' +
-        '· Components: ' + component + '\n\n' +
-        'Please reply with the matching binaries or download instructions.\n\n' +
-        '(This email was generated from the mygod download page)';
-
-      body.textContent = 'To: ' + to + '\nSubject: ' + subject + '\n\n' + text;
-      send.href = 'mailto:' + to +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(text);
-    }
-
-    document.querySelectorAll('input[name="platform"], input[name="component"]')
-      .forEach(function (el) { el.addEventListener('change', refresh); });
-    refresh();
-  })();
 </script>
 </body>
 </html>
