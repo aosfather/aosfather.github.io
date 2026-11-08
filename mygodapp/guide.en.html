@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How can I let AI find and play my music on a Mac? | MyGod</title>
+<meta name="description" content="MyGod v0.3.0 is a local music player for macOS. Pick a folder, then let MCP-capable AI assistants find and play tracks. macOS 14+ / Apple Silicon.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="author" content="aosfather">
+<link rel="canonical" href="https://aosfather.github.io/mygodapp/guide.en.html">
+<link rel="alternate" hreflang="zh-CN" href="https://aosfather.github.io/mygodapp/guide.html">
+<link rel="alternate" hreflang="en" href="https://aosfather.github.io/mygodapp/guide.en.html">
+<link rel="alternate" hreflang="x-default" href="https://aosfather.github.io/mygodapp/guide.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="MyGod">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="How can I let AI find and play my music on a Mac?">
+<meta property="og:description" content="MyGod v0.3.0: a local music player for macOS. Pick a folder, then let MCP-capable AI assistants find, queue and play tracks, with specs, fit and FAQ.">
+<meta property="og:url" content="https://aosfather.github.io/mygodapp/guide.en.html">
+<meta property="og:image" content="https://aosfather.github.io/mygodapp/shots/player.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How can I let AI find and play my music on a Mac?">
+<meta name="twitter:description" content="MyGod v0.3.0: a local music player for macOS. Pick a folder, let MCP-capable AI assistants find and play your music.">
+<meta name="twitter:image" content="https://aosfather.github.io/mygodapp/shots/player.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://aosfather.github.io/mygodapp/guide.en.html#webpage",
+      "url": "https://aosfather.github.io/mygodapp/guide.en.html",
+      "name": "How can I let AI find and play my music on a Mac?",
+      "description": "MyGod v0.3.0 is a local music player for macOS. Pick a music folder to play your own collection, then let MCP-capable AI assistants find, queue and play tracks for you.",
+      "inLanguage": "en",
+      "datePublished": "2026-11-08",
+      "dateModified": "2026-11-08",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://aosfather.github.io/mygodapp/#website",
+        "name": "MyGod",
+        "url": "https://aosfather.github.io/mygodapp/"
+      },
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "MyGod",
+        "softwareVersion": "v0.3.0",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "macOS 14.0+",
+        "url": "https://aosfather.github.io/mygodapp/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "MyGod Home", "item": "https://aosfather.github.io/mygodapp/"},
+        {"@type": "ListItem", "position": 2, "name": "Guide and FAQ", "item": "https://aosfather.github.io/mygodapp/guide.en.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://aosfather.github.io/mygodapp/guide.en.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can MyGod play online music?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Not in the current release. It plays music only from the local folder you choose. An edition with online sources is planned, and it will keep the same two tabs."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I let an AI assistant control playback?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Tick \"Allow Agent to connect to local MCP\" in the Status tab, then tell an MCP-capable assistant what you want to hear. You can turn the switch off at any time; manual playback is unaffected."}
+        },
+        {
+          "@type": "Question",
+          "name": "Can it find a song when I only remember part of the title or a few words of the lyrics?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Describe the fragment, or the mood you are after, and the assistant searches the folder you chose, compares matches, builds a queue and starts playback — no digging through folders yourself."}
+        },
+        {
+          "@type": "Question",
+          "name": "What if macOS blocks the app the first time I open it?",
+          "acceptedAnswer": {"@type": "Answer", "text": "The current build is not notarized by Apple. Go to System Settings → Privacy & Security and click \"Open Anyway\"; you only need to do this once."}
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on Intel Macs?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Not yet. The current release supports Apple Silicon (M-series) Macs only."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I adjust the sound?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Ask the assistant to set bass, night mode and loudness normalization in one sentence, or tune them one by one. Custom presets are still there after a restart."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  :root{
+    --ink:#0e1116;--ink2:#3d4450;--ink3:#6c7480;--line:#e6e9ef;
+    --bg:#ffffff;--bg2:#f6f8fb;--accent:#3b5bfd;--accent2:#7a5cff;
+    --r:14px;--max:920px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  nav.top{
+    position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+  }
+  nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;color:var(--ink)}
+  .brand:hover{text-decoration:none}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav.top ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav.top ul a{color:var(--ink2)}
+  nav.top ul a:hover{color:var(--accent);text-decoration:none}
+  @media (max-width:700px){nav.top ul li:not(:last-child):nth-child(n+3){display:none}}
+
+  header.hero{
+    padding:64px 0 46px;border-bottom:1px solid var(--line);
+    background:radial-gradient(760px 320px at 88% 0%,rgba(122,92,255,.13),transparent 62%),
+               radial-gradient(640px 300px at 4% 8%,rgba(59,91,253,.11),transparent 60%),#fff;
+  }
+  .crumbs{font-size:13px;color:var(--ink3);margin:0 0 22px}
+  .crumbs a{color:var(--ink3)}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}
+  h1{font-size:38px;line-height:1.28;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+  .meta{margin:0 0 28px;color:var(--ink3);font-size:13.5px}
+  .answer{
+    border:1px solid #c9d7ff;border-left:4px solid var(--accent);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);padding:22px 24px;margin:0 0 24px;
+  }
+  .answer .lab{display:block;font-size:12px;letter-spacing:.12em;font-weight:800;color:var(--accent);margin-bottom:8px}
+  .answer p{margin:0;font-size:16.5px;color:var(--ink);line-height:1.8}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:600;font-size:14.5px;border:1px solid transparent}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 20px rgba(59,91,253,.2)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  @media (max-width:700px){header.hero{padding:44px 0 34px}h1{font-size:28px}}
+
+  .toc{
+    border:1px solid var(--line);background:var(--bg2);border-radius:var(--r);
+    padding:18px 22px;margin:38px 0 8px;
+  }
+  .toc b{font-size:13px;letter-spacing:.08em;color:var(--ink2)}
+  .toc ol{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 24px;margin:10px 0 0;padding-left:20px;font-size:14.5px}
+  @media (max-width:600px){.toc ol{grid-template-columns:1fr}}
+
+  article section{padding:40px 0;border-bottom:1px solid var(--line);scroll-margin-top:76px}
+  article section:last-of-type{border-bottom:0}
+  h2{font-size:25px;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+  h3{font-size:17px;margin:0 0 6px;font-weight:700}
+  p{margin:0 0 14px}
+  .kicker{font-size:11.5px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:8px}
+  .tablewrap{overflow-x:auto;margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td strong{color:var(--ink)}
+  .qa{border-top:1px solid var(--line);margin-top:18px}
+  .qa .item{border-bottom:1px solid var(--line);padding:18px 0}
+  .qa h3{font-size:16px}
+  .qa p{margin:0;color:var(--ink2);font-size:15.2px}
+  .steps{counter-reset:s;display:grid;gap:14px;margin:18px 0}
+  .step{position:relative;padding:18px 22px 18px 66px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;left:20px;top:18px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:13px}
+  .step p{margin:0;color:var(--ink2);font-size:15px}
+  .note{border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);padding:18px 20px;color:var(--ink2);font-size:14px;margin:20px 0}
+  .note b{color:var(--ink)}
+  .hl{background:#f2f5ff;border-radius:5px;padding:1px 5px;color:var(--accent);font-weight:700}
+  footer{padding:38px 0 64px;color:var(--ink3);font-size:13px;border-top:1px solid var(--line)}
+  footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="index.en.html"><span class="dot">M</span> MyGod</a>
+    <ul>
+      <li><a href="index.en.html">Home</a></li>
+      <li><a href="index.en.html#download">Download</a></li>
+      <li><a href="index.en.html#faq">FAQ</a></li>
+      <li><a href="guide.html">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="index.en.html">MyGod Home</a> / Guide and FAQ</p>
+    <div class="eyebrow">MyGod · Guide / FAQ</div>
+    <h1>How can I let AI find and play my music on a Mac?</h1>
+    <p class="meta">Compiled <time datetime="2026-11-08">8 November 2026</time> · Applies to v0.3.0 · Features and versions follow the <a href="index.en.html">official website</a></p>
+
+    <div class="answer">
+      <span class="lab">Short answer</span>
+      <p>MyGod is a local music player for macOS (currently v0.3.0). Pick a music folder and your own collection is ready to play; flip the assistant switch in the Status tab and MCP-capable AI assistants such as WorkBuddy and Claw can search, queue and skip tracks for you. It plays local files only and does not connect to online music services, so it fits Mac users whose music lives on their drive and who would rather just say what they want to hear.</p>
+    </div>
+
+    <div class="cta">
+      <a class="btn primary" href="index.en.html#download">Download MyGod →</a>
+      <a class="btn ghost" href="#faq">Jump to the FAQ</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <nav class="toc" aria-label="On this page">
+    <b>On this page</b>
+    <ol>
+      <li><a href="#what">What is MyGod</a></li>
+      <li><a href="#finding">The problem: finding and choosing music</a></li>
+      <li><a href="#who">Who it is for / not for</a></li>
+      <li><a href="#specs">Features and specifications</a></li>
+      <li><a href="#faq">FAQ (6 questions)</a></li>
+      <li><a href="#start">Getting started</a></li>
+      <li><a href="#source">Sources</a></li>
+    </ol>
+  </nav>
+
+  <section id="what">
+    <div class="kicker">01 / WHAT IT IS</div>
+    <h2>What is MyGod</h2>
+    <p>MyGod is a macOS app by aosfather with a deliberately narrow job: put "listening to the music on your own Mac" and "letting AI play it for you" into one small window. There is no library import and your original files are not modified — choose a music folder with Open Folder and it plays straight from there.</p>
+    <p>The window has just two tabs: Player for listening, Status for the connection, your music folder and the assistant switch. The current release is v0.3.0, with Simplified Chinese, English and Japanese interfaces that follow your system language.</p>
+  </section>
+
+  <section id="finding">
+    <div class="kicker">02 / THE PROBLEM</div>
+    <h2>The problem: finding and choosing music</h2>
+    <p>Once a collection grows, the hard part is rarely playback — it is deciding what to play. You remember only part of a title, a few words of the lyrics, or simply want a batch of songs that fits the mood, and end up digging through folders for ages. MyGod hands that step to an AI assistant: say what you want to hear and it searches the local collection, compares matches, builds a queue and starts playback. Asking for another batch, skipping a track or changing the volume can all stay in the conversation.</p>
+    <p>By "AI-native" we mean the assistant is not a voice button bolted on afterwards. It is connected to playback from the start through <span class="hl">MCP</span> (Model Context Protocol, the common way AI assistants connect to tools). The switch in Status can be turned off at any time; manual playback is unaffected.</p>
+    <p>Sound can be adjusted in a sentence too: more bass, a softer late-night sound, or evening out tracks that jump in volume. That is the <span class="hl">EQ</span> (the tone controls) together with night mode and loudness normalization; save your settings as a preset and they are still there next time.</p>
+  </section>
+
+  <section id="who">
+    <div class="kicker">03 / FIT</div>
+    <h2>Who it is for / not for</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col">Good fit</th><th scope="col">Not a fit yet</th></tr></thead>
+        <tbody>
+          <tr><td>Music stored locally on a Mac, with a large collection</td><td>You want to stream from online music services</td></tr>
+          <tr><td>You already use AI assistants such as WorkBuddy and want to play music by speaking</td><td>Intel Macs</td></tr>
+          <tr><td>Apple Silicon (M-series), macOS 14.0 or later</td><td>Windows / mobile</td></tr>
+          <tr><td>You want to pick a batch of songs by mood or occasion in one sentence</td><td>You need a signed and notarized installer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>Quick check:</b> your music is on the drive, your Mac is an M-series model, and you would rather not pick songs by hand — if all three apply, MyGod is likely a good fit.</p>
+  </section>
+
+  <section id="specs">
+    <div class="kicker">04 / SPECS</div>
+    <h2>Features and specifications</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col">Item</th><th scope="col">Current release</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Version / system</strong></td><td>v0.3.0 / macOS 14.0+ / Apple Silicon (M-series)</td></tr>
+          <tr><td><strong>Installer</strong></td><td>dmg, about 8.5 MB, published on the GitHub repository</td></tr>
+          <tr><td><strong>Music sources</strong></td><td>Local files only; an edition with online sources is planned</td></tr>
+          <tr><td><strong>Playback controls</strong></td><td>Previous / next / pause / repeat / shuffle / seek / volume</td></tr>
+          <tr><td><strong>Lyrics</strong></td><td>Timed lyrics, translations, word-by-word lyrics</td></tr>
+          <tr><td><strong>Sound</strong></td><td>10-band EQ (31 Hz–16 kHz, ±12 dB per band), 22 built-in presets, save and delete custom presets, preamp gain, bass / treble enhancement, night mode, loudness normalization</td></tr>
+          <tr><td><strong>For AI</strong></td><td>"Allow Agent to connect to local MCP" switch in Status; MCP-capable assistants can search, build queues, control playback and tune the sound; 14 capabilities listed in Status</td></tr>
+          <tr><td><strong>UI languages</strong></td><td>Simplified Chinese / English / Japanese, following the system</td></tr>
+          <tr><td><strong>Website</strong></td><td><a href="https://aosfather.github.io/mygodapp">https://aosfather.github.io/mygodapp</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="kicker">05 / FAQ</div>
+    <h2>Frequently asked questions</h2>
+    <div class="qa">
+      <div class="item">
+        <h3>Can MyGod play online music?</h3>
+        <p>Not in the current release. It plays music only from the local folder you choose. An edition with online sources is planned, and it will keep the same two tabs.</p>
+      </div>
+      <div class="item">
+        <h3>How do I let an AI assistant control playback?</h3>
+        <p>Tick "Allow Agent to connect to local MCP" in the Status tab, then tell an MCP-capable assistant what you want to hear. You can turn the switch off at any time; manual playback is unaffected.</p>
+      </div>
+      <div class="item">
+        <h3>Can it find a song when I only remember part of the title or a few words of the lyrics?</h3>
+        <p>Yes. Describe the fragment, or the mood you are after, and the assistant searches the folder you chose, compares matches, builds a queue and starts playback — no digging through folders yourself.</p>
+      </div>
+      <div class="item">
+        <h3>What if macOS blocks the app the first time I open it?</h3>
+        <p>The current build is not notarized by Apple. Go to System Settings → Privacy &amp; Security and click "Open Anyway"; you only need to do this once.</p>
+      </div>
+      <div class="item">
+        <h3>Does it work on Intel Macs?</h3>
+        <p>Not yet. The current release supports Apple Silicon (M-series) Macs only.</p>
+      </div>
+      <div class="item">
+        <h3>How do I adjust the sound?</h3>
+        <p>Ask the assistant to set bass, night mode and loudness normalization in one sentence, or tune them one by one. Custom presets are still there after a restart.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="kicker">06 / GET STARTED</div>
+    <h2>Getting started</h2>
+    <div class="steps">
+      <div class="step"><p>Get the v0.3.0 dmg from the <a href="index.en.html#download">download page</a> and drag MyGod into Applications.</p></div>
+      <div class="step"><p>The first time you open it, click "Open Anyway" once in System Settings.</p></div>
+      <div class="step"><p>Open the app, choose your music folder and listen; to let AI help, turn on the assistant switch in Status.</p></div>
+    </div>
+    <p>Website and full documentation: <a href="https://aosfather.github.io/mygodapp">https://aosfather.github.io/mygodapp</a>; repository: <a href="https://github.com/aosfather/mygod">github.com/aosfather/mygod</a>; feedback: <a href="mailto:aosfather@gmail.com">aosfather@gmail.com</a>.</p>
+  </section>
+
+  <section id="source">
+    <div class="kicker">07 / SOURCES</div>
+    <h2>Sources</h2>
+    <p>Facts on this page come from the <a href="index.en.html">official MyGod website</a> and the v0.3.0 interface (Player / Status), compiled <time datetime="2026-11-08">8 November 2026</time>. Features and versions follow the website, and this page is revised when the website changes.</p>
+    <div class="cta">
+      <a class="btn primary" href="index.en.html">Back to the MyGod website →</a>
+      <a class="btn ghost" href="index.en.html#screenshots">See the screenshots</a>
+    </div>
+  </section>
+
+</article>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div>MyGod · A local music player for macOS · v0.3.0</div>
+    <div><a href="index.en.html">Home</a> · <a href="guide.html">中文指南</a> · Copyright © 2026 aosfather</div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>想让 AI 帮我在 Mac 上找歌、放歌，用什么？| MyGod</title>
+<meta name="description" content="MyGod v0.3.0 是 macOS 本地音乐播放器：选一个音乐文件夹就能听自己的歌；打开助手开关，WorkBuddy、Claw 等支持 MCP 的 AI 助手可替你找歌、排队、切歌。适用 macOS 14.0+ / Apple Silicon，当前仅播放本地文件。">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="author" content="aosfather">
+<link rel="canonical" href="https://aosfather.github.io/mygodapp/guide.html">
+<link rel="alternate" hreflang="zh-CN" href="https://aosfather.github.io/mygodapp/guide.html">
+<link rel="alternate" hreflang="en" href="https://aosfather.github.io/mygodapp/guide.en.html">
+<link rel="alternate" hreflang="x-default" href="https://aosfather.github.io/mygodapp/guide.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="MyGod">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="想让 AI 帮我在 Mac 上找歌、放歌，用什么？">
+<meta property="og:description" content="MyGod v0.3.0：选一个音乐文件夹听自己的歌，让支持 MCP 的 AI 助手替你找歌、排队、切歌。含适用人群、规格与常见问题。">
+<meta property="og:url" content="https://aosfather.github.io/mygodapp/guide.html">
+<meta property="og:image" content="https://aosfather.github.io/mygodapp/shots/player.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="想让 AI 帮我在 Mac 上找歌、放歌，用什么？">
+<meta name="twitter:description" content="MyGod v0.3.0：选一个音乐文件夹听自己的歌，让支持 MCP 的 AI 助手替你找歌、排队、切歌。">
+<meta name="twitter:image" content="https://aosfather.github.io/mygodapp/shots/player.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://aosfather.github.io/mygodapp/guide.html#webpage",
+      "url": "https://aosfather.github.io/mygodapp/guide.html",
+      "name": "想让 AI 帮我在 Mac 上找歌、放歌，用什么？",
+      "description": "MyGod v0.3.0 是 macOS 本地音乐播放器：选一个音乐文件夹就能听自己的歌；打开助手开关，支持 MCP 的 AI 助手可替你找歌、排队、切歌。",
+      "inLanguage": "zh-CN",
+      "datePublished": "2026-11-08",
+      "dateModified": "2026-11-08",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://aosfather.github.io/mygodapp/#website",
+        "name": "MyGod",
+        "url": "https://aosfather.github.io/mygodapp/"
+      },
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "MyGod",
+        "softwareVersion": "v0.3.0",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "macOS 14.0+",
+        "url": "https://aosfather.github.io/mygodapp/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "MyGod 官网", "item": "https://aosfather.github.io/mygodapp/"},
+        {"@type": "ListItem", "position": 2, "name": "使用指南与常见问题", "item": "https://aosfather.github.io/mygodapp/guide.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://aosfather.github.io/mygodapp/guide.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "MyGod 能听在线音乐吗？",
+          "acceptedAnswer": {"@type": "Answer", "text": "当前发布的版本不能，只播放你选中的本地文件夹里的歌。在线曲库版本在规划中，推出后仍沿用现在这两个页签。"}
+        },
+        {
+          "@type": "Question",
+          "name": "怎么让 AI 助手控制播放？",
+          "acceptedAnswer": {"@type": "Answer", "text": "在「状态」页勾选「允许 Agent 接入本机 MCP」，然后在支持 MCP 的助手里直接说想听什么即可。开关可随时关闭，关闭后手动播放不受影响。"}
+        },
+        {
+          "@type": "Question",
+          "name": "歌名记不全、只记得半句词，还能找到吗？",
+          "acceptedAnswer": {"@type": "Answer", "text": "可以。把记得的片段或想听的心情说出来，助手会在你选中的本地目录里检索、比对并排好队列，找到后直接开播，不用自己翻文件夹。"}
+        },
+        {
+          "@type": "Question",
+          "name": "第一次打开被系统拦住怎么办？",
+          "acceptedAnswer": {"@type": "Answer", "text": "当前安装包未经 Apple 公证，到「系统设置 → 隐私与安全性」点「仍要打开」即可，只需要做这一次。"}
+        },
+        {
+          "@type": "Question",
+          "name": "Intel Mac 能用吗？",
+          "acceptedAnswer": {"@type": "Answer", "text": "暂时不能，当前仅支持 Apple Silicon（M 系列）。"}
+        },
+        {
+          "@type": "Question",
+          "name": "声音怎么调？",
+          "acceptedAnswer": {"@type": "Answer", "text": "可以让助手一句话把低音、夜间模式、响度均衡等几项一起调好，自定义预设保存后重启仍在；也可以逐项慢慢调。"}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  :root{
+    --ink:#0e1116;--ink2:#3d4450;--ink3:#6c7480;--line:#e6e9ef;
+    --bg:#ffffff;--bg2:#f6f8fb;--accent:#3b5bfd;--accent2:#7a5cff;
+    --r:14px;--max:920px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.78;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  nav.top{
+    position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+  }
+  nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;color:var(--ink)}
+  .brand:hover{text-decoration:none}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav.top ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav.top ul a{color:var(--ink2)}
+  nav.top ul a:hover{color:var(--accent);text-decoration:none}
+  @media (max-width:700px){nav.top ul li:not(:last-child):nth-child(n+3){display:none}}
+
+  header.hero{
+    padding:64px 0 46px;border-bottom:1px solid var(--line);
+    background:radial-gradient(760px 320px at 88% 0%,rgba(122,92,255,.13),transparent 62%),
+               radial-gradient(640px 300px at 4% 8%,rgba(59,91,253,.11),transparent 60%),#fff;
+  }
+  .crumbs{font-size:13px;color:var(--ink3);margin:0 0 22px}
+  .crumbs a{color:var(--ink3)}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}
+  h1{font-size:38px;line-height:1.32;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+  .meta{margin:0 0 28px;color:var(--ink3);font-size:13.5px}
+  .answer{
+    border:1px solid #c9d7ff;border-left:4px solid var(--accent);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);padding:22px 24px;margin:0 0 24px;
+  }
+  .answer .lab{display:block;font-size:12px;letter-spacing:.12em;font-weight:800;color:var(--accent);margin-bottom:8px}
+  .answer p{margin:0;font-size:16.5px;color:var(--ink);line-height:1.8}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:600;font-size:14.5px;border:1px solid transparent}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 20px rgba(59,91,253,.2)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  @media (max-width:700px){header.hero{padding:44px 0 34px}h1{font-size:28px}}
+
+  .toc{
+    border:1px solid var(--line);background:var(--bg2);border-radius:var(--r);
+    padding:18px 22px;margin:38px 0 8px;
+  }
+  .toc b{font-size:13px;letter-spacing:.08em;color:var(--ink2)}
+  .toc ol{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 24px;margin:10px 0 0;padding-left:20px;font-size:14.5px}
+  @media (max-width:600px){.toc ol{grid-template-columns:1fr}}
+
+  article section{padding:40px 0;border-bottom:1px solid var(--line);scroll-margin-top:76px}
+  article section:last-of-type{border-bottom:0}
+  h2{font-size:25px;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+  h3{font-size:17px;margin:0 0 6px;font-weight:700}
+  p{margin:0 0 14px}
+  .kicker{font-size:11.5px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:8px}
+  .tablewrap{overflow-x:auto;margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td strong{color:var(--ink)}
+  .qa{border-top:1px solid var(--line);margin-top:18px}
+  .qa .item{border-bottom:1px solid var(--line);padding:18px 0}
+  .qa h3{font-size:16px}
+  .qa p{margin:0;color:var(--ink2);font-size:15.2px}
+  .steps{counter-reset:s;display:grid;gap:14px;margin:18px 0}
+  .step{position:relative;padding:18px 22px 18px 66px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;left:20px;top:18px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:13px}
+  .step p{margin:0;color:var(--ink2);font-size:15px}
+  .note{border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);padding:18px 20px;color:var(--ink2);font-size:14px;margin:20px 0}
+  .note b{color:var(--ink)}
+  .hl{background:#f2f5ff;border-radius:5px;padding:1px 5px;color:var(--accent);font-weight:700}
+  footer{padding:38px 0 64px;color:var(--ink3);font-size:13px;border-top:1px solid var(--line)}
+  footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot">M</span> MyGod</a>
+    <ul>
+      <li><a href="index.html">官网首页</a></li>
+      <li><a href="index.html#download">下载安装</a></li>
+      <li><a href="index.html#faq">常见问题</a></li>
+      <li><a href="guide.en.html">English</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="index.html">MyGod 官网</a> / 使用指南与常见问题</p>
+    <div class="eyebrow">MyGod · Guide / FAQ</div>
+    <h1>想让 AI 帮我在 Mac 上找歌、放歌，用什么？</h1>
+    <p class="meta">整理于 <time datetime="2026-11-08">2026 年 11 月 8 日</time> · 对应版本 v0.3.0 · 功能与版本以<a href="index.html">官网</a>为准</p>
+
+    <div class="answer">
+      <span class="lab">一句话结论</span>
+      <p>MyGod 是一款 macOS 本地音乐播放器（当前 v0.3.0）。选一个音乐文件夹就能听自己收藏的歌；在状态页打开助手开关，WorkBuddy、Claw 等支持 MCP 的 AI 助手可以替你搜歌、排队、切歌。它只播放本机文件，不接入在线曲库，适合「歌都存在硬盘里、又想动嘴就能听」的 Mac 用户。</p>
+    </div>
+
+    <div class="cta">
+      <a class="btn primary" href="index.html#download">下载 MyGod →</a>
+      <a class="btn ghost" href="#faq">直接看常见问题</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <nav class="toc" aria-label="本文目录">
+    <b>本文目录</b>
+    <ol>
+      <li><a href="#what">MyGod 是什么</a></li>
+      <li><a href="#finding">它解决的是「找歌、选歌」</a></li>
+      <li><a href="#who">适合谁，不适合谁</a></li>
+      <li><a href="#specs">功能与规格一览</a></li>
+      <li><a href="#faq">常见问题（6 问）</a></li>
+      <li><a href="#start">怎么开始</a></li>
+      <li><a href="#source">信息来源</a></li>
+    </ol>
+  </nav>
+
+  <section id="what">
+    <div class="kicker">01 / WHAT IT IS</div>
+    <h2>MyGod 是什么</h2>
+    <p>MyGod 是开发者 aosfather 发布的 macOS 应用，定位很窄：把「听自己电脑里的歌」和「让 AI 帮忙放歌」放进同一个小窗口。它不需要把音乐导入资料库，也不改动原文件——点「打开文件夹」选中音乐目录，直接读取播放。</p>
+    <p>窗口只有两个页签：播放页管听歌，状态页管连接、音乐目录和助手开关。当前版本 v0.3.0，支持简体中文、English、日本語三套界面，跟随系统语言。</p>
+  </section>
+
+  <section id="finding">
+    <div class="kicker">02 / THE PROBLEM</div>
+    <h2>它解决的是「找歌、选歌」</h2>
+    <p>收藏一多，最麻烦的往往不是播放，而是决定听哪首：歌名记不全、只记得半句词、想按当下的心情挑一批，却要在文件夹里翻半天。MyGod 把这一步交给 AI 助手：说一句想听什么，助手就在本地库里检索、比对、排好队列并直接开播；想换一批、切下一首、调音量，也都可以继续用说的。</p>
+    <p>这里说的「AI 原生」，指的是助手不是外挂的语音按钮，而是从一开始就通过 <span class="hl">MCP</span>（AI 助手之间通用的接法）接进播放这件事。状态页的开关随时可关，关掉后自己点着听完全不受影响。</p>
+    <p>声音也能一句话调：低音厚一点、夜里柔一点、几首歌忽大忽小抹平，靠的是 <span class="hl">EQ</span>（调音色的那几档）以及夜间模式、响度均衡等音效；调好可以存成自己的预设，下次打开还在。</p>
+  </section>
+
+  <section id="who">
+    <div class="kicker">03 / FIT</div>
+    <h2>适合谁，不适合谁</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col">适合</th><th scope="col">暂时不适合</th></tr></thead>
+        <tbody>
+          <tr><td>音乐文件存在 Mac 本地、收藏量大</td><td>想直接听在线曲库</td></tr>
+          <tr><td>平时用 WorkBuddy 等 AI 助手干活，想顺手动嘴放歌</td><td>使用 Intel 机型的 Mac</td></tr>
+          <tr><td>Apple Silicon（M 系列）、macOS 14.0 及以上</td><td>Windows / 手机端</td></tr>
+          <tr><td>想按心情、场景一句话挑一批歌</td><td>需要已签名公证的安装包</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>一句话判断：</b>歌在硬盘里、用 M 系列 Mac、又希望找歌选歌别再自己动手——这三条都中，基本就合适。</p>
+  </section>
+
+  <section id="specs">
+    <div class="kicker">04 / SPECS</div>
+    <h2>功能与规格一览</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col">项目</th><th scope="col">当前版本</th></tr></thead>
+        <tbody>
+          <tr><td><strong>版本 / 系统</strong></td><td>v0.3.0 / macOS 14.0+ / Apple Silicon（M 系列）</td></tr>
+          <tr><td><strong>安装包</strong></td><td>dmg，约 8.5 MB，经 GitHub 仓库发布</td></tr>
+          <tr><td><strong>音乐来源</strong></td><td>仅本地文件；在线曲库版本规划中</td></tr>
+          <tr><td><strong>播放控制</strong></td><td>上一首 / 下一首 / 暂停 / 循环 / 随机 / 进度 / 音量</td></tr>
+          <tr><td><strong>歌词</strong></td><td>时间轴歌词、译文、逐字歌词</td></tr>
+          <tr><td><strong>音效</strong></td><td>10 段 EQ（31 Hz–16 kHz、每段 ±12 dB）、22 个内置预设、自定义预设保存与删除、前置增益、低音 / 高音增强、夜间模式、响度均衡</td></tr>
+          <tr><td><strong>交给 AI</strong></td><td>状态页「允许 Agent 接入本机 MCP」开关；支持 MCP 的助手可搜歌、建队列、控制播放、调音效；状态页列出 14 项可用能力</td></tr>
+          <tr><td><strong>界面语言</strong></td><td>简体中文 / English / 日本語，跟随系统</td></tr>
+          <tr><td><strong>官网</strong></td><td><a href="https://aosfather.github.io/mygodapp">https://aosfather.github.io/mygodapp</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="kicker">05 / FAQ</div>
+    <h2>常见问题</h2>
+    <div class="qa">
+      <div class="item">
+        <h3>MyGod 能听在线音乐吗？</h3>
+        <p>当前发布的版本不能，只播放你选中的本地文件夹里的歌。在线曲库版本在规划中，推出后仍沿用现在这两个页签。</p>
+      </div>
+      <div class="item">
+        <h3>怎么让 AI 助手控制播放？</h3>
+        <p>在「状态」页勾选「允许 Agent 接入本机 MCP」，然后在支持 MCP 的助手里直接说想听什么即可。开关可随时关闭，关闭后手动播放不受影响。</p>
+      </div>
+      <div class="item">
+        <h3>歌名记不全、只记得半句词，还能找到吗？</h3>
+        <p>可以。把记得的片段或想听的心情说出来，助手会在你选中的本地目录里检索、比对并排好队列，找到后直接开播，不用自己翻文件夹。</p>
+      </div>
+      <div class="item">
+        <h3>第一次打开被系统拦住怎么办？</h3>
+        <p>当前安装包未经 Apple 公证，到「系统设置 → 隐私与安全性」点「仍要打开」即可，只需要做这一次。</p>
+      </div>
+      <div class="item">
+        <h3>Intel Mac 能用吗？</h3>
+        <p>暂时不能，当前仅支持 Apple Silicon（M 系列）。</p>
+      </div>
+      <div class="item">
+        <h3>声音怎么调？</h3>
+        <p>可以让助手一句话把低音、夜间模式、响度均衡等几项一起调好，自定义预设保存后重启仍在；也可以逐项慢慢调。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="kicker">06 / GET STARTED</div>
+    <h2>怎么开始</h2>
+    <div class="steps">
+      <div class="step"><p>从 <a href="index.html#download">官网下载页</a>获取 v0.3.0 的 dmg，把 MyGod 拖进「应用程序」。</p></div>
+      <div class="step"><p>首次打开时，在系统设置里点一次「仍要打开」。</p></div>
+      <div class="step"><p>打开 App，选好音乐目录就能听；想让 AI 帮忙，再到状态页打开助手开关。</p></div>
+    </div>
+    <p>官网与完整说明：<a href="https://aosfather.github.io/mygodapp">https://aosfather.github.io/mygodapp</a>；仓库：<a href="https://github.com/aosfather/mygod">github.com/aosfather/mygod</a>；反馈邮箱：<a href="mailto:aosfather@gmail.com">aosfather@gmail.com</a>。</p>
+  </section>
+
+  <section id="source">
+    <div class="kicker">07 / SOURCES</div>
+    <h2>信息来源</h2>
+    <p>本文事实依据 <a href="index.html">MyGod 官方主页</a>与 v0.3.0 实机界面（播放页 / 状态页），整理时间 <time datetime="2026-11-08">2026 年 11 月 8 日</time>。功能与版本以官网为准；官网更新后本文会同步修订。</p>
+    <div class="cta">
+      <a class="btn primary" href="index.html">回到 MyGod 官网 →</a>
+      <a class="btn ghost" href="index.html#screenshots">看看界面截图</a>
+    </div>
+  </section>
+
+</article>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div>MyGod · macOS 本地音乐播放器 · v0.3.0</div>
+    <div><a href="index.html">官网</a> · <a href="guide.en.html">English guide</a> · Copyright © 2026 aosfather</div>
+  </div>
+</footer>
+
+</body>
+</html>
