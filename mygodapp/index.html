@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyGod · macOS 本地音乐播放器，也能让 AI 帮你放歌</title>
+<style>
+  :root{
+    --ink:#0e1116;
+    --ink2:#3d4450;
+    --ink3:#6c7480;
+    --line:#e6e9ef;
+    --bg:#ffffff;
+    --bg2:#f6f8fb;
+    --accent:#3b5bfd;
+    --accent2:#7a5cff;
+    --code:#0f131a;
+    --code-ink:#d7dce6;
+    --r:14px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav ul a:hover{color:var(--accent)}
+  @media (max-width:760px){nav ul{display:none}}
+
+  /* hero */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:96px 0 84px;
+    background:
+      radial-gradient(1000px 420px at 82% -8%, rgba(122,92,255,.16), transparent 62%),
+      radial-gradient(760px 360px at 8% 6%, rgba(59,91,253,.14), transparent 60%),
+      #fff;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:20px}
+  h1{font-size:58px;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;font-weight:800;max-width:860px}
+  h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:19px;color:var(--ink2);max-width:700px;margin:0 0 34px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 22px;border-radius:11px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;
+  }
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 10px 24px rgba(59,91,253,.22)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{transform:translateY(-1px)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .stat{background:#fff;padding:20px 22px}
+  .stat b{display:block;font-size:26px;letter-spacing:-.02em}
+  .stat span{font-size:12.5px;color:var(--ink3)}
+  @media (max-width:760px){
+    h1{font-size:36px}.hero{padding:64px 0 56px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* cases */
+  .cases{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .case{border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 22px;background:#fff}
+  .case .lab{font-size:11.5px;letter-spacing:.12em;color:var(--ink3);font-weight:700;margin:0 0 7px}
+  .case .say{
+    background:var(--bg2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;
+    padding:13px 16px;font-size:15px;color:var(--ink);margin:0 0 16px;line-height:1.65;
+  }
+  .case .say::before{content:"“";color:var(--ink3)}
+  .case .say::after{content:"”";color:var(--ink3)}
+  .case ol{margin:0 0 16px;padding-left:20px;color:var(--ink2);font-size:14.5px;line-height:1.75}
+  .case ol li{margin:5px 0}
+  .case .out{
+    display:inline-block;font-size:12.5px;font-weight:700;color:#0b6b3a;
+    background:#f0fbf4;border:1px solid #bfe6cf;border-radius:6px;padding:4px 10px;
+  }
+  .case .tool{margin-left:8px;font-size:12px;color:var(--ink3)}
+  @media (max-width:900px){.cases{grid-template-columns:1fr}}
+
+  /* before / after */
+  .shift{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:30px 0 34px}
+  .shift .side{border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;background:#fff}
+  .shift .side.b{background:var(--bg2);color:var(--ink2)}
+  .shift .h{font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--ink3);margin-bottom:8px}
+  .shift ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.8}
+  .shift .side.a{border-color:#c9d7ff;background:#f8faff}
+  @media (max-width:760px){.shift{grid-template-columns:1fr}.shift .mid{text-align:center}}
+  .shift .mid{color:var(--accent);font-weight:800;font-size:18px}
+
+  /* download links */
+  .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .dl-card{border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff}
+  .dl-card .os{font-size:16.5px;font-weight:700;margin:0 0 4px}
+  .dl-card .arch{font-size:12.5px;color:var(--ink3);margin:0 0 16px}
+  .dl-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .dl-list a{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+    background:var(--bg2);color:var(--ink);font-size:13.5px;font-weight:600;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .dl-list a:hover{border-color:var(--accent);color:var(--accent);background:#f7f9ff}
+  .dl-list a small{color:var(--ink3);font-size:12px;font-weight:400}
+  @media (max-width:900px){.dl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.dl-grid{grid-template-columns:1fr}}
+  .buildsteps{margin:14px 0 22px;padding-left:22px;color:var(--ink2);font-size:14.8px}
+  .buildsteps li{margin:8px 0}
+
+  /* sections */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:10px}
+  h2{font-size:32px;letter-spacing:-.02em;margin:0 0 10px}
+  h2 + p.sub{color:var(--ink3);font-size:15.5px;margin:0 0 38px;max-width:680px}
+  h3{font-size:18px;margin:34px 0 10px}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;
+  }
+  .card .ic{font-size:20px;margin-bottom:10px}
+  .card h3{margin:0 0 6px;font-size:16.5px}
+  .card p{margin:0;color:var(--ink2);font-size:14.5px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:16px}
+  .step{
+    position:relative;padding:24px 26px 24px 74px;border:1px solid var(--line);
+    border-radius:var(--r);background:#fff;
+  }
+  .step::before{
+    counter-increment:s;content:counter(s);
+    position:absolute;left:24px;top:22px;
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:14px;
+  }
+  .step h3{margin:0 0 8px;font-size:17px}
+  .step p{margin:6px 0;color:var(--ink2);font-size:15px}
+  .step .note{color:var(--ink3);font-size:13.5px}
+
+  /* code */
+  .codewrap{position:relative;margin:16px 0}
+  pre{
+    margin:0;background:var(--code);color:var(--code-ink);
+    border-radius:12px;padding:18px 20px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;line-height:1.65;
+  }
+  pre .c{color:#7f8b9e}
+  pre .k{color:#8fb4ff}
+  pre .s{color:#a6e3a1}
+  pre .v{color:#f5c2e7}
+  .copy{
+    position:absolute;top:10px;right:10px;
+    background:#1d2430;color:#c9d2e0;border:1px solid #2a3342;
+    font-size:12px;padding:5px 10px;border-radius:7px;cursor:pointer;
+  }
+  .copy:hover{background:#252e3c}
+  code.inline{background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* prompt cards */
+  .prompts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .prompt{border:1px solid var(--line);border-radius:var(--r);padding:20px;background:#fff}
+  .prompt .who{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+  .prompt p{margin:0;font-size:14.5px;color:var(--ink2)}
+  .prompt p b{color:var(--ink)}
+  @media (max-width:900px){.prompts{grid-template-columns:1fr}}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:18px 0}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+";color:var(--accent);font-weight:800;margin-right:10px}
+  details[open] summary::before{content:"−"}
+  details p{margin:10px 0 0;color:var(--ink2);font-size:15px}
+
+  .banner{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);
+    padding:26px 28px;margin:30px 0;font-size:14.5px;color:var(--ink2);
+  }
+  .banner b{color:var(--ink)}
+
+  footer{padding:52px 0 72px;color:var(--ink3);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+  /* extras */
+  .hl{color:var(--accent);font-weight:700;background:#f2f5ff;border-radius:6px}
+  .shots{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .shot{margin:0;border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--bg2)}
+  .shot img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .shot .tagline{display:inline-block;font-size:11.5px;letter-spacing:.1em;font-weight:700;color:var(--accent);margin-bottom:12px}
+  .shot .cap{margin:14px 2px 0;font-size:14px;color:var(--ink2);line-height:1.65}
+  .shot .cap b{color:var(--ink)}
+  .req{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+  .req span{background:var(--bg2);border:1px solid var(--line);border-radius:50px;padding:7px 16px;font-size:13px;color:var(--ink2)}
+  .req b{color:var(--ink)}
+  @media (max-width:900px){.shots{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot">M</span> MyGod</div>
+    <ul>
+      <li><a href="#features">特性</a></li>
+      <li><a href="#screenshots">界面预览</a></li>
+      <li><a href="#cases">怎么用</a></li>
+      <li><a href="#editions">版本规划</a></li>
+      <li><a href="#download">下载安装</a></li>
+      <li><a href="#faq">常见问题</a></li>
+      <li><a href="#contact">联系我们</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">macOS 本地音乐播放器 · 可让 AI 助手帮你放歌</div>
+    <h1>一个 App，<br>听<em>自己的歌</em>，也能让<em>AI</em>帮你放</h1>
+    <p class="lede">
+      MyGod 是 macOS 上的本地音乐播放器。选一个文件夹，就能听自己收藏的歌；
+      打开一个开关，WorkBuddy 等 AI 助手还能替你搜歌、切歌、排队。音乐只从你这台 Mac 读取，播什么由你决定。
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#download">下载 MyGod →</a>
+      <a class="btn ghost" href="#screenshots">先看看界面</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>macOS 14+</b><span>系统要求</span></div>
+      <div class="stat"><b>4</b><span>个在线曲库 · 即将推出</span></div>
+      <div class="stat"><b>3</b><span>种界面语言：中 / 英 / 日</span></div>
+      <div class="stat"><b>1</b><span>次拖拽完成安装</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 特性 ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">FEATURES</div>
+    <h2>听歌这件事，不用那么麻烦</h2>
+    <p class="sub">不用把音乐搬进某个资料库，也不用为了放一首歌学一套新操作。</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>选个文件夹就能听</h3>
+        <p>打开 App 点「打开文件夹」，选中你放音乐的目录，MyGod 直接读取本机文件播放，不改动你的原文件。</p>
+      </div>
+      <div class="card">
+        <div class="ic">✦</div>
+        <h3>让 AI 帮你放歌</h3>
+        <p>状态页勾选「允许 Agent 接入本机 MCP」，WorkBuddy 等助手就能替你搜索、播放和管理队列。</p>
+      </div>
+      <div class="card">
+        <div class="ic">◫</div>
+        <h3>播放一屏搞定</h3>
+        <p>曲目名、上一首 / 下一首、暂停、循环、随机、进度条与音量，都在同一个窗口里。</p>
+      </div>
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>状态一眼看清</h3>
+        <p>引擎是否连接、版本、当前可用的能力列表，以及随时重新选择音乐目录的「打开文件夹」。</p>
+      </div>
+      <div class="card">
+        <div class="ic">⌂</div>
+        <h3>音乐留在本机</h3>
+        <p>App 只读取你手动选择的目录，以只读方式使用；当前版本零出网，只播本地文件。</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>跟着系统语言走</h3>
+        <p>简体中文、English、日本語 三套界面；其他语言自动回退英文。歌名、歌手、专辑按原样显示。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 界面预览 ============ -->
+<section id="screenshots">
+  <div class="wrap">
+    <div class="kicker">SCREENSHOTS</div>
+    <h2>界面一览</h2>
+    <p class="sub">两个页签，一个窗口：播放页管听歌，状态页管连接与设置。以下为 MyGod 0.3.0 实机界面。</p>
+
+    <div class="shots">
+      <figure class="shot">
+        <span class="tagline">播放 / PLAYER</span>
+        <img src="shots/player.png" alt="MyGod 播放页：曲目名、播放控制、进度与音量" loading="lazy">
+        <figcaption class="cap"><b>播放页</b> —— 正在播放的曲目、播放控件、进度条与音量都在一个窗口里，切歌调音量不用翻菜单。</figcaption>
+      </figure>
+      <figure class="shot">
+        <span class="tagline">状态 / STATUS</span>
+        <img src="shots/status.png" alt="MyGod 状态页：连接状态、打开文件夹、AI 助手开关与可用能力" loading="lazy">
+        <figcaption class="cap"><b>状态页</b> —— 引擎是否连接、换个音乐目录、允许 AI 助手接入的开关，以及当前可用的能力列表。</figcaption>
+      </figure>
+    </div>
+
+    <div class="banner">
+      <b>现在只播本地。</b> 当前可下载版本的状态页会提示「只播放本地文件，请选择本地文件」，暂不提供在线曲库入口，只留一个「打开文件夹」按钮；接入在线曲库的版本即将推出。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 怎么用 ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="kicker">HOW IT WORKS</div>
+    <h2>两种用法，随你挑</h2>
+    <p class="sub">自己点着听，或者把找歌这件事交给 AI 助手——不用改设置，也不用记命令。</p>
+
+    <div class="cases">
+      <div class="case">
+        <h3>① 只想听自己收藏的歌</h3>
+        <p class="lab">你要做的</p>
+        <ol>
+          <li>打开 App，点「打开文件夹」选中放音乐的目录；</li>
+          <li>在播放页点播放，用控件切歌、循环、调音量；</li>
+          <li>想换一批歌，再点一次「打开文件夹」即可。</li>
+        </ol>
+        <span class="out">选完就播</span><span class="tool">不需要导入资料库，也不改动原文件</span>
+      </div>
+
+      <div class="case">
+        <h3>② 让 AI 助手替你放</h3>
+        <p class="lab">你要做的</p>
+        <ol>
+          <li>在状态页勾选「允许 Agent 接入本机 MCP」；</li>
+          <li>在 WorkBuddy 等支持 MCP 的助手里说想听什么；</li>
+          <li>助手检索、建好队列并直接播放，之后一句话就能切歌。</li>
+        </ol>
+        <span class="out">一句话切歌</span><span class="tool">开关随时可关，不接助手也能正常听</span>
+      </div>
+    </div>
+
+    <div class="shift">
+      <div class="side b">
+        <div class="h">以前</div>
+        <ul>
+          <li>打开播放器，把歌一首首拖进去</li>
+          <li>想换口味，自己搜、自己挑、自己排队</li>
+          <li>边做事边听，还得腾出手点下一首</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="side a">
+        <div class="h">现在</div>
+        <ul>
+          <li>选一次文件夹，收藏的歌就都在了</li>
+          <li>让助手按心情找一批，直接接着放</li>
+          <li>想换就说一句，播放不会中断</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 版本规划 ============ -->
+<section id="editions">
+  <div class="wrap">
+    <div class="kicker">ROADMAP</div>
+    <h2>现在，以及即将推出的在线版</h2>
+    <p class="sub">目前可下载的 MyGod 只播放本地文件、零出网；接入在线曲库的版本正在准备中，即将推出。</p>
+
+    <table>
+      <thead><tr><th></th><th>当前版本（可下载）</th><th>在线版（即将推出）</th></tr></thead>
+      <tbody>
+        <tr><td>音乐来源</td><td class="hl">仅本地文件</td><td>计划接入网易云 / QQ / 咪咕 / 酷我，并与本地文件一起用</td></tr>
+        <tr><td>联网</td><td class="hl">零出网</td><td>届时播放在线曲库需要联网</td></tr>
+        <tr><td>交给 AI 的能力</td><td>14 项（仅本地）</td><td>预计 19 项</td></tr>
+        <tr><td>什么时候能用</td><td>现在就能下载</td><td>即将推出，敬请期待</td></tr>
+      </tbody>
+    </table>
+
+    <div class="banner">
+      <b>界面会沿用下去。</b> 在线版推出后仍是熟悉的「播放 / 状态」两个页签，选好音乐目录就能听，不用重新学一遍；届时本地文件与在线曲库可以一起用。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 下载与安装 ============ -->
+<section id="download">
+  <div class="wrap">
+    <div class="kicker">DOWNLOAD</div>
+    <h2>下载 MyGod</h2>
+    <p class="sub">当前版本 0.3.0，安装包为 dmg，打开拖一下就能用。</p>
+
+    <div class="req">
+      <span><b>v0.3.0</b></span>
+      <span><b>macOS 14.0</b> 或更高</span>
+      <span><b>Apple Silicon</b>（M 系列）</span>
+      <span>约 <b>8.5 MB</b></span>
+    </div>
+
+    <div class="cta" style="margin-bottom:16px">
+      <a class="btn primary" href="https://github.com/aosfather/mygod">从 GitHub 获取 v0.3.0 →</a>
+      <a class="btn ghost" href="mailto:aosfather@gmail.com?subject=MyGod%20%E4%B8%8B%E8%BD%BD">没找到？发邮件给我</a>
+    </div>
+    <p style="color:var(--ink3);font-size:13.5px;margin:0 0 34px">
+      目前通过 GitHub 仓库发布；拿到 dmg 后按下面三步安装即可。
+    </p>
+
+    <h3>安装三步</h3>
+    <div class="steps">
+      <div class="step">
+        <h3>把 MyGod 拖进「应用程序」</h3>
+        <p>打开下载好的 dmg，把 MyGod 图标拖到 Applications 快捷方式上。</p>
+      </div>
+      <div class="step">
+        <h3>首次打开时点「仍要打开」</h3>
+        <p>当前安装包未经 Apple 公证，macOS 会拦一次。到<b>系统设置 → 隐私与安全性</b>点「仍要打开」即可，之后正常双击启动。</p>
+      </div>
+      <div class="step">
+        <h3>选好音乐目录，开始听</h3>
+        <p>打开 App，点「打开文件夹」选中你的音乐目录；想让 AI 帮忙，再到状态页打开助手开关。</p>
+        <p class="note">如果仍然打不开，可在终端执行下面这条命令后再双击。</p>
+        <div class="codewrap">
+          <button class="copy" data-copy>复制</button>
+          <pre>xattr -cr /Applications/MyGod.app</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner">
+      <b>目前仅支持 Apple Silicon Mac</b>（M 系列），Intel 机型暂不可用。若希望下载后直接双击就能打开、免去上面第二步，需要 Apple 开发者签名与公证，暂未提供。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 常见问题 ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">FAQ</div>
+    <h2>常见问题</h2>
+    <div class="faq">
+      <details open>
+        <summary>第一次打开被系统拦住怎么办？</summary>
+        <p>当前安装包未经 Apple 公证，Gatekeeper 会拦一次。在<b>系统设置 → 隐私与安全性</b>点「仍要打开」；或在终端执行 <code class="inline">xattr -cr /Applications/MyGod.app</code> 后双击。只需要做这一次。</p>
+      </details>
+      <details>
+        <summary>我的音乐会被上传或改动吗？</summary>
+        <p>不会。App 只读取你手动选择的目录，且以只读方式使用，不会改动或另存原文件；当前版本零出网，只播本地文件。歌名、歌手、专辑等信息按你文件里的原样显示。</p>
+      </details>
+      <details>
+        <summary>怎么让 AI 助手控制播放？</summary>
+        <p>在「状态」页勾选「允许 Agent 接入本机 MCP」，然后在 WorkBuddy 等支持 MCP 的助手里直接说想听什么即可。开关随时可以关掉，关掉后不影响自己手动播放。</p>
+      </details>
+      <details>
+        <summary>以后能听在线曲库吗？</summary>
+        <p>能，正在准备中。即将推出的在线版计划接入网易云、QQ、咪咕、酷我，届时本地收藏与在线曲库可以一起用。目前可下载的版本仍只播放本地文件、零出网。</p>
+      </details>
+      <details>
+        <summary>Intel Mac 能用吗？</summary>
+        <p>暂时不能。当前版本仅支持 Apple Silicon（M 系列）Mac，Intel 机型的支持还在计划中。</p>
+      </details>
+      <details>
+        <summary>界面支持哪些语言？</summary>
+        <p>简体中文、English、日本語 三套界面，跟随系统语言；其他语言自动回退到英文。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 联系我们 ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker">CONTACT</div>
+    <h2>联系我们</h2>
+    <p class="sub">用着不顺畅、想要新功能，或者只是想说点什么，直接发邮件给我；每一封都会看。</p>
+
+    <div class="banner">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <a class="btn primary" href="mailto:aosfather@gmail.com?subject=MyGod%20%E5%8A%9F%E8%83%BD%E5%BB%BA%E8%AE%AE">提想法 / 功能建议 →</a>
+        <a class="btn ghost" href="mailto:aosfather@gmail.com?subject=MyGod%20Bug%20%E5%8F%8D%E9%A6%88">报 Bug →</a>
+      </div>
+      <p style="margin:0">
+        邮箱：<a href="mailto:aosfather@gmail.com" style="color:var(--accent);font-weight:600">aosfather@gmail.com</a>
+        &nbsp;·&nbsp; 仓库：<a href="https://github.com/aosfather/mygod" style="color:var(--accent)">github.com/aosfather/mygod</a>
+      </p>
+      <p style="margin:10px 0 0;font-size:13px;color:var(--ink3)">
+        反馈问题时附上 macOS 版本、芯片（是否为 M 系列）和当时的操作，会更快定位。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div>MyGod · macOS 本地音乐播放器 · v0.3.0</div>
+    <div>Copyright © 2026 aosfather</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = '复制'; }, 1400);
+      }).catch(function () {
+        btn.textContent = '请手动选择';
+      });
+    });
+  });
+</script>
+</body>
+</html>
