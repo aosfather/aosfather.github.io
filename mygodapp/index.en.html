@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyGod · A Local Music Player for macOS, with AI Assistants</title>
+<style>
+  :root{
+    --ink:#0e1116;
+    --ink2:#3d4450;
+    --ink3:#6c7480;
+    --line:#e6e9ef;
+    --bg:#ffffff;
+    --bg2:#f6f8fb;
+    --accent:#3b5bfd;
+    --accent2:#7a5cff;
+    --code:#0f131a;
+    --code-ink:#d7dce6;
+    --r:14px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+  .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+  nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink2)}
+  nav ul a:hover{color:var(--accent)}
+  @media (max-width:760px){nav ul{display:none}}
+
+  /* hero */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:96px 0 84px;
+    background:
+      radial-gradient(1000px 420px at 82% -8%, rgba(122,92,255,.16), transparent 62%),
+      radial-gradient(760px 360px at 8% 6%, rgba(59,91,253,.14), transparent 60%),
+      #fff;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:20px}
+  h1{font-size:58px;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;font-weight:800;max-width:860px}
+  h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:19px;color:var(--ink2);max-width:700px;margin:0 0 34px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 22px;border-radius:11px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;
+  }
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 10px 24px rgba(59,91,253,.22)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn:hover{transform:translateY(-1px)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .stat{background:#fff;padding:20px 22px}
+  .stat b{display:block;font-size:26px;letter-spacing:-.02em}
+  .stat span{font-size:12.5px;color:var(--ink3)}
+  @media (max-width:760px){
+    h1{font-size:36px}.hero{padding:64px 0 56px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* cases */
+  .cases{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .case{border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 22px;background:#fff}
+  .case .lab{font-size:11.5px;letter-spacing:.12em;color:var(--ink3);font-weight:700;margin:0 0 7px}
+  .case .say{
+    background:var(--bg2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;
+    padding:13px 16px;font-size:15px;color:var(--ink);margin:0 0 16px;line-height:1.65;
+  }
+  .case .say::before{content:"“";color:var(--ink3)}
+  .case .say::after{content:"”";color:var(--ink3)}
+  .case ol{margin:0 0 16px;padding-left:20px;color:var(--ink2);font-size:14.5px;line-height:1.75}
+  .case ol li{margin:5px 0}
+  .case .out{
+    display:inline-block;font-size:12.5px;font-weight:700;color:#0b6b3a;
+    background:#f0fbf4;border:1px solid #bfe6cf;border-radius:6px;padding:4px 10px;
+  }
+  .case .tool{margin-left:8px;font-size:12px;color:var(--ink3)}
+  @media (max-width:900px){.cases{grid-template-columns:1fr}}
+
+  /* before / after */
+  .shift{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:30px 0 34px}
+  .shift .side{border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;background:#fff}
+  .shift .side.b{background:var(--bg2);color:var(--ink2)}
+  .shift .h{font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--ink3);margin-bottom:8px}
+  .shift ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.8}
+  .shift .side.a{border-color:#c9d7ff;background:#f8faff}
+  @media (max-width:760px){.shift{grid-template-columns:1fr}.shift .mid{text-align:center}}
+  .shift .mid{color:var(--accent);font-weight:800;font-size:18px}
+
+  /* download links */
+  .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .dl-card{border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff}
+  .dl-card .os{font-size:16.5px;font-weight:700;margin:0 0 4px}
+  .dl-card .arch{font-size:12.5px;color:var(--ink3);margin:0 0 16px}
+  .dl-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .dl-list a{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+    background:var(--bg2);color:var(--ink);font-size:13.5px;font-weight:600;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .dl-list a:hover{border-color:var(--accent);color:var(--accent);background:#f7f9ff}
+  .dl-list a small{color:var(--ink3);font-size:12px;font-weight:400}
+  @media (max-width:900px){.dl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.dl-grid{grid-template-columns:1fr}}
+  .buildsteps{margin:14px 0 22px;padding-left:22px;color:var(--ink2);font-size:14.8px}
+  .buildsteps li{margin:8px 0}
+
+  /* sections */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700;margin-bottom:10px}
+  h2{font-size:32px;letter-spacing:-.02em;margin:0 0 10px}
+  h2 + p.sub{color:var(--ink3);font-size:15.5px;margin:0 0 38px;max-width:680px}
+  h3{font-size:18px;margin:34px 0 10px}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;
+  }
+  .card .ic{font-size:20px;margin-bottom:10px}
+  .card h3{margin:0 0 6px;font-size:16.5px}
+  .card p{margin:0;color:var(--ink2);font-size:14.5px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:16px}
+  .step{
+    position:relative;padding:24px 26px 24px 74px;border:1px solid var(--line);
+    border-radius:var(--r);background:#fff;
+  }
+  .step::before{
+    counter-increment:s;content:counter(s);
+    position:absolute;left:24px;top:22px;
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:14px;
+  }
+  .step h3{margin:0 0 8px;font-size:17px}
+  .step p{margin:6px 0;color:var(--ink2);font-size:15px}
+  .step .note{color:var(--ink3);font-size:13.5px}
+
+  /* code */
+  .codewrap{position:relative;margin:16px 0}
+  pre{
+    margin:0;background:var(--code);color:var(--code-ink);
+    border-radius:12px;padding:18px 20px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;line-height:1.65;
+  }
+  pre .c{color:#7f8b9e}
+  pre .k{color:#8fb4ff}
+  pre .s{color:#a6e3a1}
+  pre .v{color:#f5c2e7}
+  .copy{
+    position:absolute;top:10px;right:10px;
+    background:#1d2430;color:#c9d2e0;border:1px solid #2a3342;
+    font-size:12px;padding:5px 10px;border-radius:7px;cursor:pointer;
+  }
+  .copy:hover{background:#252e3c}
+  code.inline{background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* prompt cards */
+  .prompts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .prompt{border:1px solid var(--line);border-radius:var(--r);padding:20px;background:#fff}
+  .prompt .who{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+  .prompt p{margin:0;font-size:14.5px;color:var(--ink2)}
+  .prompt p b{color:var(--ink)}
+  @media (max-width:900px){.prompts{grid-template-columns:1fr}}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:18px 0}
+  th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+";color:var(--accent);font-weight:800;margin-right:10px}
+  details[open] summary::before{content:"−"}
+  details p{margin:10px 0 0;color:var(--ink2);font-size:15px}
+
+  .banner{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(135deg,#f7f9ff,#fbf7ff);
+    padding:26px 28px;margin:30px 0;font-size:14.5px;color:var(--ink2);
+  }
+  .banner b{color:var(--ink)}
+
+  footer{padding:52px 0 72px;color:var(--ink3);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+  /* extras */
+  .hl{color:var(--accent);font-weight:700;background:#f2f5ff;border-radius:6px}
+  .shots{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .shot{margin:0;border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--bg2)}
+  .shot img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .shot .tagline{display:inline-block;font-size:11.5px;letter-spacing:.1em;font-weight:700;color:var(--accent);margin-bottom:12px}
+  .shot .cap{margin:14px 2px 0;font-size:14px;color:var(--ink2);line-height:1.65}
+  .shot .cap b{color:var(--ink)}
+  .req{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+  .req span{background:var(--bg2);border:1px solid var(--line);border-radius:50px;padding:7px 16px;font-size:13px;color:var(--ink2)}
+  .req b{color:var(--ink)}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px}
+  .tag{background:var(--bg2);border:1px solid var(--line);border-radius:50px;padding:7px 16px;font-size:13px;color:var(--ink2)}
+  .tag b{color:var(--accent)}
+  @media (max-width:900px){.shots{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot">M</span> MyGod</div>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#sound">Listening</a></li>
+      <li><a href="#screenshots">Screenshots</a></li>
+      <li><a href="#cases">How It Works</a></li>
+      <li><a href="#editions">Roadmap</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="index.html">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A local music player for macOS · works with AI assistants</div>
+    <h1>One app for<br><em>your music</em> — and for <em>AI</em> to play it</h1>
+    <p class="lede">
+      MyGod is a local music player for macOS. Pick a folder and your collection is ready to play;
+      flip one switch and AI assistants like WorkBuddy can search, skip and queue tracks for you.
+      Your music is read straight from your Mac — what plays is always up to you.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#download">Download MyGod →</a>
+      <a class="btn ghost" href="#screenshots">See the interface</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>macOS 14+</b><span>System requirement</span></div>
+      <div class="stat"><b>4</b><span>Online sources · coming soon</span></div>
+      <div class="stat"><b>3</b><span>UI languages: Chinese / English / Japanese</span></div>
+      <div class="stat"><b>1</b><span>One drag to install</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Features ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">FEATURES</div>
+    <h2>Listening shouldn't be this much work</h2>
+    <p class="sub">No importing your music into a library, and no new set of controls to learn just to play a song.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>Just pick a folder</h3>
+        <p>Open the app, click "Open Folder" and choose where your music lives. MyGod reads the files in place and leaves your originals untouched.</p>
+      </div>
+      <div class="card">
+        <div class="ic">✦</div>
+        <h3>Let AI play it</h3>
+        <p>Turn on "Allow Agent to connect to local MCP" in Status, and assistants like WorkBuddy can search, play and manage the queue for you.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◫</div>
+        <h3>Everything on one screen</h3>
+        <p>Track title, previous / next, pause, repeat, shuffle, progress and volume — all in a single window.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>Status at a glance</h3>
+        <p>Whether the engine is connected, its version, the available capabilities, and "Open Folder" to switch music directories any time.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⌂</div>
+        <h3>Your music stays on your Mac</h3>
+        <p>The app only reads the folder you chose, in read-only mode; the current release plays local files only and makes no network calls.</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>Follows your system language</h3>
+        <p>Simplified Chinese, English and Japanese interfaces; other languages fall back to English. Track, artist and album names stay as they are.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Listening capabilities ============ -->
+<section id="sound">
+  <div class="wrap">
+    <div class="kicker">MADE FOR LISTENING</div>
+    <h2>14 capabilities, all for listening to a song</h2>
+    <p class="sub">
+      Together these 14 capabilities cover the whole path from finding a track to shaping the sound the way you like it.
+      They're not a developer API list — every one of them is about listening: finding music, queuing it, playing it,
+      reading lyrics, and tuning the sound.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>Find it</h3>
+        <p>Register a local folder, search by title or artist, open album and playlist pages; whether a track can play is shown right in the results.</p>
+      </div>
+      <div class="card">
+        <div class="ic">▤</div>
+        <h3>Queue it</h3>
+        <p>Drop in a set of tracks, a whole album or a playlist; shuffle, repeat-all and repeat-one are one tap away.</p>
+      </div>
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>Control it</h3>
+        <p>Play / pause / previous / next / jump to any track / seek / volume — several actions can be applied at once.</p>
+      </div>
+      <div class="card">
+        <div class="ic">✎</div>
+        <h3>Follow along</h3>
+        <p>Timed lyrics, translations and word-by-word lyrics; plus a snapshot of what's playing, what's next and which sound settings are on.</p>
+      </div>
+      <div class="card">
+        <div class="ic">♬</div>
+        <h3>Shape the sound</h3>
+        <p>A 10-band EQ, built-in presets, your own presets, night mode, loudness normalization, bass/treble enhancement — detailed below.</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>Learn your taste</h3>
+        <p>Likes, playlists and scenes are coming in later releases, so "just play something I like" keeps getting better.</p>
+      </div>
+    </div>
+
+    <h3>Sound, in particular: the EQ and everything around it</h3>
+    <p style="color:var(--ink2);font-size:15px">
+      Volume is only the beginning. MyGod also lets you decide how the music actually sounds: from a ten-band equalizer
+      to a late-night mode, and once you've got it right you can save it as your own preset — it'll still be there next
+      time you open the app. All of it exists purely for listening, not for configuration or development.
+    </p>
+
+    <div class="tags">
+      <span class="tag"><b>10-band EQ</b> 31 Hz → 16 kHz</span>
+      <span class="tag"><b>±12 dB</b> per band</span>
+      <span class="tag"><b>22</b> built-in presets</span>
+      <span class="tag">Save / delete your own presets</span>
+      <span class="tag">Preamp</span>
+      <span class="tag">Bass / treble enhancement</span>
+      <span class="tag">Night mode</span>
+      <span class="tag">Loudness normalization</span>
+    </div>
+
+    <table>
+      <thead><tr><th>What you want</th><th>How to get it</th></tr></thead>
+      <tbody>
+        <tr><td>Punchier bass, tighter drums</td><td>Pick the "Bass" or "Extra Bass" preset, or nudge 31 / 63 / 125 Hz up a little</td></tr>
+        <tr><td>Clearer vocals, less mud</td><td>Try the "Pop" or "Mid" preset, or lift 1–4 kHz</td></tr>
+        <tr><td>Late-night listening without waking anyone</td><td>Turn on Night mode: it tames dynamics so quiet parts stay audible</td></tr>
+        <tr><td>One track loud, the next one quiet</td><td>Turn on Loudness normalization to even out the difference</td></tr>
+        <tr><td>Thin laptop speakers, dull headphones</td><td>Use the "Speaker" preset, or add bass / treble enhancement separately</td></tr>
+        <tr><td>You've found your perfect sound</td><td>Save it as a named preset — it survives restarts; delete it to fall back to the built-in one</td></tr>
+      </tbody>
+    </table>
+
+    <div class="banner">
+      <b>Or just say it in one sentence.</b> With the assistant switch on, a request like "pull the bass back a bit and
+      turn on night mode" applies several sound settings at once. Adjusting everything by hand works just as well, of course.
+    </div>
+  </div>
+</section>
+
+<!-- ============ Screenshots ============ -->
+<section id="screenshots">
+  <div class="wrap">
+    <div class="kicker">SCREENSHOTS</div>
+    <h2>A look at the interface</h2>
+    <p class="sub">Two tabs, one window: Player for listening, Status for connection and settings. Shown below is MyGod 0.3.0. The screenshots show the Chinese interface — English and Japanese are also available.</p>
+
+    <div class="shots">
+      <figure class="shot">
+        <span class="tagline">PLAYER</span>
+        <img src="shots/player.png" alt="MyGod Player view: track title, playback controls, progress and volume" loading="lazy">
+        <figcaption class="cap"><b>Player</b> — the current track, playback controls, progress bar and volume all live in one window, so skipping a song or adjusting volume never means digging through menus.</figcaption>
+      </figure>
+      <figure class="shot">
+        <span class="tagline">STATUS</span>
+        <img src="shots/status.png" alt="MyGod Status view: connection state, Open Folder, AI assistant switch and available capabilities" loading="lazy">
+        <figcaption class="cap"><b>Status</b> — whether the engine is connected, a button to change your music folder, the switch that lets AI assistants connect, and the list of capabilities currently available.</figcaption>
+      </figure>
+    </div>
+
+    <div class="banner">
+      <b>Local only, for now.</b> In the current release, Status says "Local files only — please choose a local folder" and offers just an "Open Folder" button, with no online sources. A version with online music sources is coming soon.
+    </div>
+  </div>
+</section>
+
+<!-- ============ How it works ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="kicker">HOW IT WORKS</div>
+    <h2>Two ways to use it</h2>
+    <p class="sub">Tap through it yourself, or hand the song-finding to an AI assistant — no settings to change and no commands to remember.</p>
+
+    <div class="cases">
+      <div class="case">
+        <h3>① Just play my own collection</h3>
+        <p class="lab">WHAT YOU DO</p>
+        <ol>
+          <li>Open the app, click "Open Folder" and choose your music directory;</li>
+          <li>Hit play in the Player tab, then skip, repeat or adjust volume with the controls;</li>
+          <li>Want a different set of songs? Click "Open Folder" again.</li>
+        </ol>
+        <span class="out">Playing right after you pick</span><span class="tool">No library import, no changes to your files</span>
+      </div>
+
+      <div class="case">
+        <h3>② Let an AI assistant do the playing</h3>
+        <p class="lab">WHAT YOU DO</p>
+        <ol>
+          <li>Tick "Allow Agent to connect to local MCP" in the Status tab;</li>
+          <li>Tell an MCP-capable assistant like WorkBuddy what you want to hear;</li>
+          <li>It searches, builds the queue and starts playback — after that, one sentence is enough to skip.</li>
+        </ol>
+        <span class="out">Skip with a sentence</span><span class="tool">The switch can be turned off any time; manual playback works without it</span>
+      </div>
+    </div>
+
+    <div class="shift">
+      <div class="side b">
+        <div class="h">BEFORE</div>
+        <ul>
+          <li>Open a player and drag songs in one by one</li>
+          <li>Want a change? Search, pick and queue them yourself</li>
+          <li>Listening while working still means reaching for the next track</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="side a">
+        <div class="h">NOW</div>
+        <ul>
+          <li>Pick a folder once and your whole collection is there</li>
+          <li>Ask the assistant for a batch that fits the mood, and it plays right after</li>
+          <li>Say the word to change it — playback never stops</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Roadmap ============ -->
+<section id="editions">
+  <div class="wrap">
+    <div class="kicker">ROADMAP</div>
+    <h2>What's here now, and the online edition coming soon</h2>
+    <p class="sub">The MyGod you can download today plays local files only and makes no network calls. An edition with online music sources is in preparation and coming soon.</p>
+
+    <table>
+      <thead><tr><th></th><th>Current release (available now)</th><th>Online edition (coming soon)</th></tr></thead>
+      <tbody>
+        <tr><td>Music sources</td><td class="hl">Local files only</td><td>Planned: NetEase Cloud Music / QQ / Migu / Kuwo, alongside local files</td></tr>
+        <tr><td>Network</td><td class="hl">No network access</td><td>Streaming online sources will require a connection</td></tr>
+        <tr><td>Capabilities for AI</td><td>14 (local only)</td><td>19 expected</td></tr>
+        <tr><td>When</td><td>Available to download now</td><td>Coming soon</td></tr>
+      </tbody>
+    </table>
+
+    <div class="banner">
+      <b>The interface carries over.</b> When the online edition arrives it will keep the familiar Player / Status tabs,
+      so you can pick a folder and start listening without learning anything new — and local files and online sources will work together.
+    </div>
+  </div>
+</section>
+
+<!-- ============ Download & install ============ -->
+<section id="download">
+  <div class="wrap">
+    <div class="kicker">DOWNLOAD</div>
+    <h2>Download MyGod</h2>
+    <p class="sub">Current release 0.3.0. It ships as a dmg — open it, drag, and you're done.</p>
+
+    <div class="req">
+      <span><b>v0.3.0</b></span>
+      <span><b>macOS 14.0</b> or later</span>
+      <span><b>Apple Silicon</b> (M-series)</span>
+      <span>about <b>8.5 MB</b></span>
+    </div>
+
+    <div class="cta" style="margin-bottom:16px">
+      <a class="btn primary" href="https://github.com/aosfather/mygod">Get v0.3.0 on GitHub →</a>
+      <a class="btn ghost" href="mailto:aosfather@gmail.com?subject=MyGod%20download">Can't find it? Email me</a>
+    </div>
+    <p style="color:var(--ink3);font-size:13.5px;margin:0 0 34px">
+      Releases are published on the GitHub repository. Once you have the dmg, follow the three steps below.
+    </p>
+
+    <h3>Install in three steps</h3>
+    <div class="steps">
+      <div class="step">
+        <h3>Drag MyGod into Applications</h3>
+        <p>Open the downloaded dmg and drag the MyGod icon onto the Applications shortcut.</p>
+      </div>
+      <div class="step">
+        <h3>Click "Open Anyway" the first time</h3>
+        <p>The current build isn't notarized by Apple, so macOS will stop it once. Go to <b>System Settings → Privacy &amp; Security</b> and click "Open Anyway"; after that, double-clicking works normally.</p>
+      </div>
+      <div class="step">
+        <h3>Pick your music folder and listen</h3>
+        <p>Open the app, click "Open Folder" and choose your music directory. To let AI help, switch it on in the Status tab.</p>
+        <p class="note">If it still won't open, run the command below in Terminal and double-click again.</p>
+        <div class="codewrap">
+          <button class="copy" data-copy>Copy</button>
+          <pre>xattr -cr /Applications/MyGod.app</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner">
+      <b>Apple Silicon Macs only for now</b> (M-series); Intel Macs are not supported yet. A build you could simply
+      double-click without step 2 would require an Apple Developer ID and notarization, which isn't available yet.
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">FAQ</div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      <details open>
+        <summary>Why does macOS block it the first time?</summary>
+        <p>The current build isn't notarized by Apple, so Gatekeeper stops it once. Click "Open Anyway" in <b>System Settings → Privacy &amp; Security</b>, or run <code class="inline">xattr -cr /Applications/MyGod.app</code> in Terminal and double-click again. You only need to do this once.</p>
+      </details>
+      <details>
+        <summary>Will my music be uploaded or changed?</summary>
+        <p>No. The app only reads the folder you chose, in read-only mode, and never modifies or copies your originals. The current release plays local files only and makes no network calls. Track, artist and album names are shown exactly as they are in your files.</p>
+      </details>
+      <details>
+        <summary>How do I let an AI assistant control playback?</summary>
+        <p>Tick "Allow Agent to connect to local MCP" in the Status tab, then just tell an MCP-capable assistant like WorkBuddy what you want to hear. You can turn the switch off at any time; manual playback is unaffected.</p>
+      </details>
+      <details>
+        <summary>Will online music sources be supported?</summary>
+        <p>Yes — it's in preparation. The online edition coming soon is planned to add NetEase Cloud Music, QQ, Migu and Kuwo, so local and online music can be used together. The version you can download today still plays local files only, with no network access.</p>
+      </details>
+      <details>
+        <summary>Does it work on Intel Macs?</summary>
+        <p>Not yet. The current release supports Apple Silicon (M-series) Macs only; Intel support is planned.</p>
+      </details>
+      <details>
+        <summary>Which languages does the interface support?</summary>
+        <p>Simplified Chinese, English and Japanese, following your system language; any other language falls back to English.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Contact ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker">CONTACT</div>
+    <h2>Get in touch</h2>
+    <p class="sub">Something not working, a feature you'd like, or just a thought — send me an email. I read every one.</p>
+
+    <div class="banner">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <a class="btn primary" href="mailto:aosfather@gmail.com?subject=MyGod%20feature%20idea">Share an idea →</a>
+        <a class="btn ghost" href="mailto:aosfather@gmail.com?subject=MyGod%20bug%20report">Report a bug →</a>
+      </div>
+      <p style="margin:0">
+        Email: <a href="mailto:aosfather@gmail.com" style="color:var(--accent);font-weight:600">aosfather@gmail.com</a>
+        &nbsp;·&nbsp; Repo: <a href="https://github.com/aosfather/mygod" style="color:var(--accent)">github.com/aosfather/mygod</a>
+      </p>
+      <p style="margin:10px 0 0;font-size:13px;color:var(--ink3)">
+        When reporting a problem, include your macOS version, chip (M-series or not) and what you were doing — it helps a lot.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div>MyGod · A local music player for macOS · v0.3.0</div>
+    <div>Copyright © 2026 aosfather</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
+      }).catch(function () {
+        btn.textContent = 'Select manually';
+      });
+    });
+  });
+</script>
+</body>
+</html>

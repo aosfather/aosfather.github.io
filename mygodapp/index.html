@@ -221,6 +221,9 @@
   .req{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
   .req span{background:var(--bg2);border:1px solid var(--line);border-radius:50px;padding:7px 16px;font-size:13px;color:var(--ink2)}
   .req b{color:var(--ink)}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px}
+  .tag{background:var(--bg2);border:1px solid var(--line);border-radius:50px;padding:7px 16px;font-size:13px;color:var(--ink2)}
+  .tag b{color:var(--accent)}
   @media (max-width:900px){.shots{grid-template-columns:1fr}}
 </style>
 </head>
@@ -231,12 +234,14 @@
     <div class="brand"><span class="dot">M</span> MyGod</div>
     <ul>
       <li><a href="#features">特性</a></li>
+      <li><a href="#sound">听歌能力</a></li>
       <li><a href="#screenshots">界面预览</a></li>
       <li><a href="#cases">怎么用</a></li>
       <li><a href="#editions">版本规划</a></li>
       <li><a href="#download">下载安装</a></li>
       <li><a href="#faq">常见问题</a></li>
       <li><a href="#contact">联系我们</a></li>
+      <li><a href="index.en.html">English</a></li>
     </ul>
   </div>
 </nav>
@@ -300,6 +305,85 @@
         <h3>跟着系统语言走</h3>
         <p>简体中文、English、日本語 三套界面；其他语言自动回退英文。歌名、歌手、专辑按原样显示。</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 听歌能力 ============ -->
+<section id="sound">
+  <div class="wrap">
+    <div class="kicker">MADE FOR LISTENING</div>
+    <h2>14 项能力，只为好好听一首歌</h2>
+    <p class="sub">
+      这 14 项能力串起来，就是从「找到歌」到「把声音调成自己喜欢的样子」的完整过程。
+      它们不是给开发者看的接口清单，全都围着听歌这件事：找歌、排队、播放、看歌词，以及调音效。
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>找得到</h3>
+        <p>登记本地音乐目录、按歌名或艺人检索、打开专辑与歌单页；哪首能不能播，检索时就标出来。</p>
+      </div>
+      <div class="card">
+        <div class="ic">▤</div>
+        <h3>排得好</h3>
+        <p>一组曲目、整张专辑或整个歌单直接入队，随机、列表循环、单曲循环随手切。</p>
+      </div>
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>控得住</h3>
+        <p>播放 / 暂停 / 上一首 / 下一首 / 跳到队列任意一首 / 拖进度 / 调音量，几个动作可以一次生效。</p>
+      </div>
+      <div class="card">
+        <div class="ic">✎</div>
+        <h3>跟着看</h3>
+        <p>时间轴歌词、译文与逐字歌词；当前播到哪、下一首是什么、音效开着哪些，一屏就能看到。</p>
+      </div>
+      <div class="card">
+        <div class="ic">♬</div>
+        <h3>调得出好声音</h3>
+        <p>十段均衡器、内置预设、自定义预设、夜间模式、响度均衡、高低音增强——下面单独说。</p>
+      </div>
+      <div class="card">
+        <div class="ic">↻</div>
+        <h3>慢慢记住口味</h3>
+        <p>收藏、歌单与场景等能力会陆续补齐，让「随便放点我喜欢的」越来越准。</p>
+      </div>
+    </div>
+
+    <h3>尤其说说声音：EQ 和那一套音效</h3>
+    <p style="color:var(--ink2);font-size:15px">
+      音量只是最基础的一项。MyGod 把「声音长什么样」也交给你：从十段均衡器到深夜模式，
+      调好能存成自己的预设，下次打开还是这一套。这些完全是为听歌准备的，和开发、配置无关。
+    </p>
+
+    <div class="tags">
+      <span class="tag"><b>10 段 EQ</b> 31 Hz → 16 kHz</span>
+      <span class="tag">每段 <b>±12 dB</b></span>
+      <span class="tag"><b>22 个</b> 内置预设</span>
+      <span class="tag">自定义预设可保存 / 删除</span>
+      <span class="tag">前置增益</span>
+      <span class="tag">低音 / 高音增强</span>
+      <span class="tag">夜间模式</span>
+      <span class="tag">响度均衡</span>
+    </div>
+
+    <table>
+      <thead><tr><th>想要的效果</th><th>怎么调</th></tr></thead>
+      <tbody>
+        <tr><td>低音更有劲、鼓点更实</td><td>选「低音」或「超重低音」预设，或把 31 / 63 / 125 Hz 推高一点</td></tr>
+        <tr><td>人声更清楚、不糊</td><td>选「流行」「中音」一类的预设，或抬高 1–4 kHz</td></tr>
+        <tr><td>深夜听，不想吵到人</td><td>开夜间模式：压住大动态，小声的部分也听得见</td></tr>
+        <tr><td>一首响一首轻，总要去摸音量</td><td>开响度均衡，把曲目之间的音量差抹平</td></tr>
+        <tr><td>笔记本喇叭太薄、耳机太闷</td><td>用「扬声器」预设，或单独补低音、高音增强</td></tr>
+        <tr><td>调出了自己最爱的那套</td><td>保存成命名预设，重启后仍在；不想用了删掉就回到内置</td></tr>
+      </tbody>
+    </table>
+
+    <div class="banner">
+      <b>也可以只说一句话。</b> 打开助手开关后，像「把低音收一点，再开夜间模式」这样的要求，
+      可以一次把几项音效一起调好；当然，自己一项项慢慢调也完全可以。
     </div>
   </div>
 </section>
